@@ -19,8 +19,8 @@ public class PostFestivalListResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
-    public static ResponseEntity<ResponseDto> fail(){
-        ResponseDto responseBody = new ResponseDto();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    public static ResponseEntity<ResponseDto> duplicate(){
+        ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATE_FESTIVAL, ResponseMessage.DUPLICATE_FESTIVAL);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
 }

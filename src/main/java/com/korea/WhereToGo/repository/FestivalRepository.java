@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FestivalRepository extends JpaRepository<FestivalEntity, Integer> {
+
+    FestivalEntity findByContentId(String ContentId);
 }
