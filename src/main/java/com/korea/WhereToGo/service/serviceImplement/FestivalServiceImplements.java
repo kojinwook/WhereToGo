@@ -3,6 +3,7 @@ package com.korea.WhereToGo.service.serviceImplement;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korea.WhereToGo.dto.response.ResponseDto;
+import com.korea.WhereToGo.dto.response.festival.GetFestivalListResponseDto;
 import com.korea.WhereToGo.dto.response.festival.PostFestivalListResponseDto;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
@@ -17,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +66,7 @@ public class FestivalServiceImplements implements FestivalService {
                     festivalEntity.setContentTypeId(itemNode.path("contenttypeid").asText());
 
                     FestivalEntity festival = festivalRepository.findByContentId(festivalEntity.getContentId());
+
                     if(festival != null) return PostFestivalListResponseDto.duplicate();
 
                     festivalRepository.save(festivalEntity);
@@ -72,5 +76,16 @@ public class FestivalServiceImplements implements FestivalService {
             return ResponseDto.databaseError();
         }
         return PostFestivalListResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetFestivalListResponseDto> getFestivalList() {
+        List<FestivalEntity> festivalEntities = new ArrayList<>();
+        try {
+            festivalEntities = festivalRepository.findAll();
+        }catch (Exception exception){
+            return ResponseDto.databaseError();
+        }
+        return GetFestivalListResponseDto.success(festivalEntities);
     }
 }
