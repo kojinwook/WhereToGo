@@ -1,6 +1,7 @@
 package com.korea.WhereToGo.controller;
 
 import com.korea.WhereToGo.dto.response.festival.GetFestivalListResponseDto;
+import com.korea.WhereToGo.dto.response.festival.GetSearchFestivalListResponseDto;
 import com.korea.WhereToGo.dto.response.festival.PostFestivalListResponseDto;
 import com.korea.WhereToGo.service.FestivalService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,12 @@ public class FestivalController {
     @GetMapping("/getFestivalList")
     public ResponseEntity<? super GetFestivalListResponseDto> getFestivalList() {
         ResponseEntity<? super GetFestivalListResponseDto> response = festivalService.getFestivalList();
+        return response;
+    }
+
+    @GetMapping("/searchFestivalList")
+    public ResponseEntity<? super GetSearchFestivalListResponseDto> searchFestivalList(@RequestParam String areaCode) {
+        ResponseEntity<? super GetSearchFestivalListResponseDto> response = festivalService.searchFestivalList(areaCode);
         return response;
     }
 }

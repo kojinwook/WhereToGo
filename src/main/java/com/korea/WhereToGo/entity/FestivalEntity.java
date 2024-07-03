@@ -44,6 +44,4 @@ public class FestivalEntity {
     private String contentId;
     @Column(name = "content_type_id")
     private String contentTypeId;
-    @Column(name = "member_id")
-    private Integer memberId;
 }

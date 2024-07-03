@@ -5,4 +5,5 @@ public interface ResponseCode {
     String VALIDATION_FAIL = "VF";
     String DATABASE_ERROR = "DBE";
     String DUPLICATE_FESTIVAL = "DF";
+    String NOT_EXISTED_FESTIVAL = "NF";
 }

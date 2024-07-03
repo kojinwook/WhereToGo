@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.festival.GetFestivalListResponseDto;
+import com.korea.WhereToGo.dto.response.festival.GetSearchFestivalListResponseDto;
 import com.korea.WhereToGo.dto.response.festival.PostFestivalListResponseDto;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
@@ -65,11 +66,65 @@ public class FestivalServiceImplements implements FestivalService {
                     festivalEntity.setContentId(itemNode.path("contentid").asText());
                     festivalEntity.setContentTypeId(itemNode.path("contenttypeid").asText());
 
-                    FestivalEntity festival = festivalRepository.findByContentId(festivalEntity.getContentId());
+                    FestivalEntity existingFestival = festivalRepository.findByContentId(festivalEntity.getContentId());
 
-                    if(festival != null) return PostFestivalListResponseDto.duplicate();
+                    if (existingFestival != null) {
+                        boolean isUpdated = false;
+                        if (!existingFestival.getTitle().equals(festivalEntity.getTitle())) {
+                            existingFestival.setTitle(festivalEntity.getTitle());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getStartDate().equals(festivalEntity.getStartDate())) {
+                            existingFestival.setStartDate(festivalEntity.getStartDate());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getEndDate().equals(festivalEntity.getEndDate())) {
+                            existingFestival.setEndDate(festivalEntity.getEndDate());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getAddress1().equals(festivalEntity.getAddress1())) {
+                            existingFestival.setAddress1(festivalEntity.getAddress1());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getFirstImage().equals(festivalEntity.getFirstImage())) {
+                            existingFestival.setFirstImage(festivalEntity.getFirstImage());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getTel().equals(festivalEntity.getTel())) {
+                            existingFestival.setTel(festivalEntity.getTel());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getMapX().equals(festivalEntity.getMapX())) {
+                            existingFestival.setMapX(festivalEntity.getMapX());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getMapY().equals(festivalEntity.getMapY())) {
+                            existingFestival.setMapY(festivalEntity.getMapY());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getModifyDate().equals(festivalEntity.getModifyDate())) {
+                            existingFestival.setModifyDate(festivalEntity.getModifyDate());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getAreaCode().equals(festivalEntity.getAreaCode())) {
+                            existingFestival.setAreaCode(festivalEntity.getAreaCode());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getSigunguCode().equals(festivalEntity.getSigunguCode())) {
+                            existingFestival.setSigunguCode(festivalEntity.getSigunguCode());
+                            isUpdated = true;
+                        }
+                        if (!existingFestival.getContentTypeId().equals(festivalEntity.getContentTypeId())) {
+                            existingFestival.setContentTypeId(festivalEntity.getContentTypeId());
+                            isUpdated = true;
+                        }
 
-                    festivalRepository.save(festivalEntity);
+                        if (isUpdated) {
+                            festivalRepository.save(existingFestival);
+                        }
+                    } else {
+                        festivalRepository.save(festivalEntity);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -83,9 +138,23 @@ public class FestivalServiceImplements implements FestivalService {
         List<FestivalEntity> festivalEntities = new ArrayList<>();
         try {
             festivalEntities = festivalRepository.findAll();
-        }catch (Exception exception){
+        } catch (Exception exception) {
             return ResponseDto.databaseError();
         }
         return GetFestivalListResponseDto.success(festivalEntities);
+    }
+
+    @Override
+    public ResponseEntity<? super GetSearchFestivalListResponseDto> searchFestivalList(String areaCode) {
+        List<FestivalEntity> festivalEntities = new ArrayList<>();
+        try {
+            festivalEntities = festivalRepository.findByAreaCode(areaCode);
+
+            if (festivalEntities.isEmpty()) return GetSearchFestivalListResponseDto.notExistFestival();
+
+        } catch (Exception exception) {
+            return ResponseDto.databaseError();
+        }
+        return GetSearchFestivalListResponseDto.success(festivalEntities);
     }
 }
