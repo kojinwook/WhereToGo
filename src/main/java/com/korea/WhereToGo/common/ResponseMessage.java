@@ -6,4 +6,5 @@ public interface ResponseMessage {
     String DATABASE_ERROR = "Database_Error";
     String DUPLICATE_FESTIVAL = "Duplicate_Festival";
     String NOT_EXISTED_FESTIVAL = "Not_Existed_Festival";
+    String DO_NOT_HAVE_PERMISSION = "Do_Not_Have_Permission";
 }

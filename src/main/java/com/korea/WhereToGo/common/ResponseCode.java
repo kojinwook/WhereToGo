@@ -6,4 +6,5 @@ public interface ResponseCode {
     String DATABASE_ERROR = "DBE";
     String DUPLICATE_FESTIVAL = "DF";
     String NOT_EXISTED_FESTIVAL = "NF";
+    String DO_NOT_HAVE_PERMISSION = "DHP";
 }

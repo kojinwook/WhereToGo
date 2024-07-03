@@ -2,10 +2,9 @@ package com.korea.WhereToGo.service.serviceImplement;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.korea.WhereToGo.dto.request.festival.PatchFestivalRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
-import com.korea.WhereToGo.dto.response.festival.GetFestivalListResponseDto;
-import com.korea.WhereToGo.dto.response.festival.GetSearchFestivalListResponseDto;
-import com.korea.WhereToGo.dto.response.festival.PostFestivalListResponseDto;
+import com.korea.WhereToGo.dto.response.festival.*;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
 import com.korea.WhereToGo.service.FestivalService;
@@ -156,5 +155,38 @@ public class FestivalServiceImplements implements FestivalService {
             return ResponseDto.databaseError();
         }
         return GetSearchFestivalListResponseDto.success(festivalEntities);
+    }
+
+    @Override
+    public ResponseEntity<? super PatchFestivalResponseDto> patchFestival(PatchFestivalRequestDto dto, String contentId, String userId) {
+        try {
+            FestivalEntity festivalEntity = festivalRepository.findByContentId(contentId);
+            if (festivalEntity == null) return PatchFestivalResponseDto.notExistFestival();
+
+//            UserEntity userEntity = userRepository.findByUserId(userId);
+//            if (userEntity == null || !userEntity.getRole().equals("ADMIN")) return PatchFestivalResponseDto.notPermission();
+
+            festivalEntity.patchFestival(dto);
+            festivalRepository.save(festivalEntity);
+
+        } catch (Exception exception) {
+            return ResponseDto.databaseError();
+        }
+        return PatchFestivalResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetFestivalResponseDto> getFestival(String contentId) {
+        FestivalEntity festivalEntity = new FestivalEntity();
+
+        try {
+
+            festivalEntity = festivalRepository.findByContentId(contentId);
+            if (festivalEntity == null) return GetFestivalResponseDto.notExistFestival();
+
+        } catch (Exception exception) {
+            return ResponseDto.databaseError();
+        }
+        return GetFestivalResponseDto.success(festivalEntity);
     }
 }
