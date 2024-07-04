@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,8 @@ public class FestivalServiceImplements implements FestivalService {
             JsonNode rootNode = objectMapper.readTree(response.getBody());
             JsonNode itemsNode = rootNode.path("response").path("body").path("items").path("item");
 
+            LocalDate today = LocalDate.now();
+
             if (itemsNode.isArray()) {
                 for (JsonNode itemNode : itemsNode) {
                     FestivalEntity festivalEntity = new FestivalEntity();
@@ -64,6 +67,12 @@ public class FestivalServiceImplements implements FestivalService {
                     festivalEntity.setSigunguCode(itemNode.path("sigungucode").asText());
                     festivalEntity.setContentId(itemNode.path("contentid").asText());
                     festivalEntity.setContentTypeId(itemNode.path("contenttypeid").asText());
+
+//                    LocalDate modifyDate = LocalDate.parse(festivalEntity.getModifyDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+//
+//                    if (!modifyDate.isEqual(today)) {
+//                        continue;
+//                    }
 
                     FestivalEntity existingFestival = festivalRepository.findByContentId(festivalEntity.getContentId());
 
@@ -137,6 +146,7 @@ public class FestivalServiceImplements implements FestivalService {
         List<FestivalEntity> festivalEntities = new ArrayList<>();
         try {
             festivalEntities = festivalRepository.findAll();
+
         } catch (Exception exception) {
             return ResponseDto.databaseError();
         }
