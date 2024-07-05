@@ -7,6 +7,7 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.festival.*;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
+import com.korea.WhereToGo.repository.RateRepository;
 import com.korea.WhereToGo.service.FestivalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -29,6 +30,7 @@ public class FestivalServiceImplements implements FestivalService {
     private static final String API_URL = "https://apis.data.go.kr/B551011/KorService1/searchFestival1";
     private static final String SERVICE_KEY = "jyrjzPCPy2ZunbDHSvrxNcr1Jl%2BWUNSidHGaWa0ZtEPPpAeF%2FCXZlJu9%2FInRdrmT7z29NspgBpW3ebiR3qBQ%2FQ%3D%3D";
     private final FestivalRepository festivalRepository;
+    private final RateRepository rateRepository;
 
     @Override
     public ResponseEntity<? super PostFestivalListResponseDto> saveFestivalList(String eventStartDate) {
@@ -143,7 +145,9 @@ public class FestivalServiceImplements implements FestivalService {
 
     @Override
     public ResponseEntity<? super GetFestivalListResponseDto> getFestivalList() {
+
         List<FestivalEntity> festivalEntities = new ArrayList<>();
+
         try {
             festivalEntities = festivalRepository.findAll();
 

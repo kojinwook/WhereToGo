@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -49,10 +50,8 @@ public class FestivalEntity {
     private String contentTypeId;
     @Column(name = "homepage")
     private String homepage;
-    @Column(name = "rates")
-    private double rates;
-    @Column(name = "tags")
-    private List<String> tags;
+    @Column(name = "tag")
+    private List<String> tags = new ArrayList<>();
 
     public void patchFestival(PatchFestivalRequestDto dto){
         this.title = dto.getTitle();
