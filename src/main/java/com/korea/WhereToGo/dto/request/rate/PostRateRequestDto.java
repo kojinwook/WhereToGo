@@ -12,5 +12,7 @@ public class PostRateRequestDto {
     @NotBlank
     private String contentId;
     @NotBlank
-    private int rates;
+    private int rate;
+    @NotBlank
+    private String review;
 }

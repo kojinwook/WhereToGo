@@ -7,19 +7,20 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.OptionalDouble;
+import java.util.Map;
 
 @Getter
-public class GetRateAverageResponseDto extends ResponseDto {
-    private OptionalDouble average;
+public class GeAverageRateResponseDto extends ResponseDto {
 
-    private GetRateAverageResponseDto(OptionalDouble average) {
+    private Map<String, Double> average;
+
+    private GeAverageRateResponseDto(Map<String, Double> average) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.average = average;
     }
 
-    public static ResponseEntity<? super GetRateAverageResponseDto> success(OptionalDouble average) {
-        GetRateAverageResponseDto responseBody = new GetRateAverageResponseDto(average);
+    public static ResponseEntity<? super GeAverageRateResponseDto> success(Map<String, Double> average) {
+        GeAverageRateResponseDto responseBody = new GeAverageRateResponseDto(average);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 

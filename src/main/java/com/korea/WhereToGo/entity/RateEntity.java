@@ -24,7 +24,10 @@ public class RateEntity {
 
     @Column(name = "write_datetime")
     private String writeDatetime;
+    @Column(name = "modify_datetime")
+    private String modifyDatetime;
     private String contentId;
+    private String review;
     @Column(name = "rate")
     private int rate;
 
@@ -34,6 +37,7 @@ public class RateEntity {
         String writeDatetime = simpleDateFormat.format(now);
         this.writeDatetime = writeDatetime;
         this.contentId = contentId;
-        this.rate = dto.getRates();
+        this.review = dto.getReview();
+        this.rate = dto.getRate();
     }
 }
