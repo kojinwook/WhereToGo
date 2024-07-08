@@ -10,11 +10,12 @@ import org.springframework.http.ResponseEntity;
 
 @Getter
 public class GetFestivalResponseDto extends ResponseDto {
-    FestivalEntity festival;
 
-    public GetFestivalResponseDto(FestivalEntity entity) {
+private FestivalEntity festival;
+
+    public GetFestivalResponseDto(FestivalEntity festival) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.festival = entity;
+        this.festival = festival;
     }
 
     public static ResponseEntity<GetFestivalResponseDto> success(FestivalEntity festival){
