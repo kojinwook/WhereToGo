@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -47,6 +50,8 @@ public class FestivalEntity {
     private String contentTypeId;
     @Column(name = "homepage")
     private String homepage;
+    @Column(name = "tag")
+    private List<String> tags = new ArrayList<>();
 
     public void patchFestival(PatchFestivalRequestDto dto){
         this.title = dto.getTitle();
@@ -55,13 +60,8 @@ public class FestivalEntity {
         this.address1 = dto.getAddress1();
         this.firstImage = dto.getFirstImage();
         this.tel = dto.getTel();
-        this.mapX = dto.getMapX();
-        this.mapY = dto.getMapY();
-        this.modifyDate = dto.getModifyDate();
-        this.areaCode = dto.getAreaCode();
-        this.sigunguCode = dto.getSigunguCode();
         this.contentId = dto.getContentId();
-        this.contentTypeId = dto.getContentTypeId();
         this.homepage = dto.getHomepage();
+        this.tags = dto.getTags();
     }
 }

@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,12 +16,7 @@ public class PatchFestivalRequestDto {
     private String address1;
     private String firstImage;
     private String tel;
-    private String mapX;
-    private String mapY;
-    private String modifyDate;
-    private String areaCode;
-    private String sigunguCode;
     private String contentId;
-    private String contentTypeId;
     private String homepage;
+    private List<String> tags;
 }

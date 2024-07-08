@@ -7,6 +7,7 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.festival.*;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
+import com.korea.WhereToGo.repository.RateRepository;
 import com.korea.WhereToGo.service.FestivalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class FestivalServiceImplements implements FestivalService {
     private static final String API_URL = "https://apis.data.go.kr/B551011/KorService1/searchFestival1";
     private static final String SERVICE_KEY = "jyrjzPCPy2ZunbDHSvrxNcr1Jl%2BWUNSidHGaWa0ZtEPPpAeF%2FCXZlJu9%2FInRdrmT7z29NspgBpW3ebiR3qBQ%2FQ%3D%3D";
     private final FestivalRepository festivalRepository;
+    private final RateRepository rateRepository;
 
     @Override
     public ResponseEntity<? super PostFestivalListResponseDto> saveFestivalList(String eventStartDate) {
@@ -48,6 +51,8 @@ public class FestivalServiceImplements implements FestivalService {
             JsonNode rootNode = objectMapper.readTree(response.getBody());
             JsonNode itemsNode = rootNode.path("response").path("body").path("items").path("item");
 
+            LocalDate today = LocalDate.now();
+
             if (itemsNode.isArray()) {
                 for (JsonNode itemNode : itemsNode) {
                     FestivalEntity festivalEntity = new FestivalEntity();
@@ -64,6 +69,12 @@ public class FestivalServiceImplements implements FestivalService {
                     festivalEntity.setSigunguCode(itemNode.path("sigungucode").asText());
                     festivalEntity.setContentId(itemNode.path("contentid").asText());
                     festivalEntity.setContentTypeId(itemNode.path("contenttypeid").asText());
+
+//                    LocalDate modifyDate = LocalDate.parse(festivalEntity.getModifyDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+//
+//                    if (!modifyDate.isEqual(today)) {
+//                        continue;
+//                    }
 
                     FestivalEntity existingFestival = festivalRepository.findByContentId(festivalEntity.getContentId());
 
@@ -134,9 +145,12 @@ public class FestivalServiceImplements implements FestivalService {
 
     @Override
     public ResponseEntity<? super GetFestivalListResponseDto> getFestivalList() {
+
         List<FestivalEntity> festivalEntities = new ArrayList<>();
+
         try {
             festivalEntities = festivalRepository.findAll();
+
         } catch (Exception exception) {
             return ResponseDto.databaseError();
         }
