@@ -7,4 +7,5 @@ public interface ResponseMessage {
     String DUPLICATE_FESTIVAL = "Duplicate_Festival";
     String NOT_EXISTED_FESTIVAL = "Not_Existed_Festival";
     String DO_NOT_HAVE_PERMISSION = "Do_Not_Have_Permission";
+    String NOT_EXISTED_REVIEW = "Not_Existed_Review";
 }

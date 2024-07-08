@@ -1,4 +1,4 @@
-package com.korea.WhereToGo.dto.response.rate;
+package com.korea.WhereToGo.dto.response.review;
 
 import com.korea.WhereToGo.common.ResponseCode;
 import com.korea.WhereToGo.common.ResponseMessage;
@@ -8,14 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
-public class PostRateResponseDto extends ResponseDto {
+public class PostReviewResponseDto extends ResponseDto {
 
-    private PostRateResponseDto() {
+    private PostReviewResponseDto() {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
 
-    public static ResponseEntity<? super PostRateResponseDto> success() {
-        PostRateResponseDto responseBody = new PostRateResponseDto();
+    public static ResponseEntity<? super PostReviewResponseDto> success() {
+        PostReviewResponseDto responseBody = new PostReviewResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
