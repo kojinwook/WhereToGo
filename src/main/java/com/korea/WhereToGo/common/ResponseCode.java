@@ -7,4 +7,5 @@ public interface ResponseCode {
     String DUPLICATE_FESTIVAL = "DF";
     String NOT_EXISTED_FESTIVAL = "NF";
     String DO_NOT_HAVE_PERMISSION = "DHP";
+    String NOT_EXISTED_REVIEW = "NR";
 }
