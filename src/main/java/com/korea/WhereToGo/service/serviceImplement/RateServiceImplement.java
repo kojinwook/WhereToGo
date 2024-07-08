@@ -23,6 +23,7 @@ public class RateServiceImplement implements RateService {
 
     private final FestivalRepository festivalRepository;
     private final RateRepository rateRepository;
+
     @Override
     public ResponseEntity<? super PostRateResponseDto> postRate(PostRateRequestDto dto) {
         String contentId = dto.getContentId();

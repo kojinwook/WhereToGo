@@ -10,40 +10,15 @@ import org.springframework.http.ResponseEntity;
 
 @Getter
 public class GetFestivalResponseDto extends ResponseDto {
-    private String title;
-    private String startDate;
-    private String endDate;
-    private String address1;
-    private String firstImage;
-    private String tel;
-    private String mapX;
-    private String mapY;
-    private String modifyDate;
-    private String areaCode;
-    private String sigunguCode;
-    private String contentId;
-    private String contentTypeId;
-    private String homepage;
+private FestivalEntity festival;
 
-    public GetFestivalResponseDto(FestivalEntity entity) {
-        this.title = entity.getTitle();
-        this.startDate = entity.getStartDate();
-        this.endDate = entity.getEndDate();
-        this.address1 = entity.getAddress1();
-        this.firstImage = entity.getFirstImage();
-        this.tel = entity.getTel();
-        this.mapX = entity.getMapX();
-        this.mapY = entity.getMapY();
-        this.modifyDate = entity.getModifyDate();
-        this.areaCode = entity.getAreaCode();
-        this.sigunguCode = entity.getSigunguCode();
-        this.contentId = entity.getContentId();
-        this.contentTypeId = entity.getContentTypeId();
-        this.homepage = entity.getHomepage();
+    public GetFestivalResponseDto(FestivalEntity festival) {
+        super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
+        this.festival = festival;
     }
 
-    public static ResponseEntity<GetFestivalResponseDto> success(FestivalEntity festivalEntity){
-        GetFestivalResponseDto responseBody = new GetFestivalResponseDto(festivalEntity);
+    public static ResponseEntity<GetFestivalResponseDto> success(FestivalEntity festival){
+        GetFestivalResponseDto responseBody = new GetFestivalResponseDto(festival);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
