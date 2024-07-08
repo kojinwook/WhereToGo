@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,17 +65,27 @@ public class FestivalServiceImplements implements FestivalService {
                     festivalEntity.setTel(itemNode.path("tel").asText(null));
                     festivalEntity.setMapX(itemNode.path("mapx").asText());
                     festivalEntity.setMapY(itemNode.path("mapy").asText());
-                    festivalEntity.setModifyDate(itemNode.path("modifiedtime").asText());
+                    String modifiedTimeStr = itemNode.path("modifiedtime").asText().substring(0, 8);
+                    LocalDate modifyDate = LocalDate.parse(modifiedTimeStr, DateTimeFormatter.ofPattern("yyyyMMdd"));
+                    festivalEntity.setModifyDate(modifyDate.toString());
                     festivalEntity.setAreaCode(itemNode.path("areacode").asText());
                     festivalEntity.setSigunguCode(itemNode.path("sigungucode").asText());
                     festivalEntity.setContentId(itemNode.path("contentid").asText());
                     festivalEntity.setContentTypeId(itemNode.path("contenttypeid").asText());
 
-//                    LocalDate modifyDate = LocalDate.parse(festivalEntity.getModifyDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
-//
-//                    if (!modifyDate.isEqual(today)) {
-//                        continue;
-//                    }
+                    LocalDate endDate = LocalDate.parse(festivalEntity.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+                    if (endDate.isBefore(today)) {
+                        FestivalEntity existingFestival = festivalRepository.findByContentId(festivalEntity.getContentId());
+                        if (existingFestival != null) {
+                            festivalRepository.delete(existingFestival);
+                        }
+                        continue;
+                    }
+
+                    if (!modifyDate.isEqual(today)) {
+                        continue;
+                    }
 
                     FestivalEntity existingFestival = festivalRepository.findByContentId(festivalEntity.getContentId());
 
