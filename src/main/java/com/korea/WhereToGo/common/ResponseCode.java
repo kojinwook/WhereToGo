@@ -15,4 +15,7 @@ public interface ResponseCode {
     String MAIL_FAIL = "MF";
     String NOT_EXISTED_USER = "NU";
     String WRONG_PASSWORD = "WP";
+    String NOT_EXISTED_QUESTION = "NQ";
+    String NOT_EXISTED_ANSWER = "NA";
+    String NOT_EXISTED_REVIEW = "NR";
 }

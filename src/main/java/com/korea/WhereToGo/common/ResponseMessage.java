@@ -6,6 +6,7 @@ public interface ResponseMessage {
     String DATABASE_ERROR = "Database_Error";
     String DUPLICATE_FESTIVAL = "Duplicate_Festival";
     String NOT_EXISTED_FESTIVAL = "Not_Existed_Festival";
+    String NOT_EXISTED_QUESTION = "Not_Existed_Question";
     String DO_NOT_HAVE_PERMISSION = "Do_Not_Have_Permission";
     String CERTIFICATION_FAIL = "Certification_Fail";
     String DUPLICATE_ID = "Duplicate_Id";
@@ -15,4 +16,6 @@ public interface ResponseMessage {
     String MAIL_FAIL = "Mail_Fail";
     String NOT_EXISTED_USER = "Not_Existed_User";
     String WRONG_PASSWORD = "Wrong_Password";
+    String NOT_EXISTED_ANSWER = "Not_Existed_Answer";
+    String NOT_EXISTED_REVIEW = "Not_Existed_Review";
 }
