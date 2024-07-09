@@ -17,7 +17,7 @@ public class DeleteQuestionResponseDto extends ResponseDto {
     }
     public static ResponseEntity<ResponseDto> notExistQuestion(){
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_FESTIVAL,ResponseMessage.NOT_EXISTED_FESTIVAL);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
     }
 
 

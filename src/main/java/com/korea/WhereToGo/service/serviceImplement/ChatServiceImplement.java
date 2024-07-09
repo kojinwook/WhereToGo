@@ -124,4 +124,18 @@ public class ChatServiceImplement implements ChatService {
         }
         return GetSavedMessageResponseDto.success(message);
     }
+
+    @Override
+    public ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(String userId) {
+        List<ChatRoomEntity> chatRooms = new ArrayList<>();
+        try {
+            chatRooms = chatRoomRepository.findByUserId(userId);
+            if (chatRooms == null) return GetChatRoomResponseDto.notExistChatRoom();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetChatRoomResponseDto.success(chatRooms);
+    }
 }

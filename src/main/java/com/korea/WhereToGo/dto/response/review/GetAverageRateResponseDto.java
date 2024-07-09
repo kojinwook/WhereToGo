@@ -26,6 +26,6 @@ public class GetAverageRateResponseDto extends ResponseDto {
 
     public static ResponseEntity<? super ResponseDto> notExistFestival() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_FESTIVAL, ResponseMessage.NOT_EXISTED_FESTIVAL);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 }

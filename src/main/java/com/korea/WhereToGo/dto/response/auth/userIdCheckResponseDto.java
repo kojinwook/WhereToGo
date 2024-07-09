@@ -19,6 +19,6 @@ public class userIdCheckResponseDto extends ResponseDto {
 
     public static ResponseEntity<ResponseDto> duplicateId() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATE_ID, ResponseMessage.DUPLICATE_ID);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
 }

@@ -52,4 +52,12 @@ public class ChatController {
         ResponseEntity<? super GetChatRoomListResponseDto> response = chatService.getChatRooms();
         return response;
     }
+
+    @GetMapping("/room")
+    public ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(
+            @RequestParam String userId
+    ) {
+        ResponseEntity<? super GetChatRoomResponseDto> response = chatService.getChatRoom(userId);
+        return response;
+    }
 }

@@ -84,7 +84,7 @@ public class UserServiceImplement implements UserService {
             if(userEntity == null) PatchNicknameResponseDto.notExistUser();
 
             String nickname = dto.getNickname();
-            boolean existedNickname = userRepository.existByNickname(nickname);
+            boolean existedNickname = userRepository.existsByNickname(nickname);
             userEntity.setNickname(nickname);
 
             userRepository.save(userEntity);

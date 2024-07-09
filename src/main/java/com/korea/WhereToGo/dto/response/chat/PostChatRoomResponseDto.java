@@ -21,7 +21,7 @@ public class PostChatRoomResponseDto extends ResponseDto {
 
     public static ResponseEntity<? super ResponseDto> alreadyExistChatRoom() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.ALREADY_EXIST_CHAT_ROOM, ResponseMessage.ALREADY_EXIST_CHAT_ROOM);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
 
 }

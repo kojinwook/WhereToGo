@@ -20,7 +20,7 @@ public class PatchQuestionResponseDto extends ResponseDto {
 
     public static ResponseEntity<ResponseDto> notExistQuestion(){
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_QUESTION,ResponseMessage.NOT_EXISTED_QUESTION);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
 
