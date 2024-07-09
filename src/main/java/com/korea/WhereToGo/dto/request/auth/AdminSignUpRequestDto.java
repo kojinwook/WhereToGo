@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.coyote.http11.filters.SavedRequestInputFilter;
 
 @Getter
 @Setter
@@ -25,7 +24,7 @@ public class AdminSignUpRequestDto {
     @NotBlank
     private String nickname;
     @NotBlank
-    private int phoneNumber;
+    private String phoneNumber;
     @NotBlank
     private String certificationNumber;
     @NotBlank

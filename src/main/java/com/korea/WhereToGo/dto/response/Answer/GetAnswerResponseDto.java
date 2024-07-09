@@ -28,7 +28,7 @@ public class GetAnswerResponseDto extends ResponseDto {
     }
     public static ResponseEntity<ResponseDto> notExistAnswer(){
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_ANSWER,ResponseMessage.NOT_EXISTED_ANSWER);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
     @Getter

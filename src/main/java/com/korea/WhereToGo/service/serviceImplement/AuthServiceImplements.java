@@ -45,7 +45,7 @@ public class AuthServiceImplements implements AuthService {
     public ResponseEntity<? super NicknameCheckResponseDto> nicknameCheck(NicknameCheckRequestDto dto) {
         try{
             String nickname = dto.getNickname();
-            boolean isExistNickname = userRepository.existByNickname(nickname);
+            boolean isExistNickname = userRepository.existsByNickname(nickname);
             if(isExistNickname) return NicknameCheckResponseDto.duplicateNickname();
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -60,7 +60,7 @@ public class AuthServiceImplements implements AuthService {
             String userId = dto.getUserId();
             String email = dto.getEmail();
 
-            boolean isExistId = userRepository.existByEmail(email);
+            boolean isExistId = userRepository.existsByEmail(email);
             if (isExistId) return EmailCertificationResponseDto.duplicatedEmail();
 
             String certificationNumber = getCertificationNumber();
@@ -104,11 +104,11 @@ public class AuthServiceImplements implements AuthService {
             if(isExistId) return SignUpResponseDto.duplicatedEmail();
 
             String email = dto.getEmail();
-            boolean isExistedEmail = userRepository.existByEmail(email);
+            boolean isExistedEmail = userRepository.existsByEmail(email);
             if(isExistedEmail) return SignUpResponseDto.duplicatedEmail();
 
             String nickname = dto.getNickname();
-            boolean isExistNickname = userRepository.existByNickname(nickname);
+            boolean isExistNickname = userRepository.existsByNickname(nickname);
             if (isExistNickname) return SignUpResponseDto.duplicatedNickname();
 
             String certificationNumber = dto.getCertificationNumber();
@@ -161,11 +161,11 @@ public class AuthServiceImplements implements AuthService {
             if (isExistId) return AdminSignUpResponseDto.duplicateId();
 
             String email = dto.getEmail();
-            boolean isExistedEmail = userRepository.existByEmail(email);
+            boolean isExistedEmail = userRepository.existsByEmail(email);
             if (isExistedEmail) return AdminSignUpResponseDto.duplicatedEmail();
 
             String nickname = dto.getNickname();
-            boolean isExistNickname = userRepository.existByNickname(nickname);
+            boolean isExistNickname = userRepository.existsByNickname(nickname);
             if(isExistNickname) return AdminSignUpResponseDto.duplicatedNickname();
 
             String certificationNumber = dto.getCertificationNumber();

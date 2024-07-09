@@ -34,7 +34,7 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
     private String nickname;
-    private int phoneNumber;
+    private String phoneNumber;
     private String profileImage;
     private String role;
     @CreatedDate
@@ -63,7 +63,7 @@ public class UserEntity {
         this.role = "ROLE_ADMIN";
     }
 
-    public UserEntity(String userId, String email, String nickname, int phoneNumber, String profileImage) {
+    public UserEntity(String userId, String email, String nickname, String phoneNumber, String profileImage) {
         this.userId = userId;
         this.password = "Password";
         this.email = email;

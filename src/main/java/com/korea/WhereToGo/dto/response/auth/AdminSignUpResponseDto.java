@@ -22,21 +22,21 @@ public class AdminSignUpResponseDto extends ResponseDto {
 
     public static ResponseEntity<ResponseDto> duplicateId() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATE_ID, ResponseMessage.DUPLICATE_ID);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
 
     public static ResponseEntity<ResponseDto> duplicatedEmail() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATE_EMAIL, ResponseMessage.DUPLICATE_EMAIL);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
 
     public static ResponseEntity<ResponseDto> duplicatedNickname() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.DUPLICATED_NICKNAME, ResponseMessage.DUPLICATED_NICKNAME);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
 
     public static ResponseEntity<ResponseDto> noPermission() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.DO_NOT_HAVE_PERMISSION, ResponseMessage.DO_NOT_HAVE_PERMISSION);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
     }
 }

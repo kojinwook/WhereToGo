@@ -16,7 +16,8 @@ public class ChatRoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomId;
-
     @Column(name = "room_name")
     private String roomName;
+    @Column(name = "user_id")
+    private String userId;
 }

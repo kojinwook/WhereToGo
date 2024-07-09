@@ -12,4 +12,5 @@ public interface ChatService {
     ResponseEntity<? super PostChatRoomResponseDto> postChatRoom(PostChatRoomRequestDto dto);
     ResponseEntity<? super GetChatRoomListResponseDto> getChatRooms();
     ResponseEntity<? super GetSavedMessageResponseDto> getSavedMessage(String messageId);
+    ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(String userId);
 }

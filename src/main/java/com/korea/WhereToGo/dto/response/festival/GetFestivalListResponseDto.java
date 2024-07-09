@@ -5,6 +5,7 @@ import com.korea.WhereToGo.common.ResponseMessage;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -20,6 +21,6 @@ public class GetFestivalListResponseDto extends ResponseDto {
 
     public static ResponseEntity<? super GetFestivalListResponseDto> success(List<FestivalEntity> festivalList){
         GetFestivalListResponseDto responseBody = new GetFestivalListResponseDto(festivalList);
-        return ResponseEntity.ok(responseBody);
+        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }

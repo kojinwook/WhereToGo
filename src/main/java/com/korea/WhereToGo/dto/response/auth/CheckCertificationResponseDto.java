@@ -6,7 +6,6 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 
 @Getter
 public class CheckCertificationResponseDto extends ResponseDto {
@@ -21,6 +20,6 @@ public class CheckCertificationResponseDto extends ResponseDto {
 
     public static ResponseEntity<ResponseDto> certificationFail() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.CERTIFICATION_FAIL, ResponseMessage.CERTIFICATION_FAIL);
-        return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 }
