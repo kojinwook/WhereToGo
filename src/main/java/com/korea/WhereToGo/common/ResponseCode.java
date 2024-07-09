@@ -8,4 +8,7 @@ public interface ResponseCode {
     String NOT_EXISTED_FESTIVAL = "NF";
     String DO_NOT_HAVE_PERMISSION = "DHP";
     String NOT_EXISTED_REVIEW = "NR";
+    String NOT_EXISTED_CHAT_ROOM = "NCR";
+    String NOT_EXISTED_CHAT_MESSAGE = "NCM";
+    String ALREADY_EXIST_CHAT_ROOM = "AECR";
 }
