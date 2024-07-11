@@ -14,5 +14,6 @@ public interface ReviewService {
     ResponseEntity<? super GetAverageRateResponseDto> getRateAverage(List<String> contentIds);
     ResponseEntity<? super GetReviewResponseDto> getReview(Long reviewId);
     ResponseEntity<? super PatchReviewResponseDto> patchReview(PatchReviewRequestDto dto, String userId);
-    ResponseEntity<? super GetReviewListResponseDto> getReviewList(String contentId);
+    ResponseEntity<? super GetReviewListResponseDto> getReviewList(String userId);
+    ResponseEntity<? super GetAllReviewResponseDto> getAllReview(String contentId);
 }

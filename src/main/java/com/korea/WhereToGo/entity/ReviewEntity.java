@@ -24,6 +24,8 @@ public class ReviewEntity {
     private Long reviewId;
     @Column(name = "user_id")
     private String userId;
+    @Column(name = "user_nickname")
+    private String nickname;
     @Column(name = "write_datetime")
     private String writeDatetime;
     @Column(name = "modify_datetime")
