@@ -15,6 +15,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -28,35 +29,30 @@ public class QuestionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
 
-    @NotNull
     private String title;
 
-    @NotNull
     private String content;
 
-    @NotNull
     private String type;
 
-    @NotNull
-    private String email;
+    private String image;
 
-    @NotNull
     private String userId;
 
-    @NotNull
     private Boolean answered;
 
-    @NotNull
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
-    @NotNull
     @UpdateTimestamp
     private LocalDateTime modifyDateTime;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<AnswerEntity> answers;
+//    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL,orphanRemoval = true)
+//    private List<Attachment> attachments = new ArrayList<>();
+
+//    000@JsonManagedReference
+//    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL,orphanRemoval = true)
+//    private List<AnswerEntity> answers;
 
     public QuestionEntity(PostQuestionRequestDto dto){
         this.title= dto.getTitle();
@@ -64,16 +60,18 @@ public class QuestionEntity {
         this.userId = dto.getUserId();
         this.answered = false;
         this.createDateTime = LocalDateTime.now();
-        this.modifyDateTime = LocalDateTime.now();
         this.type = dto.getType();
-        this.email = dto.getEmail();
+        this.image = null;
+
     }
+
 
     public void patchQuestion(PatchQuestionRequestDto dto){
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.type = dto.getType();
-        this.email = dto.getEmail();
+        this.image= dto.getImage();
+        this.modifyDateTime = LocalDateTime.now();
     }
 
 
