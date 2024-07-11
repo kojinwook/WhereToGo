@@ -39,6 +39,7 @@ public class ReviewEntity {
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
+        this.nickname = dto.getNickname();
         this.writeDatetime = writeDatetime;
         this.contentId = contentId;
         this.review = dto.getReview();
@@ -49,6 +50,7 @@ public class ReviewEntity {
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String modifyDatetime = simpleDateFormat.format(now);
+        this.nickname = dto.getNickname();
         this.modifyDatetime = modifyDatetime;
         this.review = dto.getReview();
         this.rate = dto.getRate();
