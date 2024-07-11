@@ -9,12 +9,5 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     AnswerEntity findByAnswerId(Long AnswerId);
-    @Query(value =
-                "SELECT *" +
-                        "FROM answer AS A" +
-                        "WHERE question_id= :questionId",
-            nativeQuery = true
-    )
-    List<AnswerEntity> getAnswerByQuestionId(Long questionId);
-    List<AnswerEntity> findByUserId(String userId);
+    List<AnswerEntity> findByQuestionId(Long questionId);
 }

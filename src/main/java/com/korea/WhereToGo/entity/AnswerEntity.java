@@ -26,31 +26,30 @@ public class AnswerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
-    @NotNull
+
     private String content;
-    @NotNull
+
     private String userId;
-    @NotNull
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
-    @NotNull
     @UpdateTimestamp
     private LocalDateTime modifyDateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
-    @JoinColumn(name="question_id", nullable=false)
-    private QuestionEntity question;
+
+    private Long questionId;
 
     public AnswerEntity(PostAnswerRequestDto dto){
         this.content=dto.getContent();
         this.userId = dto.getUserId();
+        this.questionId = dto.getQuestionId();
         this.createDateTime= LocalDateTime.now();
     }
 
     public void patchAnswer(PatchAnswerRequestDto dto){
         this.content= dto.getContent();
+        this.modifyDateTime = LocalDateTime.now();
     }
 
 

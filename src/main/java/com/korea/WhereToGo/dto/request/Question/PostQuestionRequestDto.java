@@ -18,8 +18,9 @@ public class PostQuestionRequestDto {
     @NotBlank
     private String userId;
     @NotBlank
-    private String email;
-    @NotBlank
     private String type;
+
+    private String image;
+
 
 }

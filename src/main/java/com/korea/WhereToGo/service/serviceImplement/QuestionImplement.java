@@ -9,7 +9,6 @@ import com.korea.WhereToGo.entity.QuestionEntity;
 import com.korea.WhereToGo.repository.QuestionRepository;
 import com.korea.WhereToGo.service.QuestionService;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +47,6 @@ public class QuestionImplement implements QuestionService {
         try{
             QuestionEntity questionEntity = questionRepository.findByQuestionId(QuestionId);
             if(questionEntity == null) return PatchQuestionResponseDto.notExistQuestion();
-
             questionEntity.patchQuestion(dto);
             questionRepository.save(questionEntity);
         } catch(Exception exception){
