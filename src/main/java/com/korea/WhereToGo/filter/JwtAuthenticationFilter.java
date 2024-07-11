@@ -1,6 +1,8 @@
 package com.korea.WhereToGo.filter;
 
+import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.provider.JwtProvider;
+import com.korea.WhereToGo.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -23,7 +26,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-//    private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final List<String> EXCLUDE_URLS = List.of("/api/v1/map/search");
     @Override
@@ -42,11 +45,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
 
-//            UserEntity userEntity = userRepository.findByUserId(userId);
-//            String role = userEntity.getRole();
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            String role = userEntity.getRole();
 
             List<GrantedAuthority> authorities = new ArrayList<>();
-//            authorities.add(new SimpleGrantedAuthority(role));
+            authorities.add(new SimpleGrantedAuthority(role));
 
             SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
             AbstractAuthenticationToken authenticationToken =
