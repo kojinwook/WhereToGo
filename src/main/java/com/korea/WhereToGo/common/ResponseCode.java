@@ -13,4 +13,16 @@ public interface ResponseCode {
     String NOT_EXISTED_NOTICE = "NN";
     String NOT_EXISTED_REVIEW = "NR";
 
+    String CERTIFICATION_FAIL = "CF";
+    String DUPLICATE_ID = "DI";
+    String DUPLICATE_EMAIL = "DE";
+    String DUPLICATED_NICKNAME = "DN";
+    String SIGN_IN_FAIL = "SF";
+    String MAIL_FAIL = "MF";
+    String NOT_EXISTED_USER = "NU";
+    String WRONG_PASSWORD = "WP";
+    String NOT_EXISTED_CHAT_ROOM = "NCR";
+    String NOT_EXISTED_CHAT_MESSAGE = "NCM";
+    String ALREADY_EXIST_CHAT_ROOM = "AECR";
+
 }

@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.config;
 
+import com.korea.WhereToGo.filter.JwtAuthenticationFilter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -34,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig implements WebMvcConfigurer {
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
@@ -57,7 +60,8 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers("/api/v1/**", "/**").permitAll()
                         .anyRequest().authenticated()
-                );
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
 

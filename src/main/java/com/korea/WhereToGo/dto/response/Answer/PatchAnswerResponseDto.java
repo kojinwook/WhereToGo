@@ -3,7 +3,6 @@ package com.korea.WhereToGo.dto.response.Answer;
 import com.korea.WhereToGo.common.ResponseCode;
 import com.korea.WhereToGo.common.ResponseMessage;
 import com.korea.WhereToGo.dto.response.ResponseDto;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -17,6 +16,6 @@ public class PatchAnswerResponseDto extends ResponseDto {
     }
     public static ResponseEntity<ResponseDto> notExistAnswer(){
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_ANSWER,ResponseMessage.NOT_EXISTED_ANSWER);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 }
