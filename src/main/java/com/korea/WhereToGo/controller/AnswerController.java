@@ -29,9 +29,11 @@ public class AnswerController {
         ResponseEntity<? super PostAnswerResponseDto> response = answerService.PostAnswer(requestBody);
         return response;
     }
-    @GetMapping("/list")
-    public ResponseEntity<? super GetAllAnswerResponseDto> getAllAnswers(){
-        ResponseEntity<? super GetAllAnswerResponseDto> response = answerService.getAllAnswers();
+    @GetMapping("/list/{questionId}")
+    public ResponseEntity<? super GetAllAnswerResponseDto> getAllAnswers(
+            @PathVariable("questionId") Long questionId
+    ){
+        ResponseEntity<? super GetAllAnswerResponseDto> response = answerService.getAllAnswers(questionId);
         return response;
     }
     @GetMapping("/detail/{answerId}")

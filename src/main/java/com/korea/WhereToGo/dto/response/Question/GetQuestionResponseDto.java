@@ -19,7 +19,7 @@ public class GetQuestionResponseDto  extends ResponseDto {
     private String content;
     private String userId;
     private String type;
-    private String email;
+    private String image;
     private Boolean answered;
     private LocalDateTime createDateTime;
     private LocalDateTime modifyDateTime;
@@ -32,7 +32,7 @@ public class GetQuestionResponseDto  extends ResponseDto {
         this.createDateTime=questionEntity.getCreateDateTime();
         this.modifyDateTime=questionEntity.getModifyDateTime();
         this.userId= questionEntity.getUserId();
-        this.email= questionEntity.getEmail();
+        this.image= questionEntity.getImage();
         this.type= questionEntity.getType();
         this.answered=questionEntity.getAnswered();
     }

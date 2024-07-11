@@ -22,33 +22,38 @@ public class QuestionController {
     @PostMapping("")
     public ResponseEntity<? super PostQuestionResponseDto> postQuestion(
             @RequestBody @Valid PostQuestionRequestDto requestBody
-            ){ResponseEntity<? super PostQuestionResponseDto> response = questionService.postQuestion(requestBody);
-            return response;
+    ) {
+        ResponseEntity<? super PostQuestionResponseDto> response = questionService.postQuestion(requestBody);
+        return response;
     }
+
     @GetMapping("/list")
-    public ResponseEntity<? super GetAllQuestionResponseDto> getAllQuestion(){
+    public ResponseEntity<? super GetAllQuestionResponseDto> getAllQuestion() {
         ResponseEntity<? super GetAllQuestionResponseDto> response = questionService.getAllQuestions();
         return response;
     }
+
     @GetMapping("/detail/{questionId}")
     public ResponseEntity<? super GetQuestionResponseDto> getQuestion(
             @PathVariable("questionId") Long questionId
-    ){
+    ) {
         ResponseEntity<? super GetQuestionResponseDto> response = questionService.getQuestion(questionId);
         return response;
     }
+
     @PatchMapping("/update/{questionId}")
     public ResponseEntity<? super PatchQuestionResponseDto> patchQuestion(
             @RequestBody @Valid PatchQuestionRequestDto requestBody,
-            @PathVariable("questionId") Long questionId){
+            @PathVariable("questionId") Long questionId) {
         ResponseEntity<? super PatchQuestionResponseDto> response = questionService.patchQuestion(requestBody, questionId);
-    return response;
+        return response;
     }
+
     @DeleteMapping("/delete/{questionId}")
     public ResponseEntity<? super DeleteQuestionResponseDto> deleteQuestion(
             @PathVariable("questionId") Long questionId,
             @AuthenticationPrincipal String userId
-    ){
+    ) {
         ResponseEntity<? super DeleteQuestionResponseDto> response = questionService.deleteQuestion(questionId);
         return response;
     }
