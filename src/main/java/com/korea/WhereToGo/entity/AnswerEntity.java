@@ -37,7 +37,6 @@ public class AnswerEntity {
     @UpdateTimestamp
     private LocalDateTime modifyDateTime;
 
-
     private Long questionId;
 
     public AnswerEntity(PostAnswerRequestDto dto){
