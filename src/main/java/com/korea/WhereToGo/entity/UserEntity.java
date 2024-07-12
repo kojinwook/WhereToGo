@@ -35,6 +35,7 @@ public class UserEntity {
     private String email;
     private String nickname;
     private String phoneNumber;
+    @Column(name = "profile_image")
     private String profileImage;
     private String role;
     @CreatedDate
