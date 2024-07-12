@@ -24,6 +24,8 @@ public class ReviewEntity {
     private Long reviewId;
     @Column(name = "user_id")
     private String userId;
+    @Column(name = "user_nickname")
+    private String nickname;
     @Column(name = "write_datetime")
     private String writeDatetime;
     @Column(name = "modify_datetime")
@@ -37,6 +39,7 @@ public class ReviewEntity {
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
+        this.nickname = dto.getNickname();
         this.writeDatetime = writeDatetime;
         this.contentId = contentId;
         this.review = dto.getReview();
@@ -47,6 +50,7 @@ public class ReviewEntity {
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String modifyDatetime = simpleDateFormat.format(now);
+        this.nickname = dto.getNickname();
         this.modifyDatetime = modifyDatetime;
         this.review = dto.getReview();
         this.rate = dto.getRate();
