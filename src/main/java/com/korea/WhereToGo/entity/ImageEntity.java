@@ -22,6 +22,10 @@ public class ImageEntity {
     private String contentId;
     private String image;
 
+    @ManyToOne
+    @JoinColumn(name = "meeting_id")
+    private MeetingEntity meeting;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "review_id")
@@ -33,7 +37,13 @@ public class ImageEntity {
         this.image = image;
     }
 
-    public Long getReviewId() {
+    public ImageEntity(String contentId, String image, String userId, MeetingEntity meeting) {
+        this.userId = userId;
+        this.contentId = contentId;
+        this.image = image;
+        this.meeting = meeting;
+    }
+     public Long getReviewId() {
         return review != null ? review.getReviewId() : null;
     }
 }

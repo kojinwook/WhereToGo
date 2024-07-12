@@ -6,6 +6,7 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.review.*;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.entity.ImageEntity;
+import com.korea.WhereToGo.entity.MeetingEntity;
 import com.korea.WhereToGo.entity.ReviewEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
 import com.korea.WhereToGo.repository.ImageRepository;
