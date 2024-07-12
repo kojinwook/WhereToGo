@@ -9,7 +9,10 @@ import java.util.List;
 
 @Repository
 public interface ImageRepository extends JpaRepository<ImageEntity, String> {
-    List<ImageEntity> findByContentId(String contentId);
+    List<ImageEntity> findByReview_ReviewId(Long reviewId);
+    List<ImageEntity> findByReviewReviewIdIn(List<Long> reviewIds);
+    List<ImageEntity> findByReview_ReviewIdIn(List<Long> reviewIds);
+    List<ImageEntity> findByReviewReviewId(Long reviewId);
 
     @Transactional
     void deleteByContentId(String contentId);

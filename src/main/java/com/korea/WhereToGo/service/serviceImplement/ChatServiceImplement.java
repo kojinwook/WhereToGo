@@ -69,7 +69,6 @@ public class ChatServiceImplement implements ChatService {
         List<ChatMessageEntity> messages = new ArrayList<>();
         try {
             messages = chatMessageRepository.findByRoomId(roomId);
-//            if (messages.isEmpty()) return GetChatMessageListResponseDto.notExistChatRoom();
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -87,9 +86,6 @@ public class ChatServiceImplement implements ChatService {
         ChatRoomEntity chatRoom = new ChatRoomEntity();
         Long roomId = null;
         try {
-            ChatRoomEntity room = chatRoomRepository.findByRoomName(roomName);
-            if (room != null) return PostChatRoomResponseDto.alreadyExistChatRoom();
-
             chatRoom.setRoomName(roomName);
             chatRoom.setNickname(nickname);
             chatRoom.setCreatorNickname(creatorNickname);
