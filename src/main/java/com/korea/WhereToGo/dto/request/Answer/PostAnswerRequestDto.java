@@ -14,7 +14,7 @@ public class PostAnswerRequestDto {
     @NotBlank
     private String content;
     @NotBlank
-    private String userId;
+    private String nickname;
     @NotNull
     private Long questionId;
 

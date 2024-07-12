@@ -15,7 +15,7 @@ public class PatchQuestionRequestDto {
     @NotBlank
     private String content;
     @NotBlank
-    private String userId;
+    private String nickname;
     @NotBlank
     private String type;
 

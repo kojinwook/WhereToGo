@@ -17,7 +17,7 @@ public class GetQuestionResponseDto  extends ResponseDto {
     private Long questionId;
     private String title;
     private String content;
-    private String userId;
+    private String nickname;
     private String type;
     private String image;
     private Boolean answered;
@@ -31,8 +31,8 @@ public class GetQuestionResponseDto  extends ResponseDto {
         this.content=questionEntity.getContent();
         this.createDateTime=questionEntity.getCreateDateTime();
         this.modifyDateTime=questionEntity.getModifyDateTime();
-        this.userId= questionEntity.getUserId();
-        this.image= questionEntity.getImage();
+        this.nickname= questionEntity.getNickname();
+        this.image=  questionEntity.getImage();
         this.type= questionEntity.getType();
         this.answered=questionEntity.getAnswered();
     }
