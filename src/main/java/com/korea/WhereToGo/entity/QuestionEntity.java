@@ -22,8 +22,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="question")
-@Table(name="question")
+@Entity(name = "question")
+@Table(name = "question")
 public class QuestionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class QuestionEntity {
 
     private String image;
 
-    private String userId;
+    private String nickname;
 
     private Boolean answered;
 
@@ -50,27 +50,26 @@ public class QuestionEntity {
 //    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL,orphanRemoval = true)
 //    private List<Attachment> attachments = new ArrayList<>();
 
-//    000@JsonManagedReference
+//    @JsonManagedReference
 //    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL,orphanRemoval = true)
 //    private List<AnswerEntity> answers;
 
-    public QuestionEntity(PostQuestionRequestDto dto){
-        this.title= dto.getTitle();
-        this.content=dto.getContent();
-        this.userId = dto.getUserId();
+    public QuestionEntity(PostQuestionRequestDto dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.nickname = dto.getNickname();
         this.answered = false;
         this.createDateTime = LocalDateTime.now();
         this.type = dto.getType();
-        this.image = null;
-
+        this.image = dto.getImage();
     }
 
 
-    public void patchQuestion(PatchQuestionRequestDto dto){
+    public void patchQuestion(PatchQuestionRequestDto dto) {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.type = dto.getType();
-        this.image= dto.getImage();
+        this.image = dto.getImage();
         this.modifyDateTime = LocalDateTime.now();
     }
 
