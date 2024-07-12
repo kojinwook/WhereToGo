@@ -54,9 +54,17 @@ public class ReviewController {
 
     @GetMapping("/getReviewList")
     public ResponseEntity<? super GetReviewListResponseDto> getReviewList(
+            @RequestParam String userId
+    ) {
+        ResponseEntity<? super GetReviewListResponseDto> response = reviewService.getReviewList(userId);
+        return response;
+    }
+
+    @GetMapping("/getAllReview")
+    public ResponseEntity<? super GetAllReviewResponseDto> getAllReview(
             @RequestParam String contentId
     ) {
-        ResponseEntity<? super GetReviewListResponseDto> response = reviewService.getReviewList(contentId);
+        ResponseEntity<? super GetAllReviewResponseDto> response = reviewService.getAllReview(contentId);
         return response;
     }
 }

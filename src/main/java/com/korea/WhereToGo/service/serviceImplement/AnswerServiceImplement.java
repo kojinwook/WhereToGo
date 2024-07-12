@@ -18,16 +18,16 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AnswerImplement implements AnswerService {
+public class AnswerServiceImplement implements AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
 
     @Override
-    public ResponseEntity<? super GetAnswerResponseDto> getAnswer(Long questionId){
-        List<AnswerEntity> answerEntities = new ArrayList<>();
+    public ResponseEntity<? super GetAnswerResponseDto> getAnswer(Long answerId){
+        AnswerEntity answerEntities = new AnswerEntity();
         try{
-            answerEntities= answerRepository.getAnswerByQuestionId(questionId);
-            if(answerEntities.isEmpty()) return GetAnswerResponseDto.notExistAnswer();
+            answerEntities= answerRepository.findByAnswerId(answerId);
+            if(answerEntities==null) return GetAnswerResponseDto.notExistAnswer();
 
         }
         catch(Exception exception){
@@ -38,10 +38,12 @@ public class AnswerImplement implements AnswerService {
     }
     @Override
     public ResponseEntity<? super PostAnswerResponseDto> PostAnswer(PostAnswerRequestDto dto){
+        Long questionId = dto.getQuestionId();
         try{
+            QuestionEntity questionEntity = questionRepository.findByQuestionId(questionId);
+            if(questionEntity == null) return PostAnswerResponseDto.notExistQuestion();
+
             AnswerEntity  answerEntity = new AnswerEntity(dto);
-            QuestionEntity question = questionRepository.findById(dto.getQuestionId()).get();
-            answerEntity.setQuestion(question);
             answerRepository.save(answerEntity);
         } catch(Exception exception){
             exception.printStackTrace();
@@ -76,10 +78,10 @@ public class AnswerImplement implements AnswerService {
         return DeleteAnswerResponseDto.success();
     }
     @Override
-    public ResponseEntity<? super GetAllAnswerResponseDto> getAllAnswers(){
+    public ResponseEntity<? super GetAllAnswerResponseDto> getAllAnswers(Long questionId){
         List<AnswerEntity> answers = null;
         try{
-            answers = answerRepository.findAll();
+            answers = answerRepository.findByQuestionId(questionId);
         } catch(Exception exception){
             exception.printStackTrace();
             return ResponseDto.databaseError();

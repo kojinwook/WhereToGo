@@ -17,5 +17,7 @@ public class PatchReviewRequestDto {
     private int rate;
     @NotBlank
     private String review;
+    @NotBlank
+    private String nickname;
     private List<String> imageList;
 }

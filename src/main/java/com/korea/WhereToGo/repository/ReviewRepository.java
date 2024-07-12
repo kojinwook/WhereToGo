@@ -9,4 +9,5 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<ReviewEntity, Integer> {
     List<ReviewEntity> findByContentId(String contentId);
     ReviewEntity findByReviewId(Long reviewId);
+    List<ReviewEntity> findByUserId(String userId);
 }

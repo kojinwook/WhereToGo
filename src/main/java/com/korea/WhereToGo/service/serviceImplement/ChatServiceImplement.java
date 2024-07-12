@@ -69,33 +69,40 @@ public class ChatServiceImplement implements ChatService {
         List<ChatMessageEntity> messages = new ArrayList<>();
         try {
             messages = chatMessageRepository.findByRoomId(roomId);
-            if (messages.isEmpty()) return GetChatMessageListResponseDto.notExistChatRoom();
+//            if (messages.isEmpty()) return GetChatMessageListResponseDto.notExistChatRoom();
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-
         return GetChatMessageListResponseDto.success(messages);
     }
 
     @Override
     public ResponseEntity<? super PostChatRoomResponseDto> postChatRoom(PostChatRoomRequestDto dto) {
         String roomName = dto.getRoomName();
+        String nickname = dto.getNickname();
+        String creatorNickname = dto.getCreatorNickname();
+        String creatorProfileImage = dto.getCreatorProfileImage();
+        ChatRoomEntity chatRoom = new ChatRoomEntity();
+        Long roomId = null;
         try {
             ChatRoomEntity room = chatRoomRepository.findByRoomName(roomName);
             if (room != null) return PostChatRoomResponseDto.alreadyExistChatRoom();
 
-            ChatRoomEntity chatRoom = new ChatRoomEntity();
             chatRoom.setRoomName(roomName);
+            chatRoom.setNickname(nickname);
+            chatRoom.setCreatorNickname(creatorNickname);
+            chatRoom.setCreatorProfileImage(creatorProfileImage);
             chatRoomRepository.save(chatRoom);
+
+            roomId = chatRoom.getRoomId();
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-
-        return PostChatRoomResponseDto.success();
+        return PostChatRoomResponseDto.success(roomId);
     }
 
     @Override
@@ -126,10 +133,10 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(String userId) {
+    public ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(String nickname) {
         List<ChatRoomEntity> chatRooms = new ArrayList<>();
         try {
-            chatRooms = chatRoomRepository.findByUserId(userId);
+            chatRooms = chatRoomRepository.findByNickname(nickname);
             if (chatRooms == null) return GetChatRoomResponseDto.notExistChatRoom();
 
         } catch (Exception exception) {

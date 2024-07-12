@@ -53,6 +53,8 @@ public class FestivalServiceImplements implements FestivalService {
             JsonNode itemsNode = rootNode.path("response").path("body").path("items").path("item");
 
             LocalDate today = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+            String todayFormatted = today.format(formatter);
 
             if (itemsNode.isArray()) {
                 for (JsonNode itemNode : itemsNode) {
@@ -73,17 +75,7 @@ public class FestivalServiceImplements implements FestivalService {
                     festivalEntity.setContentId(itemNode.path("contentid").asText());
                     festivalEntity.setContentTypeId(itemNode.path("contenttypeid").asText());
 
-                    LocalDate endDate = LocalDate.parse(festivalEntity.getEndDate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
-
-                    if (endDate.isBefore(today)) {
-                        FestivalEntity existingFestival = festivalRepository.findByContentId(festivalEntity.getContentId());
-                        if (existingFestival != null) {
-                            festivalRepository.delete(existingFestival);
-                        }
-                        continue;
-                    }
-
-                    if (!modifyDate.isEqual(today)) {
+                    if (!modifyDate.isEqual(LocalDate.parse(todayFormatted, DateTimeFormatter.ofPattern("yyyyMMdd")))) {
                         continue;
                     }
 

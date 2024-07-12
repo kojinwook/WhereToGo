@@ -55,9 +55,9 @@ public class ChatController {
 
     @GetMapping("/room")
     public ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(
-            @RequestParam String userId
+            @RequestParam String nickname
     ) {
-        ResponseEntity<? super GetChatRoomResponseDto> response = chatService.getChatRoom(userId);
+        ResponseEntity<? super GetChatRoomResponseDto> response = chatService.getChatRoom(nickname);
         return response;
     }
 }

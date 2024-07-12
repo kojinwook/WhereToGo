@@ -1,4 +1,4 @@
-package com.korea.WhereToGo.dto.request.Question;
+package com.korea.WhereToGo.dto.request.Notice;
 
 
 import jakarta.validation.constraints.NotBlank;
@@ -9,15 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PatchQuestionRequestDto {
+public class PostNoticeRequestDto {
+
     @NotBlank
     private String title;
     @NotBlank
     private String content;
-    @NotBlank
-    private String userId;
-    @NotBlank
-    private String type;
 
     private String image;
 
