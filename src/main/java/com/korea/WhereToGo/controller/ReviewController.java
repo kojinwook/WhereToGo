@@ -23,7 +23,7 @@ public class ReviewController {
             @RequestBody PostReviewRequestDto dto,
             @AuthenticationPrincipal String userId
     ) {
-        ResponseEntity<? super PostReviewResponseDto> response = reviewService.postRate(dto, userId);
+        ResponseEntity<? super PostReviewResponseDto> response = reviewService.postReview(dto, userId);
         return response;
     }
 
