@@ -10,7 +10,9 @@ import lombok.Setter;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,6 +36,9 @@ public class ReviewEntity {
     private String review;
     @Column(name = "rate")
     private int rate;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImageEntity> images = new ArrayList<>();
 
     public ReviewEntity(PostReviewRequestDto dto, String contentId) {
         Date now = Date.from(Instant.now());

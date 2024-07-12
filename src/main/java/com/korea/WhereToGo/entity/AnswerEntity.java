@@ -29,7 +29,7 @@ public class AnswerEntity {
 
     private String content;
 
-    private String userId;
+    private String nickname;
 
     @CreationTimestamp
     private LocalDateTime createDateTime;
@@ -42,7 +42,7 @@ public class AnswerEntity {
 
     public AnswerEntity(PostAnswerRequestDto dto){
         this.content=dto.getContent();
-        this.userId = dto.getUserId();
+        this.nickname = dto.getNickname();
         this.questionId = dto.getQuestionId();
         this.createDateTime= LocalDateTime.now();
     }

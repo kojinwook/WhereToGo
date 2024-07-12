@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public interface ReviewService {
-    ResponseEntity<? super PostReviewResponseDto> postRate(PostReviewRequestDto dto, String userId);
+    ResponseEntity<? super PostReviewResponseDto> postReview(PostReviewRequestDto dto, String userId);
     ResponseEntity<? super GetAverageRateResponseDto> getRateAverage(List<String> contentIds);
     ResponseEntity<? super GetReviewResponseDto> getReview(Long reviewId);
     ResponseEntity<? super PatchReviewResponseDto> patchReview(PatchReviewRequestDto dto, String userId);
