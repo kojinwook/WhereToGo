@@ -14,15 +14,13 @@ import java.util.stream.Collectors;
 
 @Getter
 public class GetAnswerResponseDto extends ResponseDto {
-    private List<AnswerDto> answer;
+    private AnswerEntity answer;
 
-    public GetAnswerResponseDto(List<AnswerEntity> answerEntities){
+    public GetAnswerResponseDto(AnswerEntity answerEntities){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.answer= answerEntities.stream()
-                 .map(AnswerDto:: new)
-                .collect(Collectors.toList());
+        this.answer= answerEntities;
     }
-    public static ResponseEntity<GetAnswerResponseDto> success(List<AnswerEntity> answerEntities){
+    public static ResponseEntity<GetAnswerResponseDto> success(AnswerEntity answerEntities){
         GetAnswerResponseDto responseBody = new GetAnswerResponseDto(answerEntities);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
@@ -31,20 +29,5 @@ public class GetAnswerResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
     }
 
-    @Getter
-    public static class AnswerDto{
-        private Long answerId;
-        private String content;
-        private String userId;
-        private LocalDateTime createDatetime;
-        private LocalDateTime modifyDateTime;
 
-        public AnswerDto(AnswerEntity answerEntity){
-            this.answerId = answerEntity.getAnswerId();
-            this.content= answerEntity.getContent();
-            this.userId = answerEntity.getUserId();
-            this.createDatetime = answerEntity.getCreateDateTime();
-            this.modifyDateTime = answerEntity.getModifyDateTime();
-        }
-    }
 }

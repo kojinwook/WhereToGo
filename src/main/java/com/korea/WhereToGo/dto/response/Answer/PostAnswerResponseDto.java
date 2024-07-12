@@ -16,4 +16,9 @@ public class PostAnswerResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
+    public static ResponseEntity<ResponseDto> notExistQuestion(){
+        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_QUESTION, ResponseMessage.NOT_EXISTED_QUESTION);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
 }

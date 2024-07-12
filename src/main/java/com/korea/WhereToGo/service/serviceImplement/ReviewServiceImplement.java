@@ -6,6 +6,7 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.review.*;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.entity.ImageEntity;
+import com.korea.WhereToGo.entity.MeetingEntity;
 import com.korea.WhereToGo.entity.ReviewEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
 import com.korea.WhereToGo.repository.ImageRepository;
@@ -112,10 +113,10 @@ public class ReviewServiceImplement implements ReviewService {
     }
 
     @Override
-    public ResponseEntity<? super GetReviewListResponseDto> getReviewList(String contentId) {
+    public ResponseEntity<? super GetReviewListResponseDto> getReviewList(String userId) {
         List<ReviewEntity> reviews = new ArrayList<>();
         try {
-            reviews = reviewRepository.findByContentId(contentId);
+            reviews = reviewRepository.findByUserId(userId);
             if (reviews.isEmpty()) return GetReviewListResponseDto.notExistReview();
 
         } catch (Exception exception) {
@@ -123,5 +124,19 @@ public class ReviewServiceImplement implements ReviewService {
             return ResponseDto.databaseError();
         }
         return GetReviewListResponseDto.success(reviews);
+    }
+
+    @Override
+    public ResponseEntity<? super GetAllReviewResponseDto> getAllReview(String contentId) {
+        List<ReviewEntity> reviews = new ArrayList<>();
+        try {
+            reviews = reviewRepository.findByContentId(contentId);
+            if (reviews.isEmpty()) return GetAllReviewResponseDto.notExistReview();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetAllReviewResponseDto.success(reviews);
     }
 }

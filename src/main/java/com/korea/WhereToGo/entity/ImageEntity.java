@@ -21,10 +21,21 @@ public class ImageEntity {
     private String contentId;
     private String image;
 
+    @ManyToOne
+    @JoinColumn(name = "meeting_id")
+    private MeetingEntity meeting;
+
     public ImageEntity(String contentId, String image, String userId){
         this.userId = userId;
         this.contentId = contentId;
         this.image = image;
+    }
+
+    public ImageEntity(String contentId, String image, String userId, MeetingEntity meeting) {
+        this.userId = userId;
+        this.contentId = contentId;
+        this.image = image;
+        this.meeting = meeting;
     }
 }
 

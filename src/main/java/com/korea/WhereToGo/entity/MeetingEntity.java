@@ -13,6 +13,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,17 +25,15 @@ import java.time.LocalDateTime;
 public class MeetingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String title;
     private String introduction;
     private String content;
 
     @Column(name = "meeting_image")
-    private String meetingImage;
-
-//    @NotNull
-//    private String userId;
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImageEntity> meetingImage = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime createDate;
@@ -45,14 +45,12 @@ public class MeetingEntity {
         this.title = title;
         this.introduction = introduction;
         this.content = content;
-        this.meetingImage = meetingImage;
     }
 
-    public MeetingEntity(PostMeetingRequestDto dto){
+    public MeetingEntity(PostMeetingRequestDto dto) {
         this.title = dto.getTitle();
         this.introduction = dto.getIntroduction();
         this.content = dto.getContent();
-        this.meetingImage = dto.getMeetingImage();
         this.createDate = LocalDateTime.now();
     }
 }

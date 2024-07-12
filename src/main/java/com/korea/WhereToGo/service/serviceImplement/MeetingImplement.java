@@ -21,7 +21,7 @@ public class MeetingImplement implements MeetingService {
         try {
             MeetingEntity meetingEntity = new MeetingEntity(dto);
             meetingRepository.save(meetingEntity);
-        } catch (Exception e){
+        }catch (Exception e){
             e.printStackTrace();
             return ResponseDto.databaseError();
         }

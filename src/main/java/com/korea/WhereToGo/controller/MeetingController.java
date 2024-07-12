@@ -2,6 +2,7 @@ package com.korea.WhereToGo.controller;
 
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import com.korea.WhereToGo.dto.response.meeting.PostMeetingResponseDto;
+import com.korea.WhereToGo.entity.MeetingEntity;
 import com.korea.WhereToGo.service.MeetingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/meeting")
 public class MeetingController {
+
     private final MeetingService meetingService;
 
     @PostMapping("/write")

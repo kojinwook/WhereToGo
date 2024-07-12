@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 @Getter
 @RequiredArgsConstructor
 public class GetMeetingResponseDto extends ResponseDto {
-    private int meetingId;
+    private Long meetingId;
     private String userId;
     private String title;
     private String introduction;
@@ -26,7 +26,7 @@ public class GetMeetingResponseDto extends ResponseDto {
         this.title = meetingEntity.getTitle();
         this.introduction = meetingEntity.getIntroduction();
         this.content = meetingEntity.getContent();
-        this.meetingImage = meetingEntity.getMeetingImage();
+//        this.meetingImage = meetingEntity.getMeetingImage();
     }
 
     public  static ResponseEntity<GetMeetingResponseDto> success(MeetingEntity meetingEntity){

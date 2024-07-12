@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 public class PostMeetingResponseDto extends ResponseDto {
+
     private PostMeetingResponseDto() {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     }
@@ -15,4 +16,5 @@ public class PostMeetingResponseDto extends ResponseDto {
         PostMeetingResponseDto responseBody = new PostMeetingResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
+
 }

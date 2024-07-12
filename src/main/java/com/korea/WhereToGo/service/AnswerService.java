@@ -14,5 +14,5 @@ public interface AnswerService {
     ResponseEntity<?  super PostAnswerResponseDto> PostAnswer(PostAnswerRequestDto dto);
     ResponseEntity<? super PatchAnswerResponseDto> patchAnswer(PatchAnswerRequestDto dto, Long AnswerId);
     ResponseEntity<? super DeleteAnswerResponseDto> deleteAnswer(Long AnswerId);
-    ResponseEntity<? super GetAllAnswerResponseDto> getAllAnswers();
+    ResponseEntity<? super GetAllAnswerResponseDto> getAllAnswers(Long questionId);
 }
