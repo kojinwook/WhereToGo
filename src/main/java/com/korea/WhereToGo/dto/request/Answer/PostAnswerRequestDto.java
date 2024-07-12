@@ -17,6 +17,4 @@ public class PostAnswerRequestDto {
     private String nickname;
     @NotNull
     private Long questionId;
-
-
 }
