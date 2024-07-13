@@ -1,9 +1,9 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
 
-import com.korea.WhereToGo.dto.request.Question.PatchQuestionRequestDto;
-import com.korea.WhereToGo.dto.request.Question.PostQuestionRequestDto;
-import com.korea.WhereToGo.dto.response.Question.*;
+import com.korea.WhereToGo.dto.request.question.PatchQuestionRequestDto;
+import com.korea.WhereToGo.dto.request.question.PostQuestionRequestDto;
+import com.korea.WhereToGo.dto.response.question.*;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.entity.QuestionEntity;
 import com.korea.WhereToGo.repository.QuestionRepository;

@@ -1,8 +1,8 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
-import com.korea.WhereToGo.dto.request.Answer.PatchAnswerRequestDto;
-import com.korea.WhereToGo.dto.request.Answer.PostAnswerRequestDto;
-import com.korea.WhereToGo.dto.response.Answer.*;
+import com.korea.WhereToGo.dto.request.answer.PatchAnswerRequestDto;
+import com.korea.WhereToGo.dto.request.answer.PostAnswerRequestDto;
+import com.korea.WhereToGo.dto.response.answer.*;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.entity.AnswerEntity;
 import com.korea.WhereToGo.entity.QuestionEntity;
@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

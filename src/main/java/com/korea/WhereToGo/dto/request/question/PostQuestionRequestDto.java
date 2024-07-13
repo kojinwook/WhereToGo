@@ -1,8 +1,7 @@
-package com.korea.WhereToGo.dto.request.Answer;
+package com.korea.WhereToGo.dto.request.question;
 
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,13 +9,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PatchAnswerRequestDto {
+public class PostQuestionRequestDto {
+    @NotBlank
+    private String title;
     @NotBlank
     private String content;
     @NotBlank
     private String nickname;
-    @NotNull
-    private Long questionId;
+    @NotBlank
+    private String type;
+
+    private String image;
 
 
 }

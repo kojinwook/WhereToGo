@@ -1,11 +1,10 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
-import com.korea.WhereToGo.dto.request.Notice.PatchNoticeRequestDto;
-import com.korea.WhereToGo.dto.request.Notice.PostNoticeRequestDto;
-import com.korea.WhereToGo.dto.response.Notice.*;
+import com.korea.WhereToGo.dto.request.notice.PatchNoticeRequestDto;
+import com.korea.WhereToGo.dto.request.notice.PostNoticeRequestDto;
+import com.korea.WhereToGo.dto.response.notice.*;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.entity.NoticeEntity;
-import com.korea.WhereToGo.entity.QuestionEntity;
 import com.korea.WhereToGo.repository.NoticeRepository;
 import com.korea.WhereToGo.service.NoticeService;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.korea.WhereToGo.dto.response.Notice;
+package com.korea.WhereToGo.dto.response.notice;
 
 import com.korea.WhereToGo.common.ResponseCode;
 import com.korea.WhereToGo.common.ResponseMessage;
@@ -6,8 +6,6 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import javax.sound.midi.Patch;
 
 @Getter
 public class PatchNoticeResponseDto extends ResponseDto {

@@ -1,4 +1,4 @@
-package com.korea.WhereToGo.dto.response.Answer;
+package com.korea.WhereToGo.dto.response.answer;
 
 
 import com.korea.WhereToGo.common.ResponseCode;

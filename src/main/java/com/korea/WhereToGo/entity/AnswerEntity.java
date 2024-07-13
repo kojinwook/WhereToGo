@@ -1,11 +1,9 @@
 package com.korea.WhereToGo.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.korea.WhereToGo.dto.request.Answer.PatchAnswerRequestDto;
-import com.korea.WhereToGo.dto.request.Answer.PostAnswerRequestDto;
+import com.korea.WhereToGo.dto.request.answer.PatchAnswerRequestDto;
+import com.korea.WhereToGo.dto.request.answer.PostAnswerRequestDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

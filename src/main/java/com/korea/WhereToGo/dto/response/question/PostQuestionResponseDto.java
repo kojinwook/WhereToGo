@@ -1,10 +1,9 @@
-package com.korea.WhereToGo.dto.response.Question;
+package com.korea.WhereToGo.dto.response.question;
 
 import com.korea.WhereToGo.common.ResponseCode;
 import com.korea.WhereToGo.common.ResponseMessage;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import lombok.Getter;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
