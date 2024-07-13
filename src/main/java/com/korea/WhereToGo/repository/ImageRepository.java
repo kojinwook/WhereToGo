@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ImageRepository extends JpaRepository<ImageEntity, String> {
+public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
     List<ImageEntity> findByReview_ReviewId(Long reviewId);
     List<ImageEntity> findByReviewReviewIdIn(List<Long> reviewIds);
     List<ImageEntity> findByReview_ReviewIdIn(List<Long> reviewIds);

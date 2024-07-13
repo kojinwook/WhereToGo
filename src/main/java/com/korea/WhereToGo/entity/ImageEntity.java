@@ -22,7 +22,7 @@ public class ImageEntity {
     private String contentId;
     private String image;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "meeting_id")
     private MeetingEntity meeting;
 
@@ -37,12 +37,6 @@ public class ImageEntity {
         this.image = image;
     }
 
-    public ImageEntity(String contentId, String image, String userId, MeetingEntity meeting) {
-        this.userId = userId;
-        this.contentId = contentId;
-        this.image = image;
-        this.meeting = meeting;
-    }
      public Long getReviewId() {
         return review != null ? review.getReviewId() : null;
     }

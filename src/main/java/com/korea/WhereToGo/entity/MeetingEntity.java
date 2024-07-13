@@ -1,10 +1,7 @@
 package com.korea.WhereToGo.entity;
 
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
-import com.korea.WhereToGo.dto.response.meeting.GetMeetingResponseDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +10,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -31,9 +26,8 @@ public class MeetingEntity {
     private String introduction;
     private String content;
 
-    @Column(name = "meeting_image")
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ImageEntity> meetingImage = new ArrayList<>();
+    @OneToOne(mappedBy = "meeting")
+    private ImageEntity image;
 
     @CreatedDate
     private LocalDateTime createDate;
