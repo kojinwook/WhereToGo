@@ -27,6 +27,6 @@ public class GetChatRoomResponseDto extends ResponseDto {
 
     public static ResponseEntity<ResponseDto> notExistChatRoom(){
         ResponseDto response = new ResponseDto(ResponseCode.NOT_EXISTED_CHAT_ROOM, ResponseMessage.NOT_EXISTED_CHAT_ROOM);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(response);
     }
 }

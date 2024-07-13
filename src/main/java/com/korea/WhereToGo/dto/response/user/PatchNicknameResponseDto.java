@@ -16,7 +16,7 @@ public class PatchNicknameResponseDto extends ResponseDto {
 
     public static ResponseEntity<ResponseDto> notExistUser(){
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
     }
 
     public static ResponseEntity<ResponseDto> duplicateNickname(){
