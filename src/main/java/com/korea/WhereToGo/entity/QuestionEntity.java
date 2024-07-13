@@ -1,22 +1,17 @@
 package com.korea.WhereToGo.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.korea.WhereToGo.dto.request.Question.PatchQuestionRequestDto;
-import com.korea.WhereToGo.dto.request.Question.PostQuestionRequestDto;
+import com.korea.WhereToGo.dto.request.question.PatchQuestionRequestDto;
+import com.korea.WhereToGo.dto.request.question.PostQuestionRequestDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Setter
 @Getter

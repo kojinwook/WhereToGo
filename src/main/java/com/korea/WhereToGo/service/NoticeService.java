@@ -1,8 +1,8 @@
 package com.korea.WhereToGo.service;
 
-import com.korea.WhereToGo.dto.request.Notice.PatchNoticeRequestDto;
-import com.korea.WhereToGo.dto.request.Notice.PostNoticeRequestDto;
-import com.korea.WhereToGo.dto.response.Notice.*;
+import com.korea.WhereToGo.dto.request.notice.PatchNoticeRequestDto;
+import com.korea.WhereToGo.dto.request.notice.PostNoticeRequestDto;
+import com.korea.WhereToGo.dto.response.notice.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

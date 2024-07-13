@@ -1,4 +1,4 @@
-package com.korea.WhereToGo.dto.request.Notice;
+package com.korea.WhereToGo.dto.request.notice;
 
 
 import jakarta.validation.constraints.NotBlank;

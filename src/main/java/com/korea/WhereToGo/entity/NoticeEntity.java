@@ -1,8 +1,8 @@
 package com.korea.WhereToGo.entity;
 
 
-import com.korea.WhereToGo.dto.request.Notice.PatchNoticeRequestDto;
-import com.korea.WhereToGo.dto.request.Notice.PostNoticeRequestDto;
+import com.korea.WhereToGo.dto.request.notice.PatchNoticeRequestDto;
+import com.korea.WhereToGo.dto.request.notice.PostNoticeRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

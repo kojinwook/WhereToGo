@@ -1,4 +1,4 @@
-package com.korea.WhereToGo.dto.request.Answer;
+package com.korea.WhereToGo.dto.request.answer;
 
 
 import jakarta.validation.constraints.NotBlank;
@@ -10,11 +10,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostAnswerRequestDto {
+public class PatchAnswerRequestDto {
     @NotBlank
     private String content;
     @NotBlank
     private String nickname;
     @NotNull
     private Long questionId;
+
+
 }

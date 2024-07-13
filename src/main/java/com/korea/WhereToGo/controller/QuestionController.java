@@ -1,14 +1,12 @@
 package com.korea.WhereToGo.controller;
 
 
-import com.korea.WhereToGo.dto.request.Question.PatchQuestionRequestDto;
-import com.korea.WhereToGo.dto.request.Question.PostQuestionRequestDto;
-import com.korea.WhereToGo.dto.response.Question.*;
+import com.korea.WhereToGo.dto.request.question.PatchQuestionRequestDto;
+import com.korea.WhereToGo.dto.request.question.PostQuestionRequestDto;
+import com.korea.WhereToGo.dto.response.question.*;
 import com.korea.WhereToGo.service.QuestionService;
 import jakarta.validation.Valid;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

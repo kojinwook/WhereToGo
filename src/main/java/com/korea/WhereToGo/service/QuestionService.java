@@ -1,9 +1,8 @@
 package com.korea.WhereToGo.service;
 
-import com.korea.WhereToGo.dto.request.Question.PatchQuestionRequestDto;
-import com.korea.WhereToGo.dto.request.Question.PostQuestionRequestDto;
-import com.korea.WhereToGo.dto.response.Question.*;
-import lombok.Setter;
+import com.korea.WhereToGo.dto.request.question.PatchQuestionRequestDto;
+import com.korea.WhereToGo.dto.request.question.PostQuestionRequestDto;
+import com.korea.WhereToGo.dto.response.question.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
