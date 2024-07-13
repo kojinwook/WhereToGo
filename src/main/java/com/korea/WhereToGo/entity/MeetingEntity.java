@@ -25,6 +25,7 @@ public class MeetingEntity {
     private String title;
     private String introduction;
     private String content;
+    private String userNickname;
 
     @OneToOne(mappedBy = "meeting")
     private ImageEntity image;
@@ -35,7 +36,6 @@ public class MeetingEntity {
     private LocalDateTime modifyDate;
 
     public MeetingEntity(String userId, String title, String introduction, String content, String meetingImage){
-//        this.userId = userId;
         this.title = title;
         this.introduction = introduction;
         this.content = content;
@@ -45,6 +45,7 @@ public class MeetingEntity {
         this.title = dto.getTitle();
         this.introduction = dto.getIntroduction();
         this.content = dto.getContent();
+        this.userNickname = dto.getNickname();
         this.createDate = LocalDateTime.now();
     }
 }

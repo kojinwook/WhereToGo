@@ -15,6 +15,8 @@ public class PostMeetingRequestDto {
     private String introduction;
     @NotBlank
     private String content;
+    @NotBlank
+    private String nickname;
 
     private String imageUrl;
 }
