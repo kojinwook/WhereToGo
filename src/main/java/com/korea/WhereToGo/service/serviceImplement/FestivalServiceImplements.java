@@ -75,69 +75,69 @@ public class FestivalServiceImplements implements FestivalService {
                     festivalEntity.setContentId(itemNode.path("contentid").asText());
                     festivalEntity.setContentTypeId(itemNode.path("contenttypeid").asText());
 
-                    if (!modifyDate.isEqual(LocalDate.parse(todayFormatted, DateTimeFormatter.ofPattern("yyyyMMdd")))) {
-                        continue;
-                    }
-
-                    FestivalEntity existingFestival = festivalRepository.findByContentId(festivalEntity.getContentId());
-
-                    if (existingFestival != null) {
-                        boolean isUpdated = false;
-                        if (!existingFestival.getTitle().equals(festivalEntity.getTitle())) {
-                            existingFestival.setTitle(festivalEntity.getTitle());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getStartDate().equals(festivalEntity.getStartDate())) {
-                            existingFestival.setStartDate(festivalEntity.getStartDate());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getEndDate().equals(festivalEntity.getEndDate())) {
-                            existingFestival.setEndDate(festivalEntity.getEndDate());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getAddress1().equals(festivalEntity.getAddress1())) {
-                            existingFestival.setAddress1(festivalEntity.getAddress1());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getFirstImage().equals(festivalEntity.getFirstImage())) {
-                            existingFestival.setFirstImage(festivalEntity.getFirstImage());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getTel().equals(festivalEntity.getTel())) {
-                            existingFestival.setTel(festivalEntity.getTel());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getMapX().equals(festivalEntity.getMapX())) {
-                            existingFestival.setMapX(festivalEntity.getMapX());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getMapY().equals(festivalEntity.getMapY())) {
-                            existingFestival.setMapY(festivalEntity.getMapY());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getModifyDate().equals(festivalEntity.getModifyDate())) {
-                            existingFestival.setModifyDate(festivalEntity.getModifyDate());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getAreaCode().equals(festivalEntity.getAreaCode())) {
-                            existingFestival.setAreaCode(festivalEntity.getAreaCode());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getSigunguCode().equals(festivalEntity.getSigunguCode())) {
-                            existingFestival.setSigunguCode(festivalEntity.getSigunguCode());
-                            isUpdated = true;
-                        }
-                        if (!existingFestival.getContentTypeId().equals(festivalEntity.getContentTypeId())) {
-                            existingFestival.setContentTypeId(festivalEntity.getContentTypeId());
-                            isUpdated = true;
-                        }
-
-                        if (isUpdated) {
-                            festivalRepository.save(existingFestival);
-                        }
-                    } else {
+//                    if (!modifyDate.isEqual(LocalDate.parse(todayFormatted, DateTimeFormatter.ofPattern("yyyyMMdd")))) {
+//                        continue;
+//                    }
+//
+//                    FestivalEntity existingFestival = festivalRepository.findByContentId(festivalEntity.getContentId());
+//
+//                    if (existingFestival != null) {
+//                        boolean isUpdated = false;
+//                        if (!existingFestival.getTitle().equals(festivalEntity.getTitle())) {
+//                            existingFestival.setTitle(festivalEntity.getTitle());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getStartDate().equals(festivalEntity.getStartDate())) {
+//                            existingFestival.setStartDate(festivalEntity.getStartDate());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getEndDate().equals(festivalEntity.getEndDate())) {
+//                            existingFestival.setEndDate(festivalEntity.getEndDate());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getAddress1().equals(festivalEntity.getAddress1())) {
+//                            existingFestival.setAddress1(festivalEntity.getAddress1());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getFirstImage().equals(festivalEntity.getFirstImage())) {
+//                            existingFestival.setFirstImage(festivalEntity.getFirstImage());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getTel().equals(festivalEntity.getTel())) {
+//                            existingFestival.setTel(festivalEntity.getTel());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getMapX().equals(festivalEntity.getMapX())) {
+//                            existingFestival.setMapX(festivalEntity.getMapX());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getMapY().equals(festivalEntity.getMapY())) {
+//                            existingFestival.setMapY(festivalEntity.getMapY());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getModifyDate().equals(festivalEntity.getModifyDate())) {
+//                            existingFestival.setModifyDate(festivalEntity.getModifyDate());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getAreaCode().equals(festivalEntity.getAreaCode())) {
+//                            existingFestival.setAreaCode(festivalEntity.getAreaCode());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getSigunguCode().equals(festivalEntity.getSigunguCode())) {
+//                            existingFestival.setSigunguCode(festivalEntity.getSigunguCode());
+//                            isUpdated = true;
+//                        }
+//                        if (!existingFestival.getContentTypeId().equals(festivalEntity.getContentTypeId())) {
+//                            existingFestival.setContentTypeId(festivalEntity.getContentTypeId());
+//                            isUpdated = true;
+//                        }
+//
+//                        if (isUpdated) {
+//                            festivalRepository.save(existingFestival);
+//                        }
+//                    } else {
                         festivalRepository.save(festivalEntity);
-                    }
+//                    }
                 }
             }
         } catch (Exception e) {

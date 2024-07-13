@@ -2,10 +2,12 @@ package com.korea.WhereToGo.service.serviceImplement;
 
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.GetMeetingResponseDto;
 import com.korea.WhereToGo.dto.response.meeting.PostMeetingResponseDto;
+import com.korea.WhereToGo.entity.ImageEntity;
 import com.korea.WhereToGo.entity.MeetingEntity;
+import com.korea.WhereToGo.repository.ImageRepository;
 import com.korea.WhereToGo.repository.MeetingRepository;
+import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.MeetingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +16,29 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MeetingImplement implements MeetingService {
+    private final UserRepository userRepository;
     private final MeetingRepository meetingRepository;
+    private final ImageRepository imageRepository;
 
     @Override
     public ResponseEntity<? super PostMeetingResponseDto> postMeeting(PostMeetingRequestDto dto) {
+        String nickname = dto.getNickname();
         try {
+            boolean userEntity = userRepository.existsByNickname(nickname);
+            if(!userEntity) return PostMeetingResponseDto.notExistUser();
+
             MeetingEntity meetingEntity = new MeetingEntity(dto);
             meetingRepository.save(meetingEntity);
-        }catch (Exception e){
+
+            String meetingImageUrl = dto.getImageUrl();
+            ImageEntity imageEntity = new ImageEntity();
+            imageEntity.setImage(meetingImageUrl);
+            imageEntity.setMeeting(meetingEntity);
+            imageRepository.save(imageEntity);
+
+            meetingEntity.setImage(imageEntity);
+            meetingRepository.save(meetingEntity);
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
