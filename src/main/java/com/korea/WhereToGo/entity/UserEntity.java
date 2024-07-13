@@ -50,7 +50,7 @@ public class UserEntity {
         this.password = dto.getPassword();
         this.email = dto.getEmail();
         this.nickname = dto.getNickname();
-        this.phoneNumber = dto.getPhoneNumber();
+        this.phoneNumber = dto.getPhone();
         this.role = "ROLE_USER";
         this.likeBoardList = new ArrayList<>();
     }
