@@ -50,6 +50,7 @@ public class FestivalEntity {
     private String contentTypeId;
     @Column(name = "homepage")
     private String homepage;
+    @ElementCollection
     @Column(name = "tag")
     private List<String> tags = new ArrayList<>();
 
