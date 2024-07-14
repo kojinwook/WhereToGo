@@ -44,15 +44,20 @@ public class FestivalEntity {
     private String areaCode;
     @Column(name = "sigunguCode")
     private String sigunguCode;
-    @Column(name = "content_id")
+    @Column(name = "content_id", unique = true)
     private String contentId;
     @Column(name = "content_type_id")
     private String contentTypeId;
     @Column(name = "homepage")
     private String homepage;
+    @Column(name = "favorite_count", nullable = false)
+    private int favoriteCount = 0;
     @ElementCollection
     @Column(name = "tag")
     private List<String> tags = new ArrayList<>();
+
+    @OneToMany(mappedBy = "festival", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FavoriteEntity> likes = new ArrayList<>();
 
     public void patchFestival(PatchFestivalRequestDto dto){
         this.title = dto.getTitle();
@@ -64,5 +69,17 @@ public class FestivalEntity {
         this.contentId = dto.getContentId();
         this.homepage = dto.getHomepage();
         this.tags = dto.getTags();
+    }
+
+    // 좋아요 수 증가 메서드
+    public void increaseFavoriteCount() {
+        this.favoriteCount++;
+    }
+
+    // 좋아요 수 감소 메서드
+    public void decreaseFavoriteCount() {
+        if (this.favoriteCount > 0) {
+            this.favoriteCount--;
+        }
     }
 }
