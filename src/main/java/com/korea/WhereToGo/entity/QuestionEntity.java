@@ -12,6 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -30,7 +32,8 @@ public class QuestionEntity {
 
     private String type;
 
-    private String image;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImageEntity> imageList = new ArrayList<>();
 
     private String nickname;
 
@@ -56,7 +59,6 @@ public class QuestionEntity {
         this.answered = false;
         this.createDateTime = LocalDateTime.now();
         this.type = dto.getType();
-        this.image = dto.getImage();
     }
 
 
@@ -64,9 +66,6 @@ public class QuestionEntity {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.type = dto.getType();
-        this.image = dto.getImage();
         this.modifyDateTime = LocalDateTime.now();
     }
-
-
 }

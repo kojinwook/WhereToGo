@@ -19,9 +19,10 @@ public class QuestionController {
 
     @PostMapping("")
     public ResponseEntity<? super PostQuestionResponseDto> postQuestion(
-            @RequestBody @Valid PostQuestionRequestDto requestBody
+            @RequestBody @Valid PostQuestionRequestDto requestBody,
+            @AuthenticationPrincipal String userId
     ) {
-        ResponseEntity<? super PostQuestionResponseDto> response = questionService.postQuestion(requestBody);
+        ResponseEntity<? super PostQuestionResponseDto> response = questionService.postQuestion(requestBody, userId);
         return response;
     }
 

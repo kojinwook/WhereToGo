@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface QuestionService {
     ResponseEntity<? super GetQuestionResponseDto> getQuestion(Long QuestionId);
-    ResponseEntity<? super PostQuestionResponseDto> postQuestion(PostQuestionRequestDto dto);
+    ResponseEntity<? super PostQuestionResponseDto> postQuestion(PostQuestionRequestDto dto, String userId);
     ResponseEntity<? super PatchQuestionResponseDto> patchQuestion(PatchQuestionRequestDto dto, Long QuestionId);
     ResponseEntity<? super DeleteQuestionResponseDto> deleteQuestion(Long QuestionId);
     ResponseEntity<? super GetAllQuestionResponseDto> getAllQuestions();

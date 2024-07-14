@@ -31,10 +31,21 @@ public class ImageEntity {
     @JoinColumn(name = "review_id")
     private ReviewEntity review;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "question_id")
+    private QuestionEntity question;
+
     public ImageEntity(String contentId, String image, String userId){
         this.userId = userId;
         this.contentId = contentId;
         this.image = image;
+    }
+
+    public ImageEntity(String image, QuestionEntity question, String userId) {
+        this.image = image;
+        this.question = question;
+        this.userId = userId;
     }
 
      public Long getReviewId() {
