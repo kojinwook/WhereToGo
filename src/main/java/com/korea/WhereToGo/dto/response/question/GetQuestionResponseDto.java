@@ -9,38 +9,18 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDateTime;
-
 @Getter
 public class GetQuestionResponseDto  extends ResponseDto {
 
-    private Long questionId;
-    private String title;
-    private String content;
-    private String nickname;
-    private String type;
-    private String image;
-    private Boolean answered;
-    private LocalDateTime createDateTime;
-    private LocalDateTime modifyDateTime;
+    private QuestionEntity question;
 
-    public GetQuestionResponseDto(QuestionEntity questionEntity){
+    public GetQuestionResponseDto(QuestionEntity question){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.questionId = questionEntity.getQuestionId();
-        this.title= questionEntity.getTitle();
-        this.content=questionEntity.getContent();
-        this.createDateTime=questionEntity.getCreateDateTime();
-        this.modifyDateTime=questionEntity.getModifyDateTime();
-        this.nickname= questionEntity.getNickname();
-        this.image=  questionEntity.getImage();
-        this.type= questionEntity.getType();
-        this.answered=questionEntity.getAnswered();
+        this.question = question;
     }
 
-
-
-    public static ResponseEntity<GetQuestionResponseDto> success(QuestionEntity questionEntity){
-        GetQuestionResponseDto responseBody = new GetQuestionResponseDto(questionEntity);
+    public static ResponseEntity<GetQuestionResponseDto> success(QuestionEntity question){
+        GetQuestionResponseDto responseBody = new GetQuestionResponseDto(question);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 

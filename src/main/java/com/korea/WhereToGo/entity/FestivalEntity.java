@@ -71,12 +71,10 @@ public class FestivalEntity {
         this.tags = dto.getTags();
     }
 
-    // 좋아요 수 증가 메서드
     public void increaseFavoriteCount() {
         this.favoriteCount++;
     }
 
-    // 좋아요 수 감소 메서드
     public void decreaseFavoriteCount() {
         if (this.favoriteCount > 0) {
             this.favoriteCount--;
