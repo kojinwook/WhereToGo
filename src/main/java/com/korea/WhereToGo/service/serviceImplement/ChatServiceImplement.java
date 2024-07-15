@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +83,12 @@ public class ChatServiceImplement implements ChatService {
         ChatRoomEntity chatRoom = new ChatRoomEntity();
         Long roomId = null;
         try {
+            Optional<ChatRoomEntity> existingChatRoom = chatRoomRepository.findByNicknameAndCreatorNickname(dto.getNickname(), dto.getCreatorNickname());
+            if (existingChatRoom.isPresent()) {
+                roomId = existingChatRoom.get().getRoomId();
+                return PostChatRoomResponseDto.success(roomId);
+            }
+
             chatRoom.setRoomName(dto.getRoomName());
             chatRoom.setUserId(dto.getUserId());
             chatRoom.setNickname(dto.getNickname());
@@ -124,13 +131,13 @@ public class ChatServiceImplement implements ChatService {
         return GetSavedMessageResponseDto.success(message);
     }
 
-    @Override
-    public ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(String nickname) {
+    public ResponseEntity<? super GetChatRoomResponseDto> getUserChatRooms(String nickname) {
         List<ChatRoomEntity> chatRoomList = new ArrayList<>();
         try {
-            chatRoomList = chatRoomRepository.findByNickname(nickname);
-            if (chatRoomList == null) return GetChatRoomResponseDto.notExistChatRoom();
-
+            chatRoomList = chatRoomRepository.findByNicknameOrCreatorNickname(nickname, nickname);
+            if (chatRoomList == null || chatRoomList.isEmpty()) {
+                return GetChatRoomResponseDto.notExistChatRoom();
+            }
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
