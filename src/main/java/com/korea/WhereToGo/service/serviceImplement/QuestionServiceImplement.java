@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class QuestionImplement implements QuestionService {
+public class QuestionServiceImplement implements QuestionService {
     private final QuestionRepository questionRepository;
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
@@ -32,6 +32,7 @@ public class QuestionImplement implements QuestionService {
         try {
             questionEntity = questionRepository.findByQuestionId(QuestionId);
             if (questionEntity == null) return GetQuestionResponseDto.notExistQuestion();
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();

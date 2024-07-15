@@ -55,5 +55,12 @@ public class NoticeController {
         ResponseEntity<? super DeleteNoticeResponseDto> response = noticeService.deleteNotice(noticeId);
         return response;
     }
+    @GetMapping("/search")
+    public ResponseEntity<? super GetSearchNoticeListResponseDto> findNoticesByKeyword(
+            @RequestParam String keyword
+    ){
+        ResponseEntity<? super GetSearchNoticeListResponseDto> response = noticeService.searchNoticeList(keyword);
+        return response;
+    }
 
 }
