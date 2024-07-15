@@ -48,6 +48,12 @@ public class ImageEntity {
         this.userId = userId;
     }
 
+    public ImageEntity(String image, ReviewEntity review, String userId) {
+        this.image = image;
+        this.review = review;
+        this.userId = userId;
+    }
+
      public Long getReviewId() {
         return review != null ? review.getReviewId() : null;
     }

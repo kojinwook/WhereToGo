@@ -22,6 +22,4 @@ public class PostQuestionRequestDto {
     private String type;
 
     private List<String> imageList;
-
-
 }

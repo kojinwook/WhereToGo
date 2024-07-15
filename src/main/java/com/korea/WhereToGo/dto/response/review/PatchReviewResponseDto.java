@@ -24,8 +24,8 @@ public class PatchReviewResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
     }
 
-    public static ResponseEntity<? super ResponseDto> notExistFestival() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_FESTIVAL, ResponseMessage.NOT_EXISTED_FESTIVAL);
+    public static ResponseEntity<? super ResponseDto> notExistUser() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
     }
 
