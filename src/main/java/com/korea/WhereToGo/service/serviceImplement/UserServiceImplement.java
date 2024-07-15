@@ -117,6 +117,25 @@ public class UserServiceImplement implements UserService {
         return PasswordRecoveryResponseDto.success();
     }
 
+    @Override
+    public ResponseEntity<? super FindUserIdResponseDto> findUserId(String email) {
+        try {
+            UserEntity userEntity = userRepository.findByEmail(email);
+            if (userEntity == null) return FindUserIdResponseDto.notExistUser();
+
+            String userId = userEntity.getUserId();
+
+            String emailText = "회원님의 아이디는: " + userId + " 입니다.";
+
+            emailService.sendEmail(email, "아이디", emailText);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return FindUserIdResponseDto.success();
+    }
+
     private String generateTemporaryPassword() {
         int length = 10;
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

@@ -116,6 +116,9 @@ public class AuthServiceImplements implements AuthService {
             boolean isMatched = certificationEntity.getEmail().equals(email) && certificationEntity.getCertificationNumber().equals(certificationNumber);
             if(!isMatched) return  SignUpResponseDto.certificationFail();
 
+            boolean agreedPersonal = dto.getAgreedPersonal();
+            if(!agreedPersonal) return SignUpResponseDto.disAgreed();
+
             String password = dto.getPassword();
             String encodedPassword = passwordEncoder.encode(password);
             dto.setPassword(encodedPassword);
