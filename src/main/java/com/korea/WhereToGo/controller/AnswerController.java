@@ -21,7 +21,6 @@ public class AnswerController {
     public ResponseEntity<? super PostAnswerResponseDto> postAnswer(
             @RequestBody @Valid PostAnswerRequestDto requestBody
     ){
-        System.out.println(requestBody);
         ResponseEntity<? super PostAnswerResponseDto> response = answerService.PostAnswer(requestBody);
         return response;
     }

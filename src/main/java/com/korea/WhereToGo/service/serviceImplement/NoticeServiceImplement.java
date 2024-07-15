@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,5 +78,16 @@ public class NoticeServiceImplement implements NoticeService {
             return ResponseDto.databaseError();
         }
         return GetAllNoticeResponseDto.success(notices);
+    }
+    @Override
+    public ResponseEntity<? super GetSearchNoticeListResponseDto> searchNoticeList(String keyword){
+        List<NoticeEntity> noticeEntities = new ArrayList<>();
+        try{
+            noticeEntities = noticeRepository.findByTitleContainingOrContentContaining(keyword, keyword);
+            if(noticeEntities.isEmpty()) return GetSearchNoticeListResponseDto.notExistNotice();
+        } catch(Exception exception){
+            return ResponseDto.databaseError();
+        }
+        return GetSearchNoticeListResponseDto.success(noticeEntities);
     }
 }
