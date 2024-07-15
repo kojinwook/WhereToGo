@@ -62,7 +62,7 @@ public class FavoriteServiceImplement implements FavoriteService {
             if (!existedUser) return GetAllFavoriteListResponseDto.notExistUser();
 
             favoriteList = favoriteRepository.findAllByUserNickname(nickname);
-            if (favoriteList.isEmpty()) return GetAllFavoriteListResponseDto.notExistFavorite();
+//            if (favoriteList.isEmpty()) return GetAllFavoriteListResponseDto.notExistFavorite();
 
             favoriteFestivalDtos = favoriteList.stream()
                     .map(favoriteEntity -> new FavoriteFestivalDto(favoriteEntity.getFestival()))

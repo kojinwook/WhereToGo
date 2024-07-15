@@ -22,7 +22,8 @@ public class ImageEntity {
     private String contentId;
     private String image;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "meeting_id")
     private MeetingEntity meeting;
 

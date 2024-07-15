@@ -19,4 +19,6 @@ public class PostMeetingRequestDto {
     private String nickname;
 
     private String imageUrl;
+
+    private int maxParticipants;
 }

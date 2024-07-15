@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PostChatRoomRequestDto {
     private String roomName;
+    private String userId;
     private String nickname;
     private String creatorNickname;
-    private String creatorProfileImage;
 }
