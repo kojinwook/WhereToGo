@@ -6,11 +6,12 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.review.*;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.entity.ImageEntity;
-import com.korea.WhereToGo.entity.MeetingEntity;
 import com.korea.WhereToGo.entity.ReviewEntity;
+import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
 import com.korea.WhereToGo.repository.ImageRepository;
 import com.korea.WhereToGo.repository.ReviewRepository;
+import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ public class ReviewServiceImplement implements ReviewService {
     private final FestivalRepository festivalRepository;
     private final ImageRepository imageRepository;
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ResponseEntity<? super PostReviewResponseDto> postReview(PostReviewRequestDto dto, String userId) {
@@ -75,33 +77,48 @@ public class ReviewServiceImplement implements ReviewService {
 
     @Override
     public ResponseEntity<? super GetReviewResponseDto> getReview(Long reviewId) {
-        ReviewEntity reviewEntity = reviewRepository.findByReviewId(reviewId);
-        if (reviewEntity == null) {
-            return GetReviewResponseDto.notExistReview();
+        ReviewEntity reviewEntity = new ReviewEntity();
+        try {
+            reviewEntity = reviewRepository.findByReviewId(reviewId);
+            if (reviewEntity == null) {
+                return GetReviewResponseDto.notExistReview();
+            }
+
+            List<ImageEntity> imageEntities = imageRepository.findByReviewReviewId(reviewId);
+            reviewEntity.setImageList(imageEntities);
+
+        }catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
         }
-
-        List<ImageEntity> imageEntities = imageRepository.findByReviewReviewId(reviewId);
-        reviewEntity.setImages(imageEntities);
-
         return GetReviewResponseDto.success(reviewEntity);
     }
 
     @Override
     public ResponseEntity<? super PatchReviewResponseDto> patchReview(PatchReviewRequestDto dto, String userId) {
-        String reviewId = dto.getReviewId();
+        Long reviewId = dto.getReviewId();
         try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return PatchReviewResponseDto.notExistUser();
 
-//            UserEntity userEntity = userRepository.findByUserId(userId);
-//            if (userEntity == null) return PatchReviewResponseDto.notExistUser();
+            ReviewEntity reviewEntity = reviewRepository.findByReviewId(reviewId);
+            if (reviewEntity == null) return PatchReviewResponseDto.notExistReview();
 
-            ReviewEntity reviewEntity = new ReviewEntity(dto);
+            reviewEntity.PatchReview(dto);
             reviewRepository.save(reviewEntity);
 
-            List<String> imageList = dto.getImageList();
+            List<String> newImageList = dto.getImageList();
+
+            List<ImageEntity> existingImages = reviewEntity.getImageList();
+
             List<ImageEntity> imageEntities = new ArrayList<>();
 
-            for (String image : imageList) {
-                ImageEntity imageEntity = new ImageEntity(reviewId, image, userId);
+            for (ImageEntity existingImage : existingImages) {
+                imageRepository.delete(existingImage);
+            }
+
+            for (String imageUrl : newImageList) {
+                ImageEntity imageEntity = new ImageEntity(imageUrl, reviewEntity, userId);
                 imageEntities.add(imageEntity);
             }
             imageRepository.saveAll(imageEntities);
@@ -141,7 +158,7 @@ public class ReviewServiceImplement implements ReviewService {
             List<ImageEntity> relatedImages = imageEntities.stream()
                     .filter(image -> image.getReview().getReviewId().equals(review.getReviewId()))
                     .collect(Collectors.toList());
-            review.setImages(relatedImages);
+            review.setImageList(relatedImages);
         }
 
         return GetAllReviewResponseDto.success(reviews);

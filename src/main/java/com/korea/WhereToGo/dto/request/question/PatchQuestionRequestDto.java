@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,7 +21,5 @@ public class PatchQuestionRequestDto {
     @NotBlank
     private String type;
 
-    private String image;
-
-
+    private List<String> imageList;
 }

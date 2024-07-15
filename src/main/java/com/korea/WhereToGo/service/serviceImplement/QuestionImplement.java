@@ -7,8 +7,10 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.question.*;
 import com.korea.WhereToGo.entity.ImageEntity;
 import com.korea.WhereToGo.entity.QuestionEntity;
+import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.repository.ImageRepository;
 import com.korea.WhereToGo.repository.QuestionRepository;
+import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import java.util.List;
 public class QuestionImplement implements QuestionService {
     private final QuestionRepository questionRepository;
     private final ImageRepository imageRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ResponseEntity<? super GetQuestionResponseDto> getQuestion(Long QuestionId) {
@@ -42,6 +45,9 @@ public class QuestionImplement implements QuestionService {
             QuestionEntity questionEntity = new QuestionEntity(dto);
             questionRepository.save(questionEntity);
 
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if(userEntity == null) return PostQuestionResponseDto.notExistUser();
+
             List<String> imageList = dto.getImageList();
             List<ImageEntity> imageEntities = new ArrayList<>();
 
@@ -59,18 +65,37 @@ public class QuestionImplement implements QuestionService {
     }
 
     @Override
-    public ResponseEntity<? super PatchQuestionResponseDto> patchQuestion(PatchQuestionRequestDto dto, Long QuestionId) {
+    public ResponseEntity<? super PatchQuestionResponseDto> patchQuestion(PatchQuestionRequestDto dto, Long questionId, String userId) {
         try {
-            QuestionEntity questionEntity = questionRepository.findByQuestionId(QuestionId);
+            QuestionEntity questionEntity = questionRepository.findByQuestionId(questionId);
             if (questionEntity == null) return PatchQuestionResponseDto.notExistQuestion();
+
             questionEntity.patchQuestion(dto);
             questionRepository.save(questionEntity);
+
+            List<String> newImageList = dto.getImageList();
+
+            List<ImageEntity> existingImages = imageRepository.findByQuestion_QuestionId(questionId);
+
+            List<ImageEntity> imageEntities = new ArrayList<>();
+
+            for (ImageEntity existingImage : existingImages) {
+                imageRepository.delete(existingImage);
+            }
+
+            for (String imageUrl : newImageList) {
+                ImageEntity imageEntity = new ImageEntity(imageUrl, questionEntity, userId);
+                imageEntities.add(imageEntity);
+            }
+            imageRepository.saveAll(imageEntities);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
         return PatchQuestionResponseDto.success();
     }
+
 
     @Override
     public ResponseEntity<? super DeleteQuestionResponseDto> deleteQuestion(Long QuestionId) {

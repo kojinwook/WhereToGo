@@ -61,7 +61,6 @@ public class QuestionEntity {
         this.type = dto.getType();
     }
 
-
     public void patchQuestion(PatchQuestionRequestDto dto) {
         this.title = dto.getTitle();
         this.content = dto.getContent();
