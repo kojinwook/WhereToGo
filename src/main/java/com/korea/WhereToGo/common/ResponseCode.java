@@ -24,5 +24,7 @@ public interface ResponseCode {
     String NOT_EXISTED_CHAT_ROOM = "NCR";
     String NOT_EXISTED_CHAT_MESSAGE = "NCM";
     String ALREADY_EXIST_CHAT_ROOM = "AECR";
+    String NOT_EXISTED_MEETING = "NM";
+    String NOT_EXISTED_FAVORITE = "NFA";
 
 }

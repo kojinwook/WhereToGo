@@ -6,6 +6,7 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.review.*;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.entity.ImageEntity;
+import com.korea.WhereToGo.entity.MeetingEntity;
 import com.korea.WhereToGo.entity.ReviewEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
 import com.korea.WhereToGo.repository.ImageRepository;
@@ -29,7 +30,7 @@ public class ReviewServiceImplement implements ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Override
-    public ResponseEntity<? super PostReviewResponseDto> postRate(PostReviewRequestDto dto, String userId) {
+    public ResponseEntity<? super PostReviewResponseDto> postReview(PostReviewRequestDto dto, String userId) {
         String contentId = dto.getContentId();
         try {
             FestivalEntity festivalEntity = festivalRepository.findByContentId(contentId);
@@ -43,6 +44,7 @@ public class ReviewServiceImplement implements ReviewService {
 
             for (String image : imageList) {
                 ImageEntity imageEntity = new ImageEntity(contentId, image, userId);
+                imageEntity.setReview(reviewEntity);
                 imageEntities.add(imageEntity);
             }
             imageRepository.saveAll(imageEntities);
@@ -73,14 +75,14 @@ public class ReviewServiceImplement implements ReviewService {
 
     @Override
     public ResponseEntity<? super GetReviewResponseDto> getReview(Long reviewId) {
-        ReviewEntity reviewEntity = new ReviewEntity();
-        try{
-            reviewEntity = reviewRepository.findByReviewId(reviewId);
-            if (reviewEntity == null) return GetReviewResponseDto.notExistReview();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
+        ReviewEntity reviewEntity = reviewRepository.findByReviewId(reviewId);
+        if (reviewEntity == null) {
+            return GetReviewResponseDto.notExistReview();
         }
+
+        List<ImageEntity> imageEntities = imageRepository.findByReviewReviewId(reviewId);
+        reviewEntity.setImages(imageEntities);
+
         return GetReviewResponseDto.success(reviewEntity);
     }
 
@@ -127,15 +129,21 @@ public class ReviewServiceImplement implements ReviewService {
 
     @Override
     public ResponseEntity<? super GetAllReviewResponseDto> getAllReview(String contentId) {
-        List<ReviewEntity> reviews = new ArrayList<>();
-        try {
-            reviews = reviewRepository.findByContentId(contentId);
-            if (reviews.isEmpty()) return GetAllReviewResponseDto.notExistReview();
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
+        List<ReviewEntity> reviews = reviewRepository.findByContentId(contentId);
+        if (reviews.isEmpty()) {
+            return GetAllReviewResponseDto.notExistReview();
         }
+
+        List<Long> reviewIds = reviews.stream().map(ReviewEntity::getReviewId).collect(Collectors.toList());
+        List<ImageEntity> imageEntities = imageRepository.findByReviewReviewIdIn(reviewIds);
+
+        for (ReviewEntity review : reviews) {
+            List<ImageEntity> relatedImages = imageEntities.stream()
+                    .filter(image -> image.getReview().getReviewId().equals(review.getReviewId()))
+                    .collect(Collectors.toList());
+            review.setImages(relatedImages);
+        }
+
         return GetAllReviewResponseDto.success(reviews);
     }
 }

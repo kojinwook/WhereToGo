@@ -1,9 +1,9 @@
 package com.korea.WhereToGo.controller;
 
 
-import com.korea.WhereToGo.dto.request.Notice.PatchNoticeRequestDto;
-import com.korea.WhereToGo.dto.request.Notice.PostNoticeRequestDto;
-import com.korea.WhereToGo.dto.response.Notice.*;
+import com.korea.WhereToGo.dto.request.notice.PatchNoticeRequestDto;
+import com.korea.WhereToGo.dto.request.notice.PostNoticeRequestDto;
+import com.korea.WhereToGo.dto.response.notice.*;
 import com.korea.WhereToGo.service.NoticeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

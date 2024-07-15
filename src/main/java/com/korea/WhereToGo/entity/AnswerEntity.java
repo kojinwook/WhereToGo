@@ -1,11 +1,9 @@
 package com.korea.WhereToGo.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.korea.WhereToGo.dto.request.Answer.PatchAnswerRequestDto;
-import com.korea.WhereToGo.dto.request.Answer.PostAnswerRequestDto;
+import com.korea.WhereToGo.dto.request.answer.PatchAnswerRequestDto;
+import com.korea.WhereToGo.dto.request.answer.PostAnswerRequestDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +27,7 @@ public class AnswerEntity {
 
     private String content;
 
-    private String userId;
+    private String nickname;
 
     @CreationTimestamp
     private LocalDateTime createDateTime;
@@ -37,12 +35,11 @@ public class AnswerEntity {
     @UpdateTimestamp
     private LocalDateTime modifyDateTime;
 
-
     private Long questionId;
 
     public AnswerEntity(PostAnswerRequestDto dto){
         this.content=dto.getContent();
-        this.userId = dto.getUserId();
+        this.nickname = dto.getNickname();
         this.questionId = dto.getQuestionId();
         this.createDateTime= LocalDateTime.now();
     }

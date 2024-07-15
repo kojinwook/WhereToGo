@@ -1,11 +1,8 @@
 package com.korea.WhereToGo.service;
 
-import com.korea.WhereToGo.dto.request.Answer.PatchAnswerRequestDto;
-import com.korea.WhereToGo.dto.request.Answer.PostAnswerRequestDto;
-import com.korea.WhereToGo.dto.request.Question.PatchQuestionRequestDto;
-import com.korea.WhereToGo.dto.request.Question.PostQuestionRequestDto;
-import com.korea.WhereToGo.dto.response.Answer.*;
-import com.korea.WhereToGo.dto.response.Question.*;
+import com.korea.WhereToGo.dto.request.answer.PatchAnswerRequestDto;
+import com.korea.WhereToGo.dto.request.answer.PostAnswerRequestDto;
+import com.korea.WhereToGo.dto.response.answer.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 @Service

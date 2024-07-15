@@ -33,8 +33,10 @@ public class UserEntity {
     @Email
     @Column(name = "email")
     private String email;
+    @Column(name = "nickname", unique = true)
     private String nickname;
     private String phoneNumber;
+    @Column(name = "profile_image")
     private String profileImage;
     private String role;
     @CreatedDate
@@ -43,6 +45,9 @@ public class UserEntity {
     private LocalDateTime modifyDate;
 
     private List<String> likeBoardList;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FavoriteEntity> likes = new ArrayList<>();
 
     public UserEntity(SignUpRequestDto dto) {
         this.userId = dto.getUserId();

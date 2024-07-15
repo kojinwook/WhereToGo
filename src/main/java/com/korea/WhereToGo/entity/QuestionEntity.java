@@ -1,18 +1,15 @@
 package com.korea.WhereToGo.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.korea.WhereToGo.dto.request.Question.PatchQuestionRequestDto;
-import com.korea.WhereToGo.dto.request.Question.PostQuestionRequestDto;
+import com.korea.WhereToGo.dto.request.question.PatchQuestionRequestDto;
+import com.korea.WhereToGo.dto.request.question.PostQuestionRequestDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,8 +19,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="question")
-@Table(name="question")
+@Entity(name = "question")
+@Table(name = "question")
 public class QuestionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +32,10 @@ public class QuestionEntity {
 
     private String type;
 
-    private String image;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImageEntity> imageList = new ArrayList<>();
 
-    private String userId;
+    private String nickname;
 
     private Boolean answered;
 
@@ -50,29 +48,24 @@ public class QuestionEntity {
 //    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL,orphanRemoval = true)
 //    private List<Attachment> attachments = new ArrayList<>();
 
-//    000@JsonManagedReference
+//    @JsonManagedReference
 //    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL,orphanRemoval = true)
 //    private List<AnswerEntity> answers;
 
-    public QuestionEntity(PostQuestionRequestDto dto){
-        this.title= dto.getTitle();
-        this.content=dto.getContent();
-        this.userId = dto.getUserId();
+    public QuestionEntity(PostQuestionRequestDto dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.nickname = dto.getNickname();
         this.answered = false;
         this.createDateTime = LocalDateTime.now();
         this.type = dto.getType();
-        this.image = null;
-
     }
 
 
-    public void patchQuestion(PatchQuestionRequestDto dto){
+    public void patchQuestion(PatchQuestionRequestDto dto) {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.type = dto.getType();
-        this.image= dto.getImage();
         this.modifyDateTime = LocalDateTime.now();
     }
-
-
 }

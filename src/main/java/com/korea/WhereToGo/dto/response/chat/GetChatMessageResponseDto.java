@@ -25,6 +25,6 @@ public class GetChatMessageResponseDto extends ResponseDto {
 
     public static ResponseEntity<? super ResponseDto> notExistChatMessage() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_CHAT_MESSAGE, ResponseMessage.NOT_EXISTED_CHAT_MESSAGE);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseBody);
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
     }
 }

@@ -17,7 +17,7 @@ public class WithdrawalUserResponseDto extends ResponseDto {
 
     public ResponseEntity<ResponseDto> notExistedUser() {
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(result);
     }
 
     public static ResponseEntity<ResponseDto> notPermission(){
