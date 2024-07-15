@@ -1,6 +1,7 @@
 package com.korea.WhereToGo.controller;
 
 import com.korea.WhereToGo.dto.request.user.ChangePasswordRequestDto;
+import com.korea.WhereToGo.dto.request.user.FindUserIdRequestDto;
 import com.korea.WhereToGo.dto.request.user.PasswordRecoveryRequestDto;
 import com.korea.WhereToGo.dto.request.user.PatchNicknameRequestDto;
 import com.korea.WhereToGo.dto.response.user.*;
@@ -65,5 +66,12 @@ public class UserController {
             @RequestBody @Valid PasswordRecoveryRequestDto dto
     ) {
         return userService.passwordRecovery(dto.getEmail());
+    }
+
+    @PostMapping("/find-userId")
+    public ResponseEntity<? super FindUserIdResponseDto> findUserId(
+            @RequestBody @Valid FindUserIdRequestDto dto
+            ) {
+        return userService.findUserId(dto.getEmail());
     }
 }
