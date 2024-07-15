@@ -42,8 +42,11 @@ public class AnswerServiceImplement implements AnswerService {
             QuestionEntity questionEntity = questionRepository.findByQuestionId(questionId);
             if(questionEntity == null) return PostAnswerResponseDto.notExistQuestion();
 
+            questionEntity.setAnswered(true);
+
             AnswerEntity  answerEntity = new AnswerEntity(dto);
             answerRepository.save(answerEntity);
+
         } catch(Exception exception){
             exception.printStackTrace();
             return ResponseDto.databaseError();
@@ -58,6 +61,7 @@ public class AnswerServiceImplement implements AnswerService {
 
             answerEntity.patchAnswer(dto);
             answerRepository.save(answerEntity);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
@@ -69,7 +73,19 @@ public class AnswerServiceImplement implements AnswerService {
         try{
             AnswerEntity answerEntity = answerRepository.findByAnswerId(answerId);
             if(answerEntity == null) return DeleteAnswerResponseDto.notExistedAnswer();
+            Long questionId = answerEntity.getQuestionId();
+
             answerRepository.delete(answerEntity);
+
+            List<AnswerEntity> answerEntities = answerRepository.findByQuestionId(questionId);
+
+            QuestionEntity questionEntity = questionRepository.findByQuestionId(questionId);
+
+            if(answerEntities.isEmpty()) {
+                questionEntity.setAnswered(false);
+                questionRepository.save(questionEntity);
+            }
+
         } catch(Exception exception){
             exception.printStackTrace();
             return ResponseDto.databaseError();

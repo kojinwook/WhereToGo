@@ -38,4 +38,9 @@ public class SignUpResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
 
+    public static ResponseEntity<ResponseDto> disAgreed(){
+        ResponseDto responseBody = new ResponseDto(ResponseCode.FALSE_AGREEMENT, ResponseMessage.FALSE_AGREEMENT);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
 }

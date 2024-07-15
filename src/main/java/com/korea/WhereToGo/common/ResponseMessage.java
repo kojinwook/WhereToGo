@@ -24,4 +24,5 @@ public interface ResponseMessage {
     String ALREADY_EXIST_CHAT_ROOM = "Already_Exist_Chat_Room";
     String NOT_EXISTED_MEETING = "Not_Existed_Meeting";
     String NOT_EXISTED_FAVORITE = "Not_Existed_Favorite";
+    String FALSE_AGREEMENT = "False_Agreement";
 }

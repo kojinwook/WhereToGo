@@ -13,5 +13,6 @@ public interface NoticeService {
     ResponseEntity<? super PatchNoticeResponseDto> patchNotice(PatchNoticeRequestDto dto, Long NoticeId);
     ResponseEntity<? super DeleteNoticeResponseDto> deleteNotice(Long NoticeId);
     ResponseEntity<? super GetAllNoticeResponseDto> getAllNotice();
+    ResponseEntity<? super GetSearchNoticeListResponseDto> searchNoticeList(String keyword);
 
 }
