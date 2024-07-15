@@ -4,7 +4,6 @@ import com.korea.WhereToGo.common.ResponseCode;
 import com.korea.WhereToGo.common.ResponseMessage;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -14,14 +13,15 @@ public class SignInResponseDto extends ResponseDto {
     private  String token;
     private int expirationTime;
 
-    private SignInResponseDto(String token) {
+    private SignInResponseDto(String token, int expirationTime) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.token = token;
-        this.expirationTime = 3600;
+        this.expirationTime = expirationTime;
     }
 
-    public static ResponseEntity<SignInResponseDto> success(String token) {
-        SignInResponseDto responseBody = new SignInResponseDto(token);
+    public static ResponseEntity<SignInResponseDto> success(String token, boolean infinite) {
+        int expirationTime = infinite ? -1 : 3600;
+        SignInResponseDto responseBody = new SignInResponseDto(token, expirationTime);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 

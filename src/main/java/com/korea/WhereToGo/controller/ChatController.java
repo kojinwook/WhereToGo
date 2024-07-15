@@ -47,17 +47,17 @@ public class ChatController {
         return response;
     }
 
-    @GetMapping("/rooms")
-    public ResponseEntity<? super GetChatRoomListResponseDto> getChatRooms() {
-        ResponseEntity<? super GetChatRoomListResponseDto> response = chatService.getChatRooms();
-        return response;
-    }
+//    @GetMapping("/rooms")
+//    public ResponseEntity<? super GetChatRoomListResponseDto> getChatRooms() {
+//        ResponseEntity<? super GetChatRoomListResponseDto> response = chatService.getChatRooms();
+//        return response;
+//    }
 
     @GetMapping("/room")
-    public ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(
+    public ResponseEntity<? super GetChatRoomResponseDto> getUserChatRooms(
             @RequestParam String nickname
     ) {
-        ResponseEntity<? super GetChatRoomResponseDto> response = chatService.getChatRoom(nickname);
+        ResponseEntity<? super GetChatRoomResponseDto> response = chatService.getUserChatRooms(nickname);
         return response;
     }
 }
