@@ -10,6 +10,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,13 +38,8 @@ public class MeetingEntity {
     private LocalDateTime modifyDate;
     private int maxParticipants;
 
-    public MeetingEntity(String userId, String title, String introduction, String content, String userNickname, int maxParticipants) {
-        this.title = title;
-        this.introduction = introduction;
-        this.content = content;
-        this.userNickname = userNickname;
-        this.maxParticipants = maxParticipants;
-    }
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+    private List<MeetingUserEntity> participants = new ArrayList<>();
 
     public MeetingEntity(PostMeetingRequestDto dto) {
         this.title = dto.getTitle();

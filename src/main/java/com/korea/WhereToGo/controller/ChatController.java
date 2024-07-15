@@ -60,4 +60,12 @@ public class ChatController {
         ResponseEntity<? super GetChatRoomResponseDto> response = chatService.getUserChatRooms(nickname);
         return response;
     }
+
+    @GetMapping("/room/users")
+    public ResponseEntity<? super GetRoomUsersResponseDto> getRoomUsers(
+            @RequestParam Long roomId
+    ) {
+        ResponseEntity<? super GetRoomUsersResponseDto> response = chatService.getRoomUsers(roomId);
+        return response;
+    }
 }
