@@ -16,7 +16,7 @@ public class ImageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String userId;
     private String contentId;
     private String image;

@@ -26,7 +26,7 @@ import java.util.List;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Column(name = "user_id")
     private String userId;
     private String password;
@@ -49,7 +49,7 @@ public class UserEntity {
         this.password = dto.getPassword();
         this.email = dto.getEmail();
         this.nickname = dto.getNickname();
-        this.phoneNumber = dto.getPhoneNumber();
+        this.phoneNumber = dto.getPhone();
         this.role = "ROLE_USER";
         this.likeBoardList = new ArrayList<>();
     }
