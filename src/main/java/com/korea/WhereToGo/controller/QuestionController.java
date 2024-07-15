@@ -43,8 +43,9 @@ public class QuestionController {
     @PatchMapping("/update/{questionId}")
     public ResponseEntity<? super PatchQuestionResponseDto> patchQuestion(
             @RequestBody @Valid PatchQuestionRequestDto requestBody,
-            @PathVariable("questionId") Long questionId) {
-        ResponseEntity<? super PatchQuestionResponseDto> response = questionService.patchQuestion(requestBody, questionId);
+            @PathVariable("questionId") Long questionId,
+            @AuthenticationPrincipal String userId) {
+        ResponseEntity<? super PatchQuestionResponseDto> response = questionService.patchQuestion(requestBody, questionId, userId);
         return response;
     }
 

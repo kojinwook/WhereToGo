@@ -38,7 +38,7 @@ public class ReviewEntity {
     private int rate;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ImageEntity> images = new ArrayList<>();
+    private List<ImageEntity> imageList = new ArrayList<>();
 
     public ReviewEntity(PostReviewRequestDto dto, String contentId) {
         Date now = Date.from(Instant.now());
@@ -51,7 +51,7 @@ public class ReviewEntity {
         this.rate = dto.getRate();
     }
 
-    public ReviewEntity(PatchReviewRequestDto dto) {
+    public void PatchReview(PatchReviewRequestDto dto) {
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String modifyDatetime = simpleDateFormat.format(now);

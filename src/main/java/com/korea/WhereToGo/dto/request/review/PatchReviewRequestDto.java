@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PatchReviewRequestDto {
     @NotBlank
-    private String reviewId;
+    private Long reviewId;
     @NotBlank
     private int rate;
     @NotBlank
