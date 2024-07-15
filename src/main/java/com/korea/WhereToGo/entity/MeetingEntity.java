@@ -20,25 +20,28 @@ import java.time.LocalDateTime;
 public class MeetingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long meetingId;
 
     private String title;
     private String introduction;
     private String content;
     private String userNickname;
 
-    @OneToOne(mappedBy = "meeting")
-    private ImageEntity image;
+    @OneToOne(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ImageEntity imageList;
 
     @CreatedDate
     private LocalDateTime createDate;
     @LastModifiedDate
     private LocalDateTime modifyDate;
+    private int maxParticipants;
 
-    public MeetingEntity(String userId, String title, String introduction, String content, String meetingImage){
+    public MeetingEntity(String userId, String title, String introduction, String content, String userNickname, int maxParticipants) {
         this.title = title;
         this.introduction = introduction;
         this.content = content;
+        this.userNickname = userNickname;
+        this.maxParticipants = maxParticipants;
     }
 
     public MeetingEntity(PostMeetingRequestDto dto) {
@@ -46,6 +49,7 @@ public class MeetingEntity {
         this.introduction = dto.getIntroduction();
         this.content = dto.getContent();
         this.userNickname = dto.getNickname();
+        this.maxParticipants = dto.getMaxParticipants();
         this.createDate = LocalDateTime.now();
     }
 }

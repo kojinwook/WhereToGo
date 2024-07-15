@@ -79,17 +79,13 @@ public class ChatServiceImplement implements ChatService {
 
     @Override
     public ResponseEntity<? super PostChatRoomResponseDto> postChatRoom(PostChatRoomRequestDto dto) {
-        String roomName = dto.getRoomName();
-        String nickname = dto.getNickname();
-        String creatorNickname = dto.getCreatorNickname();
-        String creatorProfileImage = dto.getCreatorProfileImage();
         ChatRoomEntity chatRoom = new ChatRoomEntity();
         Long roomId = null;
         try {
-            chatRoom.setRoomName(roomName);
-            chatRoom.setNickname(nickname);
-            chatRoom.setCreatorNickname(creatorNickname);
-            chatRoom.setCreatorProfileImage(creatorProfileImage);
+            chatRoom.setRoomName(dto.getRoomName());
+            chatRoom.setUserId(dto.getUserId());
+            chatRoom.setNickname(dto.getNickname());
+            chatRoom.setCreatorNickname(dto.getCreatorNickname());
             chatRoomRepository.save(chatRoom);
 
             roomId = chatRoom.getRoomId();
@@ -130,15 +126,15 @@ public class ChatServiceImplement implements ChatService {
 
     @Override
     public ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(String nickname) {
-        List<ChatRoomEntity> chatRooms = new ArrayList<>();
+        List<ChatRoomEntity> chatRoomList = new ArrayList<>();
         try {
-            chatRooms = chatRoomRepository.findByNickname(nickname);
-            if (chatRooms == null) return GetChatRoomResponseDto.notExistChatRoom();
+            chatRoomList = chatRoomRepository.findByNickname(nickname);
+            if (chatRoomList == null) return GetChatRoomResponseDto.notExistChatRoom();
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetChatRoomResponseDto.success(chatRooms);
+        return GetChatRoomResponseDto.success(chatRoomList);
     }
 }
