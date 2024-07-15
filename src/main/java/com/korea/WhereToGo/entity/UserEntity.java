@@ -39,6 +39,7 @@ public class UserEntity {
     @Column(name = "profile_image")
     private String profileImage;
     private String role;
+    private Boolean agreedPersonal;
     @CreatedDate
     private LocalDateTime createDate;
     @LastModifiedDate
