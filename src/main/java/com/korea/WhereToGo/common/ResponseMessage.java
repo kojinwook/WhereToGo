@@ -25,5 +25,6 @@ public interface ResponseMessage {
     String NOT_EXISTED_MEETING = "Not_Existed_Meeting";
     String NOT_EXISTED_FAVORITE = "Not_Existed_Favorite";
     String FALSE_AGREEMENT = "False_Agreement";
-    String ALREADY_JOINED = "Already_Joined";
+    String ALREADY_REQUESTED = "Already_Requested";
+    String NOT_EXISTED_JOIN_REQUEST = "Not_Existed_Join_Request";
 }

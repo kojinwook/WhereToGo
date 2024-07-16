@@ -39,7 +39,7 @@ public class MeetingEntity {
     private int maxParticipants;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
-    private List<MeetingUserEntity> participants = new ArrayList<>();
+    private List<MeetingRequestEntity> participants = new ArrayList<>();
 
     public MeetingEntity(PostMeetingRequestDto dto) {
         this.title = dto.getTitle();

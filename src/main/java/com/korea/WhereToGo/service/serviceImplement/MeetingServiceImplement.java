@@ -3,18 +3,9 @@ package com.korea.WhereToGo.service.serviceImplement;
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.GetAllMeetingResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.GetMeetingResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.PostJoinMeetingResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.PostMeetingResponseDto;
-import com.korea.WhereToGo.entity.ImageEntity;
-import com.korea.WhereToGo.entity.MeetingEntity;
-import com.korea.WhereToGo.entity.MeetingUserEntity;
-import com.korea.WhereToGo.entity.UserEntity;
-import com.korea.WhereToGo.repository.ImageRepository;
-import com.korea.WhereToGo.repository.MeetingRepository;
-import com.korea.WhereToGo.repository.MeetingUserRepository;
-import com.korea.WhereToGo.repository.UserRepository;
+import com.korea.WhereToGo.dto.response.meeting.*;
+import com.korea.WhereToGo.entity.*;
+import com.korea.WhereToGo.repository.*;
 import com.korea.WhereToGo.service.MeetingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +21,8 @@ public class MeetingServiceImplement implements MeetingService {
     private final UserRepository userRepository;
     private final MeetingRepository meetingRepository;
     private final ImageRepository imageRepository;
-    private final MeetingUserRepository meetingUserRepository;
+    private final MeetingRequestRepository meetingRequestRepository;
+    private final MeetingUsersRepository meetingUsersRepository;
 
     @Override
     public ResponseEntity<? super GetMeetingResponseDto> getMeeting(Long meetingId) {
@@ -50,8 +42,8 @@ public class MeetingServiceImplement implements MeetingService {
     public ResponseEntity<? super PostMeetingResponseDto> postMeeting(PostMeetingRequestDto dto) {
         String nickname = dto.getNickname();
         try {
-//            boolean userEntity = userRepository.existsByNickname(nickname);
-//            if(!userEntity) return PostMeetingResponseDto.notExistUser();
+            boolean userEntity = userRepository.existsByNickname(nickname);
+            if(!userEntity) return PostMeetingResponseDto.notExistUser();
 
             MeetingEntity meetingEntity = new MeetingEntity(dto);
             meetingRepository.save(meetingEntity);
@@ -98,27 +90,68 @@ public class MeetingServiceImplement implements MeetingService {
             UserEntity userEntity = userRepository.findByNickname(nickname);
             if (userEntity == null) return PostJoinMeetingResponseDto.notExistUser();
 
-            boolean isUserAlreadyJoined = meetingEntity.getParticipants()
-                    .stream()
-                    .anyMatch(mu -> mu.getUser().getId().equals(userEntity.getId()));
+            boolean alreadyRequested = meetingRequestRepository.existsByMeetingAndUser(meetingEntity, userEntity);
+            if (alreadyRequested) {
+                return PostJoinMeetingResponseDto.alreadyRequested();
+            }
 
-            if (isUserAlreadyJoined) return PostJoinMeetingResponseDto.alreadyJoined();
+            MeetingRequestEntity meetingRequestEntity = new MeetingRequestEntity();
+            meetingRequestEntity.setMeeting(meetingEntity);
+            meetingRequestEntity.setUser(userEntity);
+            meetingRequestEntity.setRequestDate(LocalDateTime.now());
+            meetingRequestEntity.setStatus("PENDING");
 
-
-            MeetingUserEntity meetingUserEntity = new MeetingUserEntity();
-            meetingUserEntity.setMeeting(meetingEntity);
-            meetingUserEntity.setUser(userEntity);
-            meetingUserEntity.setUserNickname(userEntity.getNickname());
-            meetingUserEntity.setJoinDate(LocalDateTime.now());
-
-            meetingEntity.getParticipants().add(meetingUserEntity);
-
-            meetingRepository.save(meetingEntity);
+            meetingRequestRepository.save(meetingRequestEntity);
 
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseDto.databaseError();
         }
         return PostJoinMeetingResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PostResponseToJoinResponseDto> respondToJoinRequest(Long requestId, boolean isAccepted) {
+        try {
+            MeetingRequestEntity meetingRequest = meetingRequestRepository.findById(requestId).orElse(null);
+            if (meetingRequest == null) return PostResponseToJoinResponseDto.notExistRequest();
+
+
+            if (isAccepted) {
+                meetingRequest.setStatus("ACCEPTED");
+
+                MeetingUsersEntity meetingUserEntity = new MeetingUsersEntity();
+                meetingUserEntity.setMeeting(meetingRequest.getMeeting());
+                meetingUserEntity.setUser(meetingRequest.getUser());
+                meetingUserEntity.setUserNickname(meetingRequest.getUser().getNickname());
+                meetingUserEntity.setJoinDate(LocalDateTime.now());
+
+                meetingUsersRepository.save(meetingUserEntity);
+            } else {
+                meetingRequest.setStatus("REJECTED");
+            }
+
+            meetingRequestRepository.save(meetingRequest);
+            meetingRequestRepository.delete(meetingRequest);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PostResponseToJoinResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetMeetingRequestsResponseDto> getMeetingRequests(Long meetingId) {
+        List<MeetingRequestEntity> requests = new ArrayList<>();
+        try {
+
+            requests = meetingRequestRepository.findByMeeting_MeetingId(meetingId);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetMeetingRequestsResponseDto.success(requests);
     }
 }

@@ -28,4 +28,6 @@ public class ChatMessageEntity {
     private String message;
 
     private LocalDateTime timestamp;
+
+    private boolean readByReceiver;
 }
