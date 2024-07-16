@@ -13,15 +13,15 @@ import java.util.List;
 @Getter
 public class GetChatRoomResponseDto extends ResponseDto {
 
-    List<ChatRoomEntity> chatRooms;
+    List<ChatRoomEntity> chatRoomList;
 
-    public GetChatRoomResponseDto(List<ChatRoomEntity> chatRooms){
+    public GetChatRoomResponseDto(List<ChatRoomEntity> chatRoomList){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.chatRooms = chatRooms;
+        this.chatRoomList = chatRoomList;
     }
 
-    public static ResponseEntity<? super GetChatRoomResponseDto> success(List<ChatRoomEntity> chatRooms){
-        GetChatRoomResponseDto response = new GetChatRoomResponseDto(chatRooms);
+    public static ResponseEntity<? super GetChatRoomResponseDto> success(List<ChatRoomEntity> chatRoomList){
+        GetChatRoomResponseDto response = new GetChatRoomResponseDto(chatRoomList);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
