@@ -29,14 +29,17 @@ public class MeetingEntity {
     private String content;
     private String userNickname;
 
-    @OneToOne(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ImageEntity imageList;
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImageEntity> imageList = new ArrayList<>();
 
     @CreatedDate
     private LocalDateTime createDate;
     @LastModifiedDate
     private LocalDateTime modifyDate;
     private int maxParticipants;
+    private List<String> tags = new ArrayList<>();
+    private List<String> areas = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
     private List<MeetingRequestEntity> participants = new ArrayList<>();
@@ -47,6 +50,8 @@ public class MeetingEntity {
         this.content = dto.getContent();
         this.userNickname = dto.getNickname();
         this.maxParticipants = dto.getMaxParticipants();
+        this.tags = dto.getTags();
+        this.areas = dto.getAreas();
         this.createDate = LocalDateTime.now();
     }
 }
