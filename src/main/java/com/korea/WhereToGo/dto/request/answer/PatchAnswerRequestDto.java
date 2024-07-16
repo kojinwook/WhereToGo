@@ -17,6 +17,4 @@ public class PatchAnswerRequestDto {
     private String nickname;
     @NotNull
     private Long questionId;
-
-
 }
