@@ -28,7 +28,6 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
-    private final List<String> EXCLUDE_URLS = List.of("/api/v1/map/search");
     @Override
     protected  void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
