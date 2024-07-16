@@ -48,14 +48,15 @@ public class MeetingServiceImplement implements MeetingService {
             MeetingEntity meetingEntity = new MeetingEntity(dto);
             meetingRepository.save(meetingEntity);
 
-            String meetingImageUrl = dto.getImageUrl();
-            ImageEntity imageEntity = new ImageEntity();
-            imageEntity.setImage(meetingImageUrl);
-            imageEntity.setMeeting(meetingEntity);
-            imageRepository.save(imageEntity);
+            List<String> meetingImageUrl = dto.getImageList();
+            List<ImageEntity> imageEntities = new ArrayList<>();
 
-            meetingEntity.setImageList(imageEntity);
-            meetingRepository.save(meetingEntity);
+            for (String image : meetingImageUrl) {
+                ImageEntity imageEntity = new ImageEntity(image, meetingEntity);
+                imageEntity.setMeeting(meetingEntity);
+                imageEntities.add(imageEntity);
+            }
+            imageRepository.saveAll(imageEntities);
 
         } catch (Exception e) {
             e.printStackTrace();

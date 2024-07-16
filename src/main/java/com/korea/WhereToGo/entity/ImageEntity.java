@@ -22,7 +22,7 @@ public class ImageEntity {
     private String contentId;
     private String image;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "meeting_id")
     private MeetingEntity meeting;
@@ -53,6 +53,11 @@ public class ImageEntity {
         this.image = image;
         this.review = review;
         this.userId = userId;
+    }
+
+    public ImageEntity(String image, MeetingEntity meeting) {
+        this.image = image;
+        this.meeting = meeting;
     }
 
      public Long getReviewId() {

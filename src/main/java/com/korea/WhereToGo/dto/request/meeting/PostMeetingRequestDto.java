@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,7 +20,11 @@ public class PostMeetingRequestDto {
     @NotBlank
     private String nickname;
 
-    private String imageUrl;
+    private List<String> imageList;
 
     private int maxParticipants;
+
+    private List<String> tags;
+
+    private List<String> areas;
 }
