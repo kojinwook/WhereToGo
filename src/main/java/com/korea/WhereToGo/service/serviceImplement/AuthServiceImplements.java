@@ -137,10 +137,15 @@ public class AuthServiceImplements implements AuthService {
     @Override
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
         String token = null;
+        boolean infiniteExpiration = false;
         try{
             String userId = dto.getUserId();
             UserEntity userEntity = userRepository.findByUserId(userId);
             if(userEntity == null) return SignInResponseDto.SignInFail();
+
+            if (userEntity.getRole().equals("ROLE_ADMIN")) {
+                infiniteExpiration = true;
+            }
 
             String password = dto.getPassword();
             String encodePassword = userEntity.getPassword();
@@ -153,7 +158,7 @@ public class AuthServiceImplements implements AuthService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return SignInResponseDto.success(token);
+        return SignInResponseDto.success(token, infiniteExpiration);
     }
 
     @Override

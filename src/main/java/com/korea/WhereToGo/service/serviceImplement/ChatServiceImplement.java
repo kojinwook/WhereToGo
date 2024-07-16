@@ -1,13 +1,16 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
+import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.chat.PostChatMessageRequestDto;
 import com.korea.WhereToGo.dto.request.chat.PostChatRoomRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.chat.*;
 import com.korea.WhereToGo.entity.ChatMessageEntity;
 import com.korea.WhereToGo.entity.ChatRoomEntity;
+import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.repository.ChatMessageRepository;
 import com.korea.WhereToGo.repository.ChatRoomRepository;
+import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class ChatServiceImplement implements ChatService {
     private final SimpMessagingTemplate messagingTemplate;
     public final ChatRoomRepository chatRoomRepository;
     public final ChatMessageRepository chatMessageRepository;
+    public final UserRepository userRepository;
 
     @Override
     public ResponseEntity<? super PostChatMessageResponseDto> postChatMessage(PostChatMessageRequestDto dto) {
@@ -79,17 +84,19 @@ public class ChatServiceImplement implements ChatService {
 
     @Override
     public ResponseEntity<? super PostChatRoomResponseDto> postChatRoom(PostChatRoomRequestDto dto) {
-        String roomName = dto.getRoomName();
-        String nickname = dto.getNickname();
-        String creatorNickname = dto.getCreatorNickname();
-        String creatorProfileImage = dto.getCreatorProfileImage();
         ChatRoomEntity chatRoom = new ChatRoomEntity();
         Long roomId = null;
         try {
-            chatRoom.setRoomName(roomName);
-            chatRoom.setNickname(nickname);
-            chatRoom.setCreatorNickname(creatorNickname);
-            chatRoom.setCreatorProfileImage(creatorProfileImage);
+            Optional<ChatRoomEntity> existingChatRoom = chatRoomRepository.findByNicknameAndCreatorNickname(dto.getNickname(), dto.getCreatorNickname());
+            if (existingChatRoom.isPresent()) {
+                roomId = existingChatRoom.get().getRoomId();
+                return PostChatRoomResponseDto.success(roomId);
+            }
+
+            chatRoom.setRoomName(dto.getRoomName());
+            chatRoom.setUserId(dto.getUserId());
+            chatRoom.setNickname(dto.getNickname());
+            chatRoom.setCreatorNickname(dto.getCreatorNickname());
             chatRoomRepository.save(chatRoom);
 
             roomId = chatRoom.getRoomId();
@@ -128,17 +135,42 @@ public class ChatServiceImplement implements ChatService {
         return GetSavedMessageResponseDto.success(message);
     }
 
-    @Override
-    public ResponseEntity<? super GetChatRoomResponseDto> getChatRoom(String nickname) {
-        List<ChatRoomEntity> chatRooms = new ArrayList<>();
+    public ResponseEntity<? super GetChatRoomResponseDto> getUserChatRooms(String nickname) {
+        List<ChatRoomEntity> chatRoomList = new ArrayList<>();
         try {
-            chatRooms = chatRoomRepository.findByNickname(nickname);
-            if (chatRooms == null) return GetChatRoomResponseDto.notExistChatRoom();
+            chatRoomList = chatRoomRepository.findByNicknameOrCreatorNickname(nickname, nickname);
+            if (chatRoomList == null || chatRoomList.isEmpty()) {
+                return GetChatRoomResponseDto.notExistChatRoom();
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetChatRoomResponseDto.success(chatRoomList);
+    }
+
+    @Override
+    public ResponseEntity<? super GetRoomUsersResponseDto> getRoomUsers(Long roomId) {
+        List<UserDto> users = new ArrayList<>();
+        try {
+            ChatRoomEntity chatRoom = chatRoomRepository.findByRoomId(roomId);
+            if (chatRoom == null) return GetRoomUsersResponseDto.notExistChatRoom();
+
+            UserEntity user1 = userRepository.findByNickname(chatRoom.getNickname());
+            UserEntity user2 = userRepository.findByNickname(chatRoom.getCreatorNickname());
+
+            if (user1 != null) {
+                users.add(new UserDto(user1.getUserId(), user1.getNickname(), user1.getProfileImage()));
+            }
+            if (user2 != null) {
+                users.add(new UserDto(user2.getUserId(), user2.getNickname(), user2.getProfileImage()));
+            }
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetChatRoomResponseDto.success(chatRooms);
+        return GetRoomUsersResponseDto.success(users);
     }
+
 }

@@ -5,32 +5,20 @@ import com.korea.WhereToGo.common.ResponseMessage;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.entity.MeetingEntity;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
-@RequiredArgsConstructor
 public class GetMeetingResponseDto extends ResponseDto {
-    private Long meetingId;
-    private String userId;
-    private String title;
-    private String introduction;
-    private String content;
-    private String meetingImage;
+    private MeetingEntity meeting;
 
-    private GetMeetingResponseDto(MeetingEntity meetingEntity) {
+    private GetMeetingResponseDto(MeetingEntity meeting) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.meetingId = meetingEntity.getId();
-//        this.userId = meetingEntity.getUserId();
-        this.title = meetingEntity.getTitle();
-        this.introduction = meetingEntity.getIntroduction();
-        this.content = meetingEntity.getContent();
-//        this.meetingImage = meetingEntity.getMeetingImage();
+        this.meeting = meeting;
     }
 
-    public  static ResponseEntity<GetMeetingResponseDto> success(MeetingEntity meetingEntity){
-        GetMeetingResponseDto responseDto = new GetMeetingResponseDto(meetingEntity);
+    public  static ResponseEntity<GetMeetingResponseDto> success(MeetingEntity meeting){
+        GetMeetingResponseDto responseDto = new GetMeetingResponseDto(meeting);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
