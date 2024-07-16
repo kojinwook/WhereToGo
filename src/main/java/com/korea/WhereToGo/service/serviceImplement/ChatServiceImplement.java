@@ -44,6 +44,7 @@ public class ChatServiceImplement implements ChatService {
             message.setSender(dto.getSender());
             message.setMessage(dto.getMessage());
             message.setTimestamp(LocalDateTime.now());
+            message.setReadByReceiver(false);
             chatMessageRepository.save(message);
 
             messagingTemplate.convertAndSend("/topic/chat/" + dto.getRoomId(), new GetChatMessageResponseDto(message));
@@ -57,16 +58,17 @@ public class ChatServiceImplement implements ChatService {
 
     @Override
     public ResponseEntity<? super GetChatMessageResponseDto> getChatMessage(Long messageId) {
-        ChatMessageEntity message = new ChatMessageEntity();
         try {
-            message = chatMessageRepository.findByMessageId(messageId);
-            if (message == null) return GetChatMessageResponseDto.notExistChatMessage();
+            ChatMessageEntity message = chatMessageRepository.findByMessageId(messageId);
+            if (message == null) {
+                return GetChatMessageResponseDto.notExistChatMessage();
+            }
+            return GetChatMessageResponseDto.success(message);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetChatMessageResponseDto.success(message);
     }
 
     @Override
@@ -124,7 +126,7 @@ public class ChatServiceImplement implements ChatService {
     @Override
     public ResponseEntity<? super GetSavedMessageResponseDto> getSavedMessage(String messageKey) {
         ChatMessageEntity message = new ChatMessageEntity();
-        try{
+        try {
             message = chatMessageRepository.findByMessageKey(messageKey);
             if (message == null) return GetSavedMessageResponseDto.notExistChatMessage();
 
@@ -138,10 +140,11 @@ public class ChatServiceImplement implements ChatService {
     public ResponseEntity<? super GetChatRoomResponseDto> getUserChatRooms(String nickname) {
         List<ChatRoomEntity> chatRoomList = new ArrayList<>();
         try {
+            UserEntity userEntity = userRepository.findByNickname(nickname);
+            if (userEntity == null) return GetChatRoomResponseDto.notExistUser();
+
             chatRoomList = chatRoomRepository.findByNicknameOrCreatorNickname(nickname, nickname);
-            if (chatRoomList == null || chatRoomList.isEmpty()) {
-                return GetChatRoomResponseDto.notExistChatRoom();
-            }
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
@@ -173,4 +176,21 @@ public class ChatServiceImplement implements ChatService {
         return GetRoomUsersResponseDto.success(users);
     }
 
+    @Override
+    public ResponseEntity<? super UpdateReadStatusResponseDto> updateReadStatus(Long messageId) {
+        try {
+            ChatMessageEntity message = chatMessageRepository.findByMessageId(messageId);
+            if (message == null) {
+                return GetChatMessageResponseDto.notExistChatMessage(); // 존재하지 않는 메시지 처리
+            }
+
+            message.setReadByReceiver(true);
+            chatMessageRepository.save(message);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return UpdateReadStatusResponseDto.success();
+    }
 }

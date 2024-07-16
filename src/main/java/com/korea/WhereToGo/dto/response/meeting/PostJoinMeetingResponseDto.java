@@ -29,8 +29,8 @@ public class PostJoinMeetingResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 
-    public static ResponseEntity<ResponseDto> alreadyJoined(){
-        ResponseDto responseBody = new ResponseDto(ResponseCode.ALREADY_JOINED, ResponseMessage.ALREADY_JOINED);
+    public static ResponseEntity<ResponseDto> alreadyRequested(){
+        ResponseDto responseBody = new ResponseDto(ResponseCode.ALREADY_REQUESTED, ResponseMessage.ALREADY_REQUESTED);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
 }

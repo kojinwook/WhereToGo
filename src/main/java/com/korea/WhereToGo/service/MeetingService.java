@@ -2,10 +2,7 @@ package com.korea.WhereToGo.service;
 
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
-import com.korea.WhereToGo.dto.response.meeting.GetAllMeetingResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.GetMeetingResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.PostJoinMeetingResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.PostMeetingResponseDto;
+import com.korea.WhereToGo.dto.response.meeting.*;
 import org.springframework.http.ResponseEntity;
 
 public interface MeetingService {
@@ -13,4 +10,6 @@ public interface MeetingService {
     ResponseEntity<? super PostMeetingResponseDto> postMeeting(PostMeetingRequestDto dto);
     ResponseEntity<? super GetAllMeetingResponseDto> getAllMeeting();
     ResponseEntity<? super PostJoinMeetingResponseDto> postJoinMeeting(PostJoinMeetingRequestDto dto);
+    ResponseEntity<? super PostResponseToJoinResponseDto> respondToJoinRequest(Long requestId, boolean status);
+    ResponseEntity<? super GetMeetingRequestsResponseDto> getMeetingRequests(Long meetingId);
 }

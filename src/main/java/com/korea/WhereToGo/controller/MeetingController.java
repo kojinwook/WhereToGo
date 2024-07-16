@@ -2,10 +2,7 @@ package com.korea.WhereToGo.controller;
 
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
-import com.korea.WhereToGo.dto.response.meeting.GetAllMeetingResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.GetMeetingResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.PostJoinMeetingResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.PostMeetingResponseDto;
+import com.korea.WhereToGo.dto.response.meeting.*;
 import com.korea.WhereToGo.service.MeetingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +43,23 @@ public class MeetingController {
             @RequestBody @Valid PostJoinMeetingRequestDto requestBody
     ) {
         ResponseEntity<? super PostJoinMeetingResponseDto> response = meetingService.postJoinMeeting(requestBody);
+        return response;
+    }
+
+    @PostMapping("/response")
+    public ResponseEntity<? super PostResponseToJoinResponseDto> respondToJoinRequest(
+            @RequestParam Long requestId,
+            @RequestParam boolean status
+    ) {
+        ResponseEntity<? super PostResponseToJoinResponseDto> response = meetingService.respondToJoinRequest(requestId, status);
+        return response;
+    }
+
+    @GetMapping("/requests")
+    public ResponseEntity<? super GetMeetingRequestsResponseDto> getMeetingRequests(
+            @RequestParam Long meetingId
+    ) {
+        ResponseEntity<? super GetMeetingRequestsResponseDto> response = meetingService.getMeetingRequests(meetingId);
         return response;
     }
 }
