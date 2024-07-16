@@ -1,21 +1,29 @@
 package com.korea.WhereToGo.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korea.WhereToGo.dto.request.chat.PostChatMessageRequestDto;
+import com.korea.WhereToGo.dto.request.chat.PostTypingStatusRequestDto;
 import com.korea.WhereToGo.dto.response.chat.GetChatMessageListResponseDto;
 import com.korea.WhereToGo.dto.response.chat.GetChatMessageResponseDto;
 import com.korea.WhereToGo.dto.response.chat.GetSavedMessageResponseDto;
 import com.korea.WhereToGo.entity.ChatMessageEntity;
+import com.korea.WhereToGo.entity.UserStatus;
 import com.korea.WhereToGo.repository.ChatMessageRepository;
 import com.korea.WhereToGo.service.ChatService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -66,24 +74,68 @@ public class WebSocketController {
         }
     }
 
+    @MessageMapping("/chat/{roomId}/typing")
+    public void typingStatus(@DestinationVariable String roomId, @Payload PostTypingStatusRequestDto dto) {
+        messagingTemplate.convertAndSend("/topic/typing." + roomId, dto);
+    }
 
-//    @MessageMapping("/chat/{roomId}/read")
-//    public void updateReadStatus(@Payload Long messageId) {
-//        try {
-//            ResponseEntity<? super UpdateReadStatusResponseDto> response = chatService.updateReadStatus(messageId);
-//            if (response.getBody() == null || !response.getStatusCode().is2xxSuccessful()) {
-//                System.out.println("Failed to update read status for message: " + messageId);
-//                return;
-//            }
-//
-//            // ChatMessageEntity 정보 추출
-//            GetChatMessageResponseDto chatMessageResponse = (GetChatMessageResponseDto) response.getBody();
-//            ChatMessageEntity updatedMessage = chatMessageResponse.getChatMessage();
-//
-//            // 채팅 메시지를 해당 토픽으로 전송
-//            messagingTemplate.convertAndSend("/topic/chat." + updatedMessage.getRoomId(), updatedMessage);
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//    }
+    // WebSocket 연결 시
+    @MessageMapping("/chat/status")
+    public void afterConnectionEstablished() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        messagingTemplate.convertAndSend("/topic/status", new UserStatus(username, true));
+    }
+
+    // WebSocket 연결 종료 시
+    @MessageMapping("/chat/disconnect")
+    public void afterConnectionClosed() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        messagingTemplate.convertAndSend("/topic/status", new UserStatus(username, false));
+    }
+
+    @MessageMapping("/chat/{roomId}/enter")
+    public void userEnterRoom(@DestinationVariable String roomId, @Payload String jsonAuthentication) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            AuthenticationMessage authenticationMessage = objectMapper.readValue(jsonAuthentication, AuthenticationMessage.class);
+
+            String username = authenticationMessage.getUsername();
+
+            String messageToSend = username + " has entered the chat room.";
+            messagingTemplate.convertAndSend("/topic/enter." + roomId, messageToSend);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @MessageMapping("/chat/{roomId}/leave")
+    public void userLeaveRoom(@DestinationVariable String roomId, @Payload String jsonAuthentication) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            AuthenticationMessage authenticationMessage = objectMapper.readValue(jsonAuthentication, AuthenticationMessage.class);
+
+            String username = authenticationMessage.getUsername();
+            List<ChatMessageEntity> chatMessages = chatMessageRepository.findByRoomId(authenticationMessage.getRoomId());
+
+            for (ChatMessageEntity chatMessage : chatMessages) {
+                chatMessage.setReadByReceiver(true);
+                chatMessageRepository.save(chatMessage);
+            }
+
+            String messageToSend = username + " has left the chat room.";
+            messagingTemplate.convertAndSend("/topic/leave." + roomId, messageToSend);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class AuthenticationMessage {
+        private Long roomId;
+        private String username;
+        private String message;
+    }
 }
