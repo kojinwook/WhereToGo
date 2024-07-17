@@ -5,14 +5,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-@Service
-public class EmailService {
-    private final JavaMailSender javaMailSender;
+import lombok.RequiredArgsConstructor;
 
-    @Autowired
-    public EmailService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
+@Service
+@RequiredArgsConstructor
+public class EmailService {
+    
+    private final JavaMailSender javaMailSender;
 
     public void sendEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();

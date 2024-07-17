@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
+import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
@@ -154,5 +155,24 @@ public class MeetingServiceImplement implements MeetingService {
             return ResponseDto.databaseError();
         }
         return GetMeetingRequestsResponseDto.success(requests);
+    }
+
+    @Override
+    public ResponseEntity<? super PatchMeetingResponseDto> patchMeeting(PatchMeetingRequestDto dto, Long meetingId, String userId) {
+        try {
+            MeetingEntity meetingEntity = meetingRepository.findByMeetingId(meetingId);
+            if (meetingEntity == null) return PatchMeetingResponseDto.notExistMeeting();
+
+            UserEntity user = userRepository.findByUserId(userId);
+            if (!user.getUserId().equals(userId)) return PatchMeetingResponseDto.noPermission();
+
+            meetingEntity.patchMeeting(dto);
+            meetingRepository.save(meetingEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PatchMeetingResponseDto.success();
     }
 }
