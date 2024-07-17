@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import jakarta.persistence.*;
@@ -31,6 +32,7 @@ public class MeetingEntity {
     private String userNickname;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<ImageEntity> imageList = new ArrayList<>();
 
     @CreatedDate
@@ -42,10 +44,12 @@ public class MeetingEntity {
     private List<String> areas = new ArrayList<>();
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<MeetingBoardEntity> meetingBoardList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<MeetingRequestEntity> participants = new ArrayList<>();
 
     public MeetingEntity(PostMeetingRequestDto dto) {

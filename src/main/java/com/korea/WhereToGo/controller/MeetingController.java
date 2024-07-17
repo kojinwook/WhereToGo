@@ -86,4 +86,13 @@ public class MeetingController {
         ResponseEntity<? super PostMeetingBoardResponseDto> response = meetingService.postMeetingBoard(requestBody, meetingId, userId);
         return response;
     }
+
+    @GetMapping("/board/list/{meetingId}")
+    public ResponseEntity<? super GetMeetingBoardListResponseDto> getMeetingBoardList(
+            @PathVariable("meetingId") Long meetingId
+    ) {
+        ResponseEntity<? super GetMeetingBoardListResponseDto> response = meetingService.getMeetingBoardList(meetingId);
+
+        return response;
+    }
 }
