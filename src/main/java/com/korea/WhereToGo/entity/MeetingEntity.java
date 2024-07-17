@@ -41,6 +41,9 @@ public class MeetingEntity {
     private List<String> tags = new ArrayList<>();
     private List<String> areas = new ArrayList<>();
 
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+    private List<MeetingBoardEntity> meetingBoardList = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
     private List<MeetingRequestEntity> participants = new ArrayList<>();

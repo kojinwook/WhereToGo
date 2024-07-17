@@ -2,6 +2,7 @@ package com.korea.WhereToGo.service.serviceImplement;
 
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
+import com.korea.WhereToGo.dto.request.meeting.PostMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.meeting.*;
@@ -24,6 +25,7 @@ public class MeetingServiceImplement implements MeetingService {
     private final ImageRepository imageRepository;
     private final MeetingRequestRepository meetingRequestRepository;
     private final MeetingUsersRepository meetingUsersRepository;
+    private final MeetingBoardRepository meetingBoardRepository;
 
     @Override
     public ResponseEntity<? super GetMeetingResponseDto> getMeeting(Long meetingId) {
@@ -40,7 +42,7 @@ public class MeetingServiceImplement implements MeetingService {
     }
 
     @Override
-    public ResponseEntity<? super PostMeetingResponseDto> postMeeting(PostMeetingRequestDto dto) {
+    public ResponseEntity<? super PostMeetingResponseDto> postMeeting(PostMeetingRequestDto dto, String userId) {
         String nickname = dto.getNickname();
         try {
             boolean userEntity = userRepository.existsByNickname(nickname);
@@ -53,7 +55,7 @@ public class MeetingServiceImplement implements MeetingService {
             List<ImageEntity> imageEntities = new ArrayList<>();
 
             for (String image : meetingImageUrl) {
-                ImageEntity imageEntity = new ImageEntity(image, meetingEntity);
+                ImageEntity imageEntity = new ImageEntity(image, meetingEntity, userId);
                 imageEntity.setMeeting(meetingEntity);
                 imageEntities.add(imageEntity);
             }
@@ -174,5 +176,33 @@ public class MeetingServiceImplement implements MeetingService {
             return ResponseDto.databaseError();
         }
         return PatchMeetingResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PostMeetingBoardResponseDto> postMeetingBoard(PostMeetingBoardRequestDto dto, Long meetingId, String userId) {
+        try {
+            MeetingEntity meetingEntity = meetingRepository.findByMeetingId(meetingId);
+            if (meetingEntity == null) return PostMeetingBoardResponseDto.notExistMeeting();
+
+            MeetingBoardEntity meetingBoardEntity = new MeetingBoardEntity(dto);
+            meetingBoardEntity.setMeeting(meetingEntity);
+
+            meetingBoardRepository.save(meetingBoardEntity);
+
+            List<String> imageList = dto.getImageList();
+            List<ImageEntity> imageEntities = new ArrayList<>();
+
+            for (String image : imageList) {
+                ImageEntity imageEntity = new ImageEntity(image, meetingBoardEntity, userId);
+                imageEntity.setMeetingBoard(meetingBoardEntity);
+                imageEntities.add(imageEntity);
+            }
+            imageRepository.saveAll(imageEntities);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PostMeetingBoardResponseDto.success();
     }
 }
