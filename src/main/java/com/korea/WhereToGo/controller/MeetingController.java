@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.controller;
 
+import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import com.korea.WhereToGo.dto.response.meeting.*;
@@ -7,6 +8,7 @@ import com.korea.WhereToGo.service.MeetingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -60,6 +62,16 @@ public class MeetingController {
             @RequestParam Long meetingId
     ) {
         ResponseEntity<? super GetMeetingRequestsResponseDto> response = meetingService.getMeetingRequests(meetingId);
+        return response;
+    }
+
+    @PatchMapping("/update/{meetingId}")
+    public ResponseEntity<? super PatchMeetingResponseDto> patchMeeting(
+            @RequestBody @Valid PatchMeetingRequestDto requestBody,
+            @PathVariable("meetingId") Long meetingId,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super PatchMeetingResponseDto> response = meetingService.patchMeeting(requestBody, meetingId, userId);
         return response;
     }
 }

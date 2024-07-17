@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.entity;
 
+import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -53,5 +54,15 @@ public class MeetingEntity {
         this.tags = dto.getTags();
         this.areas = dto.getAreas();
         this.createDate = LocalDateTime.now();
+    }
+
+    public void patchMeeting(PatchMeetingRequestDto dto){
+        this.title = dto.getTitle();
+        this.introduction = dto.getIntroduction();
+        this.content = dto.getContent();
+        this.maxParticipants = dto.getMaxParticipants();
+        this.tags = dto.getTags();
+        this.areas = dto.getAreas();
+        this.modifyDate = LocalDateTime.now();
     }
 }
