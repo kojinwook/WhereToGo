@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.korea.WhereToGo.dto.request.festival.PatchFestivalRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -57,6 +58,7 @@ public class FestivalEntity {
     private List<String> tags = new ArrayList<>();
 
     @OneToMany(mappedBy = "festival", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<FavoriteEntity> likes = new ArrayList<>();
 
     public void patchFestival(PatchFestivalRequestDto dto){

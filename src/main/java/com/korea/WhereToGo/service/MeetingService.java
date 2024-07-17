@@ -16,4 +16,5 @@ public interface MeetingService {
     ResponseEntity<? super GetMeetingRequestsResponseDto> getMeetingRequests(Long meetingId);
     ResponseEntity<? super PatchMeetingResponseDto> patchMeeting(PatchMeetingRequestDto dto, Long meetingId, String userId);
     ResponseEntity<? super PostMeetingBoardResponseDto> postMeetingBoard(PostMeetingBoardRequestDto dto, Long meetingId, String userId);
+    ResponseEntity<? super GetMeetingBoardListResponseDto> getMeetingBoardList(Long meetingId);
 }

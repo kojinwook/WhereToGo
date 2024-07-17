@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.korea.WhereToGo.dto.request.auth.AdminSignUpRequestDto;
 import com.korea.WhereToGo.dto.request.auth.SignUpRequestDto;
 import jakarta.persistence.*;
@@ -47,7 +48,11 @@ public class UserEntity {
     private List<String> likeBoardList;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<FavoriteEntity> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MeetingBoardEntity> meetingBoardList = new ArrayList<>();
 
     public UserEntity(SignUpRequestDto dto) {
         this.userId = dto.getUserId();

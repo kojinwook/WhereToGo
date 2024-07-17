@@ -195,9 +195,7 @@ public class FestivalServiceImplements implements FestivalService {
     @Override
     public ResponseEntity<? super GetFestivalResponseDto> getFestival(String contentId) {
         FestivalEntity festivalEntity = new FestivalEntity();
-
         try {
-
             festivalEntity = festivalRepository.findByContentId(contentId);
             if (festivalEntity == null) return GetFestivalResponseDto.notExistFestival();
 
