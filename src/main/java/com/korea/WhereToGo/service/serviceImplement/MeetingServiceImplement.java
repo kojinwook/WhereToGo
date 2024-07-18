@@ -186,7 +186,6 @@ public class MeetingServiceImplement implements MeetingService {
         List<MeetingUserDto> meetingUserDtos = new ArrayList<>();
         try {
             meetingUsersList = meetingUsersRepository.findByMeeting_MeetingId(meetingId);
-            if (meetingUsersList.isEmpty()) return GetJoinMeetingMemberResponseDto.notExistMeeting();
 
             meetingEntity = meetingRepository.findByMeetingId(meetingId);
             if (meetingEntity == null) return GetJoinMeetingMemberResponseDto.notExistMeeting();
