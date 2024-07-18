@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
+import com.korea.WhereToGo.dto.MeetingUserDto;
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -127,6 +129,7 @@ public class MeetingServiceImplement implements MeetingService {
                 meetingUserEntity.setMeeting(meetingRequest.getMeeting());
                 meetingUserEntity.setUser(meetingRequest.getUser());
                 meetingUserEntity.setUserNickname(meetingRequest.getUser().getNickname());
+                meetingUserEntity.setUserProfileImage(meetingRequest.getUser().getProfileImage());
                 meetingUserEntity.setJoinDate(LocalDateTime.now());
 
                 meetingUsersRepository.save(meetingUserEntity);
@@ -175,6 +178,34 @@ public class MeetingServiceImplement implements MeetingService {
             return ResponseDto.databaseError();
         }
         return PatchMeetingResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetJoinMeetingMemberResponseDto> getJoinMeetingMember(Long meetingId) {
+        List<MeetingUsersEntity> meetingUsersList = new ArrayList<>();
+        MeetingEntity meetingEntity = new MeetingEntity();
+        List<MeetingUserDto> meetingUserDtos = new ArrayList<>();
+        try {
+            meetingUsersList = meetingUsersRepository.findByMeeting_MeetingId(meetingId);
+            if (meetingUsersList.isEmpty()) return GetJoinMeetingMemberResponseDto.notExistMeeting();
+
+            meetingEntity = meetingRepository.findByMeetingId(meetingId);
+            if (meetingEntity == null) return GetJoinMeetingMemberResponseDto.notExistMeeting();
+
+            meetingUserDtos = meetingUsersList.stream()
+                    .map(user -> new MeetingUserDto(
+                            user.getMeetingUsersId(),
+                            user.getUserNickname(),
+                            user.getUserProfileImage(),
+                            user.getJoinDate()
+                    ))
+                    .collect(Collectors.toList());
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetJoinMeetingMemberResponseDto.success(meetingUserDtos);
     }
 
     @Override

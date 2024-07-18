@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class MeetingUsersEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long requestId;
+    private Long meetingUsersId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
@@ -29,6 +29,9 @@ public class MeetingUsersEntity {
 
     @Column(name = "user_nickname")
     private String userNickname;
+
+    @Column(name = "user_profile_image")
+    private String userProfileImage;
 
     @Column(name = "join_date")
     private LocalDateTime joinDate;

@@ -84,4 +84,12 @@ public class MeetingController {
         ResponseEntity<? super DeleteMeetingResponseDto> response = meetingService.deleteMeeting(meetingId, userId);
         return response;
     }
+
+    @GetMapping("/members")
+    public ResponseEntity<? super GetJoinMeetingMemberResponseDto> getJoinMeetingMember(
+            @RequestParam Long meetingId
+    ) {
+        ResponseEntity<? super GetJoinMeetingMemberResponseDto> response = meetingService.getJoinMeetingMember(meetingId);
+        return response;
+    }
 }
