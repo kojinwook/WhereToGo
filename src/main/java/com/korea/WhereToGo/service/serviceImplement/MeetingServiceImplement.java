@@ -74,7 +74,6 @@ public class MeetingServiceImplement implements MeetingService {
         List<MeetingEntity> meetingList = new ArrayList<>();
         try {
             meetingList = meetingRepository.findAll();
-            if (meetingList.isEmpty()) return GetAllMeetingResponseDto.notExistMeeting();
 
         } catch (Exception exception) {
             exception.printStackTrace();
