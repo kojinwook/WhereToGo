@@ -2,10 +2,7 @@ package com.korea.WhereToGo.controller;
 
 import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
-import com.korea.WhereToGo.dto.response.meeting.board.GetMeetingBoardListResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.GetMeetingBoardResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.PatchMeetingBoardResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.PostMeetingBoardResponseDto;
+import com.korea.WhereToGo.dto.response.meeting.board.*;
 import com.korea.WhereToGo.service.MeetingBoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +51,15 @@ public class MeetingBoardController {
             @PathVariable("meetingBoardId") Long boardId
     ) {
         ResponseEntity<? super GetMeetingBoardResponseDto> response = meetingBoardService.getMeetingBoard(boardId);
+        return response;
+    }
+
+    @DeleteMapping("/delete/{meetingBoardId}")
+    public ResponseEntity<? super DeleteMeetingBoardResponseDto> deleteMeetingBoard(
+            @PathVariable("meetingBoardId") Long boardId,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super DeleteMeetingBoardResponseDto> response = meetingBoardService.deleteMeetingBoard(boardId, userId);
         return response;
     }
 }
