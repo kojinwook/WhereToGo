@@ -224,7 +224,6 @@ public class MeetingServiceImplement implements MeetingService {
                     UserDto userDto = new UserDto(userEntity);
                     meetingBoardEntity.setUserDto(userDto);
                 }
-
                 meetingBoardEntityList.add(meetingBoardEntity);
             }
 
@@ -234,5 +233,29 @@ public class MeetingServiceImplement implements MeetingService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteMeetingResponseDto> deleteMeeting(Long meetingId, String userId) {
+
+        try {
+            List<ImageEntity> imageEntities = imageRepository.findByMeeting_MeetingId(meetingId);
+            imageRepository.deleteAll(imageEntities);
+
+            MeetingEntity meetingEntity = meetingRepository.findByMeetingId(meetingId);
+            if (meetingEntity == null) return DeleteMeetingResponseDto.notExistMeeting();
+
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return DeleteMeetingResponseDto.noPermission();
+
+            if (!meetingEntity.getUserNickname().equals(userEntity.getNickname())) return DeleteMeetingResponseDto.noPermission();
+
+            meetingRepository.delete(meetingEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return DeleteMeetingResponseDto.success();
     }
 }

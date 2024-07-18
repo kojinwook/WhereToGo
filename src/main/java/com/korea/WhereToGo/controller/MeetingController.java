@@ -95,4 +95,13 @@ public class MeetingController {
 
         return response;
     }
+
+    @DeleteMapping("/delete/{meetingId}")
+    public ResponseEntity<? super DeleteMeetingResponseDto> deleteMeeting(
+            @PathVariable("meetingId") Long meetingId,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super DeleteMeetingResponseDto> response = meetingService.deleteMeeting(meetingId, userId);
+        return response;
+    }
 }
