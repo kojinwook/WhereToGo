@@ -4,10 +4,7 @@ import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.GetMeetingBoardListResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.GetMeetingBoardResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.PatchMeetingBoardResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.PostMeetingBoardResponseDto;
+import com.korea.WhereToGo.dto.response.meeting.board.*;
 import com.korea.WhereToGo.entity.ImageEntity;
 import com.korea.WhereToGo.entity.MeetingBoardEntity;
 import com.korea.WhereToGo.entity.MeetingEntity;
@@ -129,5 +126,25 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
             return ResponseDto.databaseError();
         }
         return GetMeetingBoardResponseDto.success(meetingBoardEntity);
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteMeetingBoardResponseDto> deleteMeetingBoard(Long boardId, String userId) {
+        try {
+            MeetingBoardEntity meetingBoardEntity = meetingBoardRepository.findByMeetingBoardId(boardId);
+            if (meetingBoardEntity == null) return DeleteMeetingBoardResponseDto.notExistMeetingBoard();
+
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return DeleteMeetingBoardResponseDto.notExistUser();
+
+            if (!meetingBoardEntity.getUser().getUserId().equals(userId)) return DeleteMeetingBoardResponseDto.noPermission();
+
+            meetingBoardRepository.delete(meetingBoardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return DeleteMeetingBoardResponseDto.success();
     }
 }
