@@ -1,4 +1,4 @@
-package com.korea.WhereToGo.dto.request.meeting;
+package com.korea.WhereToGo.dto.request.meeting.board;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostMeetingBoardRequestDto {
+public class PatchMeetingBoardRequestDto {
     private String title;
     private String content;
     private String address;

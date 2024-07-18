@@ -2,7 +2,6 @@ package com.korea.WhereToGo.service.serviceImplement;
 
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
-import com.korea.WhereToGo.dto.request.meeting.PostMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.meeting.*;
@@ -179,30 +178,26 @@ public class MeetingServiceImplement implements MeetingService {
     }
 
     @Override
-    public ResponseEntity<? super PostMeetingBoardResponseDto> postMeetingBoard(PostMeetingBoardRequestDto dto, Long meetingId, String userId) {
+    public ResponseEntity<? super DeleteMeetingResponseDto> deleteMeeting(Long meetingId, String userId) {
+
         try {
+            List<ImageEntity> imageEntities = imageRepository.findByMeeting_MeetingId(meetingId);
+            imageRepository.deleteAll(imageEntities);
+
             MeetingEntity meetingEntity = meetingRepository.findByMeetingId(meetingId);
-            if (meetingEntity == null) return PostMeetingBoardResponseDto.notExistMeeting();
+            if (meetingEntity == null) return DeleteMeetingResponseDto.notExistMeeting();
 
-            MeetingBoardEntity meetingBoardEntity = new MeetingBoardEntity(dto);
-            meetingBoardEntity.setMeeting(meetingEntity);
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return DeleteMeetingResponseDto.noPermission();
 
-            meetingBoardRepository.save(meetingBoardEntity);
+            if (!meetingEntity.getUserNickname().equals(userEntity.getNickname())) return DeleteMeetingResponseDto.noPermission();
 
-            List<String> imageList = dto.getImageList();
-            List<ImageEntity> imageEntities = new ArrayList<>();
-
-            for (String image : imageList) {
-                ImageEntity imageEntity = new ImageEntity(image, meetingBoardEntity, userId);
-                imageEntity.setMeetingBoard(meetingBoardEntity);
-                imageEntities.add(imageEntity);
-            }
-            imageRepository.saveAll(imageEntities);
+            meetingRepository.delete(meetingEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return PostMeetingBoardResponseDto.success();
+        return DeleteMeetingResponseDto.success();
     }
 }

@@ -147,9 +147,6 @@ public class ReviewServiceImplement implements ReviewService {
     @Override
     public ResponseEntity<? super GetAllReviewResponseDto> getAllReview(String contentId) {
         List<ReviewEntity> reviews = reviewRepository.findByContentId(contentId);
-        if (reviews.isEmpty()) {
-            return GetAllReviewResponseDto.notExistReview();
-        }
 
         List<Long> reviewIds = reviews.stream().map(ReviewEntity::getReviewId).collect(Collectors.toList());
         List<ImageEntity> imageEntities = imageRepository.findByReviewReviewIdIn(reviewIds);
