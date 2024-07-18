@@ -1,9 +1,7 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
-import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
-import com.korea.WhereToGo.dto.request.meeting.PostMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.meeting.*;
@@ -177,62 +175,6 @@ public class MeetingServiceImplement implements MeetingService {
             return ResponseDto.databaseError();
         }
         return PatchMeetingResponseDto.success();
-    }
-
-    @Override
-    public ResponseEntity<? super PostMeetingBoardResponseDto> postMeetingBoard(PostMeetingBoardRequestDto dto, Long meetingId, String userId) {
-        try {
-            MeetingEntity meetingEntity = meetingRepository.findByMeetingId(meetingId);
-            if (meetingEntity == null) return PostMeetingBoardResponseDto.notExistMeeting();
-
-            UserEntity userEntity = userRepository.findByUserId(userId);
-            if (userEntity == null) return PostMeetingBoardResponseDto.notExistUser();
-            UserDto userDto = new UserDto(userEntity);
-
-            MeetingBoardEntity meetingBoardEntity = new MeetingBoardEntity(dto);
-            meetingBoardEntity.setMeeting(meetingEntity);
-            meetingBoardEntity.setUserDto(userDto);
-
-            meetingBoardRepository.save(meetingBoardEntity);
-
-            List<String> imageList = dto.getImageList();
-            List<ImageEntity> imageEntities = new ArrayList<>();
-
-            for (String image : imageList) {
-                ImageEntity imageEntity = new ImageEntity(image, meetingBoardEntity, userId);
-                imageEntity.setMeetingBoard(meetingBoardEntity);
-                imageEntities.add(imageEntity);
-            }
-            imageRepository.saveAll(imageEntities);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-        return PostMeetingBoardResponseDto.success();
-    }
-
-    @Override
-    public ResponseEntity<? super GetMeetingBoardListResponseDto> getMeetingBoardList(Long meetingId) {
-        try {
-            List<MeetingBoardEntity> meetingBoardList = meetingBoardRepository.findByMeeting_MeetingId(meetingId);
-
-            List<MeetingBoardEntity> meetingBoardEntityList = new ArrayList<>();
-            for (MeetingBoardEntity meetingBoardEntity : meetingBoardList) {
-                UserEntity userEntity = meetingBoardEntity.getUser();
-                if (userEntity != null) {
-                    UserDto userDto = new UserDto(userEntity);
-                    meetingBoardEntity.setUserDto(userDto);
-                }
-                meetingBoardEntityList.add(meetingBoardEntity);
-            }
-
-            return GetMeetingBoardListResponseDto.success(meetingBoardEntityList);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
     }
 
     @Override

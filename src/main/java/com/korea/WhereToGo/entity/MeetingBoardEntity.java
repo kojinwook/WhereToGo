@@ -3,7 +3,8 @@ package com.korea.WhereToGo.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.korea.WhereToGo.dto.UserDto;
-import com.korea.WhereToGo.dto.request.meeting.PostMeetingBoardRequestDto;
+import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
+import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -53,5 +54,12 @@ public class MeetingBoardEntity {
         this.content = dto.getContent();
         this.address = dto.getAddress();
         this.createDate = LocalDateTime.now();
+    }
+
+    public void patchMeetingBoard(PatchMeetingBoardRequestDto dto){
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.address = dto.getAddress();
+        this.modifyDate = LocalDateTime.now();
     }
 }
