@@ -1,4 +1,4 @@
-package com.korea.WhereToGo.dto.response.meeting;
+package com.korea.WhereToGo.dto.response.meeting.board;
 
 import com.korea.WhereToGo.common.ResponseCode;
 import com.korea.WhereToGo.common.ResponseMessage;

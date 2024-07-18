@@ -27,4 +27,5 @@ public interface ResponseMessage {
     String FALSE_AGREEMENT = "False_Agreement";
     String ALREADY_REQUESTED = "Already_Requested";
     String NOT_EXISTED_JOIN_REQUEST = "Not_Existed_Join_Request";
+    String NOT_EXISTED_MEETING_BOARD = "Not_Existed_Meeting_Board";
 }

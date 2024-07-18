@@ -2,7 +2,6 @@ package com.korea.WhereToGo.controller;
 
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
-import com.korea.WhereToGo.dto.request.meeting.PostMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import com.korea.WhereToGo.dto.response.meeting.*;
 import com.korea.WhereToGo.service.MeetingService;
@@ -74,25 +73,6 @@ public class MeetingController {
             @AuthenticationPrincipal String userId
     ) {
         ResponseEntity<? super PatchMeetingResponseDto> response = meetingService.patchMeeting(requestBody, meetingId, userId);
-        return response;
-    }
-
-    @PostMapping("/board/{meetingId}")
-    public ResponseEntity<? super PostMeetingBoardResponseDto> postMeetingBoard(
-            @RequestBody @Valid PostMeetingBoardRequestDto requestBody,
-            @PathVariable("meetingId") Long meetingId,
-            @AuthenticationPrincipal String userId
-    ) {
-        ResponseEntity<? super PostMeetingBoardResponseDto> response = meetingService.postMeetingBoard(requestBody, meetingId, userId);
-        return response;
-    }
-
-    @GetMapping("/board/list/{meetingId}")
-    public ResponseEntity<? super GetMeetingBoardListResponseDto> getMeetingBoardList(
-            @PathVariable("meetingId") Long meetingId
-    ) {
-        ResponseEntity<? super GetMeetingBoardListResponseDto> response = meetingService.getMeetingBoardList(meetingId);
-
         return response;
     }
 
