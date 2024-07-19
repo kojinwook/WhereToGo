@@ -24,7 +24,7 @@ import java.util.List;
 public class NoticeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long noticeId;gi
+    private Long noticeId;
 
     private String title;
 
