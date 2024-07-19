@@ -4,7 +4,9 @@ import com.korea.WhereToGo.dto.request.notice.PatchNoticeRequestDto;
 import com.korea.WhereToGo.dto.request.notice.PostNoticeRequestDto;
 import com.korea.WhereToGo.dto.response.notice.*;
 import com.korea.WhereToGo.dto.response.ResponseDto;
+import com.korea.WhereToGo.entity.ImageEntity;
 import com.korea.WhereToGo.entity.NoticeEntity;
+import com.korea.WhereToGo.repository.ImageRepository;
 import com.korea.WhereToGo.repository.NoticeRepository;
 import com.korea.WhereToGo.service.NoticeService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoticeServiceImplement implements NoticeService {
     private final NoticeRepository noticeRepository;
+    private final ImageRepository imageRepository;
     @Override
     public ResponseEntity<? super GetNoticeResponseDto> getNotice(Long NoticeId){
         NoticeEntity noticeEntity = null;
@@ -31,10 +34,21 @@ public class NoticeServiceImplement implements NoticeService {
         return GetNoticeResponseDto.success(noticeEntity);
     }
     @Override
-    public ResponseEntity<? super PostNoticeResponseDto> postNotice(PostNoticeRequestDto dto){
+    public ResponseEntity<? super PostNoticeResponseDto> postNotice(PostNoticeRequestDto dto, String userId){
         try{
             NoticeEntity noticeEntity = new NoticeEntity(dto);
             noticeRepository.save(noticeEntity);
+
+            List<String> imageList = dto.getImageList();
+            List<ImageEntity> imageEntities = new ArrayList<>();
+
+            for (String image : imageList) {
+                ImageEntity imageEntity = new ImageEntity(image, noticeEntity, userId);
+                imageEntity.setNotice(noticeEntity);
+                imageEntities.add(imageEntity);
+            }
+            imageRepository.saveAll(imageEntities);
+
         } catch(Exception exception){
             exception.printStackTrace();
             return ResponseDto.databaseError();

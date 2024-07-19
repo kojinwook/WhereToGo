@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface NoticeService {
     ResponseEntity<? super GetNoticeResponseDto> getNotice(Long NoticeId);
-    ResponseEntity<? super PostNoticeResponseDto> postNotice(PostNoticeRequestDto dto);
+    ResponseEntity<? super PostNoticeResponseDto> postNotice(PostNoticeRequestDto dto, String userId);
     ResponseEntity<? super PatchNoticeResponseDto> patchNotice(PatchNoticeRequestDto dto, Long NoticeId);
     ResponseEntity<? super DeleteNoticeResponseDto> deleteNotice(Long NoticeId);
     ResponseEntity<? super GetAllNoticeResponseDto> getAllNotice();

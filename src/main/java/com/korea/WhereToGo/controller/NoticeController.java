@@ -19,9 +19,10 @@ public class NoticeController {
 
     @PostMapping("")
     public ResponseEntity<? super PostNoticeResponseDto> postNotice(
-            @RequestBody @Valid PostNoticeRequestDto requestBody
+            @RequestBody @Valid PostNoticeRequestDto requestBody,
+            @AuthenticationPrincipal String userId
     ) {
-        ResponseEntity<? super PostNoticeResponseDto> response = noticeService.postNotice(requestBody);
+        ResponseEntity<? super PostNoticeResponseDto> response = noticeService.postNotice(requestBody, userId);
         return response;
     }
 
