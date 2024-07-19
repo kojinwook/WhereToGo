@@ -12,21 +12,11 @@ import java.time.LocalDateTime;
 
 @Getter
 public class GetNoticeResponseDto extends ResponseDto {
-    private Long noticeId;
-    private String title;
-    private String content;
-    private String image;
-    private LocalDateTime createDateTime;
-    private LocalDateTime modifyDateTime;
+    private NoticeEntity notice;
 
-    public GetNoticeResponseDto(NoticeEntity noticeEntity){
+    public GetNoticeResponseDto(NoticeEntity notice){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.noticeId= noticeEntity.getNoticeId();
-        this.title= noticeEntity.getTitle();
-        this.content= noticeEntity.getContent();
-        this.image = noticeEntity.getImage();
-        this.createDateTime=noticeEntity.getCreateDateTime();
-        this.modifyDateTime = noticeEntity.getModifyDataTime();
+        this.notice = notice;
     }
 
     public static ResponseEntity<GetNoticeResponseDto> success(NoticeEntity noticeEntity){

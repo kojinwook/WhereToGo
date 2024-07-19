@@ -16,6 +16,9 @@ public class PatchNoticeRequestDto {
     @NotBlank
     private String content;
 
+    @NotBlank
+    private String nickname;
+
     private String image;
 
 
