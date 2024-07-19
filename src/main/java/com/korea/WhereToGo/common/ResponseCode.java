@@ -29,5 +29,6 @@ public interface ResponseCode {
     String FALSE_AGREEMENT = "FA";
     String ALREADY_REQUESTED = "AR";
     String NOT_EXISTED_JOIN_REQUEST = "NEJR";
+    String NOT_EXISTED_MEETING_BOARD = "NMB";
 
 }

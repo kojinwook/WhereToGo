@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.dto;
 
+import com.korea.WhereToGo.entity.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,5 +15,11 @@ public class UserDto {
         this.userId = userId;
         this.nickname = nickname;
         this.profileImage = profileImage;
+    }
+
+    public UserDto(UserEntity user) {
+        this.userId = user.getUserId();
+        this.nickname = user.getNickname();
+        this.profileImage = user.getProfileImage();
     }
 }

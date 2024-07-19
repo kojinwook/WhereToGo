@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
+import com.korea.WhereToGo.dto.MeetingUserDto;
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostJoinMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class MeetingServiceImplement implements MeetingService {
     private final ImageRepository imageRepository;
     private final MeetingRequestRepository meetingRequestRepository;
     private final MeetingUsersRepository meetingUsersRepository;
+    private final MeetingBoardRepository meetingBoardRepository;
 
     @Override
     public ResponseEntity<? super GetMeetingResponseDto> getMeeting(Long meetingId) {
@@ -40,7 +43,7 @@ public class MeetingServiceImplement implements MeetingService {
     }
 
     @Override
-    public ResponseEntity<? super PostMeetingResponseDto> postMeeting(PostMeetingRequestDto dto) {
+    public ResponseEntity<? super PostMeetingResponseDto> postMeeting(PostMeetingRequestDto dto, String userId) {
         String nickname = dto.getNickname();
         try {
             boolean userEntity = userRepository.existsByNickname(nickname);
@@ -53,7 +56,7 @@ public class MeetingServiceImplement implements MeetingService {
             List<ImageEntity> imageEntities = new ArrayList<>();
 
             for (String image : meetingImageUrl) {
-                ImageEntity imageEntity = new ImageEntity(image, meetingEntity);
+                ImageEntity imageEntity = new ImageEntity(image, meetingEntity, userId);
                 imageEntity.setMeeting(meetingEntity);
                 imageEntities.add(imageEntity);
             }
@@ -71,7 +74,6 @@ public class MeetingServiceImplement implements MeetingService {
         List<MeetingEntity> meetingList = new ArrayList<>();
         try {
             meetingList = meetingRepository.findAll();
-            if (meetingList.isEmpty()) return GetAllMeetingResponseDto.notExistMeeting();
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -126,6 +128,7 @@ public class MeetingServiceImplement implements MeetingService {
                 meetingUserEntity.setMeeting(meetingRequest.getMeeting());
                 meetingUserEntity.setUser(meetingRequest.getUser());
                 meetingUserEntity.setUserNickname(meetingRequest.getUser().getNickname());
+                meetingUserEntity.setUserProfileImage(meetingRequest.getUser().getProfileImage());
                 meetingUserEntity.setJoinDate(LocalDateTime.now());
 
                 meetingUsersRepository.save(meetingUserEntity);
@@ -174,5 +177,56 @@ public class MeetingServiceImplement implements MeetingService {
             return ResponseDto.databaseError();
         }
         return PatchMeetingResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetJoinMeetingMemberResponseDto> getJoinMeetingMember(Long meetingId) {
+        List<MeetingUsersEntity> meetingUsersList = new ArrayList<>();
+        MeetingEntity meetingEntity = new MeetingEntity();
+        List<MeetingUserDto> meetingUserDtos = new ArrayList<>();
+        try {
+            meetingUsersList = meetingUsersRepository.findByMeeting_MeetingId(meetingId);
+
+            meetingEntity = meetingRepository.findByMeetingId(meetingId);
+            if (meetingEntity == null) return GetJoinMeetingMemberResponseDto.notExistMeeting();
+
+            meetingUserDtos = meetingUsersList.stream()
+                    .map(user -> new MeetingUserDto(
+                            user.getMeetingUsersId(),
+                            user.getUserNickname(),
+                            user.getUserProfileImage(),
+                            user.getJoinDate()
+                    ))
+                    .collect(Collectors.toList());
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetJoinMeetingMemberResponseDto.success(meetingUserDtos);
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteMeetingResponseDto> deleteMeeting(Long meetingId, String userId) {
+
+        try {
+            List<ImageEntity> imageEntities = imageRepository.findByMeeting_MeetingId(meetingId);
+            imageRepository.deleteAll(imageEntities);
+
+            MeetingEntity meetingEntity = meetingRepository.findByMeetingId(meetingId);
+            if (meetingEntity == null) return DeleteMeetingResponseDto.notExistMeeting();
+
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return DeleteMeetingResponseDto.noPermission();
+
+            if (!meetingEntity.getUserNickname().equals(userEntity.getNickname())) return DeleteMeetingResponseDto.noPermission();
+
+            meetingRepository.delete(meetingEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return DeleteMeetingResponseDto.success();
     }
 }

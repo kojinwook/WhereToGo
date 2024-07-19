@@ -20,9 +20,10 @@ public class MeetingController {
 
     @PostMapping("/write")
     public ResponseEntity<? super PostMeetingResponseDto> postMeeting(
-            @RequestBody @Valid PostMeetingRequestDto requestBody
+            @RequestBody @Valid PostMeetingRequestDto requestBody,
+            @AuthenticationPrincipal String userId
     ) {
-        ResponseEntity<? super PostMeetingResponseDto> response = meetingService.postMeeting(requestBody);
+        ResponseEntity<? super PostMeetingResponseDto> response = meetingService.postMeeting(requestBody, userId);
         return response;
     }
 
@@ -72,6 +73,23 @@ public class MeetingController {
             @AuthenticationPrincipal String userId
     ) {
         ResponseEntity<? super PatchMeetingResponseDto> response = meetingService.patchMeeting(requestBody, meetingId, userId);
+        return response;
+    }
+
+    @DeleteMapping("/delete/{meetingId}")
+    public ResponseEntity<? super DeleteMeetingResponseDto> deleteMeeting(
+            @PathVariable("meetingId") Long meetingId,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super DeleteMeetingResponseDto> response = meetingService.deleteMeeting(meetingId, userId);
+        return response;
+    }
+
+    @GetMapping("/members")
+    public ResponseEntity<? super GetJoinMeetingMemberResponseDto> getJoinMeetingMember(
+            @RequestParam Long meetingId
+    ) {
+        ResponseEntity<? super GetJoinMeetingMemberResponseDto> response = meetingService.getJoinMeetingMember(meetingId);
         return response;
     }
 }

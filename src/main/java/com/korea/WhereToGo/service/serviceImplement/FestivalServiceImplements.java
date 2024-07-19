@@ -6,8 +6,10 @@ import com.korea.WhereToGo.dto.request.festival.PatchFestivalRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.festival.*;
 import com.korea.WhereToGo.entity.FestivalEntity;
+import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
 import com.korea.WhereToGo.repository.ReviewRepository;
+import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.FestivalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -31,6 +33,7 @@ public class FestivalServiceImplements implements FestivalService {
     private static final String API_URL = "https://apis.data.go.kr/B551011/KorService1/searchFestival1";
     private static final String SERVICE_KEY = "jyrjzPCPy2ZunbDHSvrxNcr1Jl%2BWUNSidHGaWa0ZtEPPpAeF%2FCXZlJu9%2FInRdrmT7z29NspgBpW3ebiR3qBQ%2FQ%3D%3D";
     private final FestivalRepository festivalRepository;
+    private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
 
     @Override
@@ -180,8 +183,8 @@ public class FestivalServiceImplements implements FestivalService {
             FestivalEntity festivalEntity = festivalRepository.findByContentId(contentId);
             if (festivalEntity == null) return PatchFestivalResponseDto.notExistFestival();
 
-//            UserEntity userEntity = userRepository.findByUserId(userId);
-//            if (userEntity == null || !userEntity.getRole().equals("ADMIN")) return PatchFestivalResponseDto.notPermission();
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null || !userEntity.getRole().equals("ADMIN")) return PatchFestivalResponseDto.notPermission();
 
             festivalEntity.patchFestival(dto);
             festivalRepository.save(festivalEntity);
@@ -195,9 +198,7 @@ public class FestivalServiceImplements implements FestivalService {
     @Override
     public ResponseEntity<? super GetFestivalResponseDto> getFestival(String contentId) {
         FestivalEntity festivalEntity = new FestivalEntity();
-
         try {
-
             festivalEntity = festivalRepository.findByContentId(contentId);
             if (festivalEntity == null) return GetFestivalResponseDto.notExistFestival();
 

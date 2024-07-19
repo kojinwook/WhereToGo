@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import jakarta.persistence.*;
@@ -31,6 +32,7 @@ public class MeetingEntity {
     private String userNickname;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<ImageEntity> imageList = new ArrayList<>();
 
     @CreatedDate
@@ -38,11 +40,17 @@ public class MeetingEntity {
     @LastModifiedDate
     private LocalDateTime modifyDate;
     private int maxParticipants;
-    private List<String> tags = new ArrayList<>();
-    private List<String> areas = new ArrayList<>();
-
+    @ElementCollection
+    private List<String> categories;
+    @ElementCollection
+    private List<String> locations;
 
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<MeetingBoardEntity> meetingBoardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<MeetingRequestEntity> participants = new ArrayList<>();
 
     public MeetingEntity(PostMeetingRequestDto dto) {
@@ -51,8 +59,8 @@ public class MeetingEntity {
         this.content = dto.getContent();
         this.userNickname = dto.getNickname();
         this.maxParticipants = dto.getMaxParticipants();
-        this.tags = dto.getTags();
-        this.areas = dto.getAreas();
+        this.categories = dto.getTags();
+        this.locations = dto.getAreas();
         this.createDate = LocalDateTime.now();
     }
 
@@ -61,8 +69,8 @@ public class MeetingEntity {
         this.introduction = dto.getIntroduction();
         this.content = dto.getContent();
         this.maxParticipants = dto.getMaxParticipants();
-        this.tags = dto.getTags();
-        this.areas = dto.getAreas();
+        this.categories = dto.getTags();
+        this.locations = dto.getAreas();
         this.modifyDate = LocalDateTime.now();
     }
 }
