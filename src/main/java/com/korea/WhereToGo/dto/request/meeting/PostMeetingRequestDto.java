@@ -26,5 +26,7 @@ public class PostMeetingRequestDto {
 
     private List<String> tags;
 
-    private List<String> areas;
+    private List<String> categories;
+
+    private List<String> locations;
 }
