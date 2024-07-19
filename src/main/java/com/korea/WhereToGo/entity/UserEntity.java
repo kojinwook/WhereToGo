@@ -54,6 +54,10 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MeetingBoardEntity> meetingBoardList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<MeetingBoardReplyEntity> meetingBoardAnswer = new ArrayList<>();
+
     public UserEntity(SignUpRequestDto dto) {
         this.userId = dto.getUserId();
         this.password = dto.getPassword();

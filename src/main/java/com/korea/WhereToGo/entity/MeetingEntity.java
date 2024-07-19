@@ -41,6 +41,8 @@ public class MeetingEntity {
     private LocalDateTime modifyDate;
     private int maxParticipants;
     @ElementCollection
+    private List<String> tags;
+    @ElementCollection
     private List<String> categories;
     @ElementCollection
     private List<String> locations;
@@ -59,8 +61,9 @@ public class MeetingEntity {
         this.content = dto.getContent();
         this.userNickname = dto.getNickname();
         this.maxParticipants = dto.getMaxParticipants();
-        this.categories = dto.getTags();
-        this.locations = dto.getAreas();
+        this.tags = dto.getTags();
+        this.categories = dto.getCategories();
+        this.locations = dto.getLocations();
         this.createDate = LocalDateTime.now();
     }
 
@@ -69,8 +72,9 @@ public class MeetingEntity {
         this.introduction = dto.getIntroduction();
         this.content = dto.getContent();
         this.maxParticipants = dto.getMaxParticipants();
+        this.tags = dto.getTags();
         this.categories = dto.getTags();
-        this.locations = dto.getAreas();
+        this.locations = dto.getLocations();
         this.modifyDate = LocalDateTime.now();
     }
 }
