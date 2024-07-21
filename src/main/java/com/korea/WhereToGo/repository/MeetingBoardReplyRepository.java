@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface MeetingBoardReplyRepository extends JpaRepository<MeetingBoardReplyEntity, Long> {
     List<MeetingBoardReplyEntity> findByMeetingBoardId(Long meetingBoardId);
+    MeetingBoardReplyEntity findByReplyId(Long replyId);
 }

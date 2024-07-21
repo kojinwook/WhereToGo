@@ -3,14 +3,12 @@ package com.korea.WhereToGo.service.serviceImplement;
 import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
-import com.korea.WhereToGo.dto.request.meeting.board.reply.PostBoardReplyRequestDto;
-import com.korea.WhereToGo.dto.request.meeting.board.reply.PostReplyToReplyRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.meeting.board.*;
-import com.korea.WhereToGo.dto.response.meeting.board.reply.GetBoardReplyListResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.reply.PostBoardReplyResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.reply.PostReplyToReplyResponseDto;
-import com.korea.WhereToGo.entity.*;
+import com.korea.WhereToGo.entity.ImageEntity;
+import com.korea.WhereToGo.entity.MeetingBoardEntity;
+import com.korea.WhereToGo.entity.MeetingEntity;
+import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.repository.*;
 import com.korea.WhereToGo.service.MeetingBoardService;
 import lombok.RequiredArgsConstructor;
@@ -151,74 +149,5 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
         return DeleteMeetingBoardResponseDto.success();
     }
 
-    @Override
-    public ResponseEntity<? super PostBoardReplyResponseDto> postBoardReply(PostBoardReplyRequestDto dto, String userId) {
-        try {
-            MeetingBoardReplyEntity comment = new MeetingBoardReplyEntity(dto);
-            UserEntity user = userRepository.findByUserId(userId);
-            comment.setUser(user);
 
-            meetingBoardReplyRepository.save(comment);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-        return PostBoardReplyResponseDto.success();
-    }
-
-    @Override
-    public ResponseEntity<? super GetBoardReplyListResponseDto> getBoardReplyList(Long boardId) {
-        List<MeetingBoardReplyEntity> replyList = new ArrayList<>();
-        try {
-            replyList = meetingBoardReplyRepository.findByMeetingBoardId(boardId);
-
-            for (MeetingBoardReplyEntity meetingBoardReplyEntity : replyList) {
-                UserEntity userEntity1 = meetingBoardReplyEntity.getUser();
-                if (userEntity1 != null) {
-                    UserDto userDto = new UserDto(userEntity1);
-                    meetingBoardReplyEntity.setUserDto(userDto);
-                }
-                for (MeetingReplyToReplyEntity replyReply : meetingBoardReplyEntity.getReplies()) {
-                    UserEntity userEntity2 = replyReply.getUser();
-                    if (userEntity1 != null) {
-                        UserDto userDto = new UserDto(userEntity2);
-                        meetingBoardReplyEntity.setUserDto(userDto);
-                    }
-                }
-            }
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-        return GetBoardReplyListResponseDto.success(replyList);
-    }
-
-    private void setUserDtoToReplyReply(MeetingBoardReplyEntity meetingBoardReplyEntity) {
-        for(MeetingReplyToReplyEntity reply : meetingBoardReplyEntity.getReplies()) {
-            UserDto userDto = new UserDto(reply.getUser());
-            reply.setUserDto(userDto);
-        }
-        setUserDtoToReplyReply(meetingBoardReplyEntity);
-    }
-
-    @Override
-    public ResponseEntity<? super PostReplyToReplyResponseDto> postReplyToReply(PostReplyToReplyRequestDto dto, String userId) {
-        try {
-            MeetingBoardReplyEntity parentComment = meetingBoardReplyRepository.findById(dto.getParentCommentId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid parent comment ID"));
-
-            MeetingReplyToReplyEntity reply = new MeetingReplyToReplyEntity(dto, parentComment);
-            UserEntity user = userRepository.findByUserId(userId);
-            reply.setUser(user);
-
-            meetingReplyToReplyRepository.save(reply);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-        return PostReplyToReplyResponseDto.success();
-    }
 }

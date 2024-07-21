@@ -92,4 +92,12 @@ public class MeetingController {
         ResponseEntity<? super GetJoinMeetingMemberResponseDto> response = meetingService.getJoinMeetingMember(meetingId);
         return response;
     }
+
+    @GetMapping("/my-meeting-list")
+    public ResponseEntity<? super GetUserMeetingResponseDto> getMyMeeting(
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super GetUserMeetingResponseDto> response = meetingService.getUserMeeting(userId);
+        return response;
+    }
 }

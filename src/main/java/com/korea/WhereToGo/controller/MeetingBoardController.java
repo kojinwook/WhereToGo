@@ -2,12 +2,7 @@ package com.korea.WhereToGo.controller;
 
 import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
-import com.korea.WhereToGo.dto.request.meeting.board.reply.PostBoardReplyRequestDto;
-import com.korea.WhereToGo.dto.request.meeting.board.reply.PostReplyToReplyRequestDto;
 import com.korea.WhereToGo.dto.response.meeting.board.*;
-import com.korea.WhereToGo.dto.response.meeting.board.reply.GetBoardReplyListResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.reply.PostBoardReplyResponseDto;
-import com.korea.WhereToGo.dto.response.meeting.board.reply.PostReplyToReplyResponseDto;
 import com.korea.WhereToGo.service.MeetingBoardService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -65,32 +60,6 @@ public class MeetingBoardController {
             @AuthenticationPrincipal String userId
     ) {
         ResponseEntity<? super DeleteMeetingBoardResponseDto> response = meetingBoardService.deleteMeetingBoard(boardId, userId);
-        return response;
-    }
-
-    @PostMapping("/reply")
-    public ResponseEntity<? super PostBoardReplyResponseDto> postBoardReply(
-            @RequestBody @Valid PostBoardReplyRequestDto requestBody,
-            @AuthenticationPrincipal String userId
-    ) {
-        ResponseEntity<? super PostBoardReplyResponseDto> response = meetingBoardService.postBoardReply(requestBody, userId);
-        return response;
-    }
-
-    @PostMapping("/reply/reply")
-    public ResponseEntity<? super PostReplyToReplyResponseDto> postReplyToReply(
-            @RequestBody @Valid PostReplyToReplyRequestDto requestBody,
-            @AuthenticationPrincipal String userId
-    ) {
-        ResponseEntity<? super PostReplyToReplyResponseDto> response = meetingBoardService.postReplyToReply(requestBody, userId);
-        return response;
-    }
-
-    @GetMapping("/reply/list/{meetingBoardId}")
-    public ResponseEntity<? super GetBoardReplyListResponseDto> getBoardReplyList(
-            @PathVariable("meetingBoardId") Long boardId
-    ) {
-        ResponseEntity<? super GetBoardReplyListResponseDto> response = meetingBoardService.getBoardReplyList(boardId);
         return response;
     }
 }
