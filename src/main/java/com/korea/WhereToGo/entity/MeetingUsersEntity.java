@@ -1,5 +1,8 @@
 package com.korea.WhereToGo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.korea.WhereToGo.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,10 +24,15 @@ public class MeetingUsersEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
+    @JsonIgnore
     private MeetingEntity meeting;
+
+    @Transient
+    private UserDto userDto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private UserEntity user;
 
     @Column(name = "user_nickname")

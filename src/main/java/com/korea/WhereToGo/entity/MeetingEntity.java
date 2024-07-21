@@ -1,6 +1,8 @@
 package com.korea.WhereToGo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.PostMeetingRequestDto;
 import jakarta.persistence.*;
@@ -31,6 +33,14 @@ public class MeetingEntity {
     private String content;
     private String userNickname;
 
+    @Transient
+    private UserDto userDto;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
+    @JsonBackReference
+    private UserEntity creator;
+
     @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<ImageEntity> imageList = new ArrayList<>();
@@ -55,16 +65,21 @@ public class MeetingEntity {
     @JsonManagedReference
     private List<MeetingRequestEntity> participants = new ArrayList<>();
 
-    public MeetingEntity(PostMeetingRequestDto dto) {
+    @ManyToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<MeetingUsersEntity> meetingUsers = new ArrayList<>();
+
+    public MeetingEntity(PostMeetingRequestDto dto, UserEntity creator) {
         this.title = dto.getTitle();
         this.introduction = dto.getIntroduction();
         this.content = dto.getContent();
-        this.userNickname = dto.getNickname();
+//        this.userNickname = dto.getNickname();
         this.maxParticipants = dto.getMaxParticipants();
         this.tags = dto.getTags();
         this.categories = dto.getCategories();
         this.locations = dto.getLocations();
         this.createDate = LocalDateTime.now();
+        this.creator = creator;
     }
 
     public void patchMeeting(PatchMeetingRequestDto dto){
