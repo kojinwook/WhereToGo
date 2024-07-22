@@ -154,17 +154,23 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
     public ResponseEntity<? super GetMeetingImageListResponseDto> getMeetingImageList(Long meetingId) {
         List<ImageEntity> imageEntityList = new ArrayList<>();
 
-
         try {
-            imageEntityList = imageRepository.findByMeeting_MeetingId(meetingId);
+            List<ImageEntity> meetingImages = imageRepository.findByMeeting_MeetingId(meetingId);
+            imageEntityList.addAll(meetingImages);
+
+            List<ImageEntity> meetingBoardImages = imageRepository.findByMeetingBoard_Meeting_MeetingId(meetingId);
+            imageEntityList.addAll(meetingBoardImages);
+
             MeetingEntity meetingEntity = meetingRepository.findByMeetingId(meetingId);
-            if(meetingEntity == null) {
+            if (meetingEntity == null) {
                 return GetMeetingImageListResponseDto.notExistMeeting();
             }
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
         return GetMeetingImageListResponseDto.success(imageEntityList);
     }
+
 }
