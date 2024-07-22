@@ -10,9 +10,4 @@ import lombok.Setter;
 public class WithdrawalUserRequestDto {
     private String userId;
     private String password;
-
-    public WithdrawalUserRequestDto(String userId, String password) {
-        this.userId = userId;
-        this.password = password;
-    }
 }

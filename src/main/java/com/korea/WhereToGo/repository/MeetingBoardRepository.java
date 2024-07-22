@@ -11,4 +11,5 @@ public interface MeetingBoardRepository extends JpaRepository<MeetingBoardEntity
     List<MeetingBoardEntity> findByMeeting_MeetingId(Long meetingId);
     MeetingBoardEntity findByMeetingBoardId(Long boardId);
     List<MeetingBoardEntity> findByUser_UserId(String userId);
+    List<MeetingBoardEntity> findByMeeting_MeetingIdIn(List<Long> meetingIdList);
 }
