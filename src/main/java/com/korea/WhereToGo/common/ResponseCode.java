@@ -30,5 +30,7 @@ public interface ResponseCode {
     String ALREADY_REQUESTED = "AR";
     String NOT_EXISTED_JOIN_REQUEST = "NEJR";
     String NOT_EXISTED_MEETING_BOARD = "NMB";
+    String NOT_EXISTED_BOARD_REPLY = "NBR";
+    String NOT_EXISTED_REPLY_REPLY = "NRR";
 
 }

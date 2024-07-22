@@ -10,10 +10,7 @@ import com.korea.WhereToGo.entity.ImageEntity;
 import com.korea.WhereToGo.entity.MeetingBoardEntity;
 import com.korea.WhereToGo.entity.MeetingEntity;
 import com.korea.WhereToGo.entity.UserEntity;
-import com.korea.WhereToGo.repository.ImageRepository;
-import com.korea.WhereToGo.repository.MeetingBoardRepository;
-import com.korea.WhereToGo.repository.MeetingRepository;
-import com.korea.WhereToGo.repository.UserRepository;
+import com.korea.WhereToGo.repository.*;
 import com.korea.WhereToGo.service.MeetingBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +25,8 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
 
     private final MeetingRepository meetingRepository;
     private final MeetingBoardRepository meetingBoardRepository;
+    private final MeetingBoardReplyRepository meetingBoardReplyRepository;
+    private final MeetingReplyToReplyRepository meetingReplyToReplyRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
@@ -39,11 +38,11 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
 
             UserEntity userEntity = userRepository.findByUserId(userId);
             if (userEntity == null) return PostMeetingBoardResponseDto.notExistUser();
-            UserDto userDto = new UserDto(userEntity);
+//            UserDto userDto = new UserDto(userEntity);
 
             MeetingBoardEntity meetingBoardEntity = new MeetingBoardEntity(dto);
             meetingBoardEntity.setMeeting(meetingEntity);
-            meetingBoardEntity.setUserDto(userDto);
+            meetingBoardEntity.setUser(userEntity);
 
             meetingBoardRepository.save(meetingBoardEntity);
 
@@ -73,7 +72,8 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
             UserEntity userEntity = userRepository.findByUserId(userId);
             if (userEntity == null) return PatchMeetingBoardResponseDto.notExistUser();
 
-            if (!meetingBoardEntity.getUser().getUserId().equals(userId)) return PatchMeetingBoardResponseDto.noPermission();
+            if (!meetingBoardEntity.getUser().getUserId().equals(userId))
+                return PatchMeetingBoardResponseDto.noPermission();
 
             meetingBoardEntity.patchMeetingBoard(dto);
 
@@ -138,7 +138,8 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
             UserEntity userEntity = userRepository.findByUserId(userId);
             if (userEntity == null) return DeleteMeetingBoardResponseDto.notExistUser();
 
-            if (!meetingBoardEntity.getUser().getUserId().equals(userId)) return DeleteMeetingBoardResponseDto.noPermission();
+            if (!meetingBoardEntity.getUser().getUserId().equals(userId))
+                return DeleteMeetingBoardResponseDto.noPermission();
 
             meetingBoardRepository.delete(meetingBoardEntity);
 
@@ -149,6 +150,7 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
         return DeleteMeetingBoardResponseDto.success();
     }
 
+<<<<<<< HEAD
     @Override
     public ResponseEntity<? super GetMeetingImageListResponseDto> getMeetingImageList(Long meetingId) {
         List<ImageEntity> imageEntityList = new ArrayList<>();
@@ -166,4 +168,7 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
         }
         return GetMeetingImageListResponseDto.success(imageEntityList);
     }
+=======
+
+>>>>>>> 3d02c222836967582ecbfb560b51acfb5994d85b
 }

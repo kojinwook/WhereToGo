@@ -1,6 +1,7 @@
 package com.korea.WhereToGo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,6 +43,11 @@ public class ImageEntity {
     @JoinColumn(name = "question_id")
     private QuestionEntity question;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinColumn(name = "notice_id")
+    private NoticeEntity notice;
+
     public ImageEntity(String contentId, String image, String userId){
         this.userId = userId;
         this.contentId = contentId;
@@ -69,6 +75,12 @@ public class ImageEntity {
     public ImageEntity(String image, MeetingBoardEntity meetingBoard, String userId) {
         this.image = image;
         this.meetingBoard = meetingBoard;
+        this.userId = userId;
+    }
+
+    public ImageEntity(String image, NoticeEntity notice, String userId){
+        this.image = image;
+        this.notice = notice;
         this.userId = userId;
     }
 

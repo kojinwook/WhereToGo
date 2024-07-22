@@ -23,9 +23,4 @@ public class GetAllMeetingResponseDto extends ResponseDto {
         GetAllMeetingResponseDto responseDto = new GetAllMeetingResponseDto(meetingList);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
-
-    public static ResponseEntity<ResponseDto> notExistMeeting() {
-        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_MEETING, ResponseMessage.NOT_EXISTED_MEETING);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
-    }
 }

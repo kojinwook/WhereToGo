@@ -52,7 +52,16 @@ public class UserEntity {
     private List<FavoriteEntity> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<MeetingBoardEntity> meetingBoardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<MeetingBoardReplyEntity> meetingBoardAnswer = new ArrayList<>();
+
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<MeetingEntity> meetings;
 
     public UserEntity(SignUpRequestDto dto) {
         this.userId = dto.getUserId();
