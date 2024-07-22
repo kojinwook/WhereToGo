@@ -88,10 +88,10 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
 
     @Override
     public ResponseEntity<? super GetMeetingBoardListResponseDto> getMeetingBoardList(Long meetingId) {
+        List<MeetingBoardEntity> meetingBoardEntityList = new ArrayList<>();
         try {
             List<MeetingBoardEntity> meetingBoardList = meetingBoardRepository.findByMeeting_MeetingId(meetingId);
 
-            List<MeetingBoardEntity> meetingBoardEntityList = new ArrayList<>();
             for (MeetingBoardEntity meetingBoardEntity : meetingBoardList) {
                 UserEntity userEntity = meetingBoardEntity.getUser();
                 if (userEntity != null) {
@@ -100,13 +100,11 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
                 }
                 meetingBoardEntityList.add(meetingBoardEntity);
             }
-
-            return GetMeetingBoardListResponseDto.success(meetingBoardEntityList);
-
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+        return GetMeetingBoardListResponseDto.success(meetingBoardEntityList);
     }
 
     @Override

@@ -12,4 +12,5 @@ public interface FestivalService {
     ResponseEntity<? super GetSearchFestivalListResponseDto> searchFestivalList(String areaCode);
     ResponseEntity<? super PatchFestivalResponseDto> patchFestival(PatchFestivalRequestDto dto, String contentId, String userId);
     ResponseEntity<? super GetFestivalResponseDto> getFestival(String contentId);
+    ResponseEntity<? super GetTop5FestivalListResponseDto> getTop5FestivalList();
 }
