@@ -100,4 +100,11 @@ public class MeetingController {
         ResponseEntity<? super GetUserMeetingResponseDto> response = meetingService.getUserMeeting(userId);
         return response;
     }
+
+    @GetMapping("/5recent-meeting")
+    public ResponseEntity<? super Get5RecentMeetingResponseDto> get5RecentMeeting(
+    ) {
+        ResponseEntity<? super Get5RecentMeetingResponseDto> response = meetingService.get5RecentMeeting();
+        return response;
+    }
 }
