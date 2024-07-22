@@ -2,6 +2,7 @@ package com.korea.WhereToGo.controller;
 
 import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
+import com.korea.WhereToGo.dto.response.meeting.GetMeetingImageListResponseDto;
 import com.korea.WhereToGo.dto.response.meeting.board.*;
 import com.korea.WhereToGo.service.MeetingBoardService;
 import jakarta.validation.Valid;
@@ -68,6 +69,14 @@ public class MeetingBoardController {
             @AuthenticationPrincipal String userId
     ) {
         ResponseEntity<? super DeleteMeetingBoardResponseDto> response = meetingBoardService.deleteMeetingBoard(boardId, userId);
+        return response;
+    }
+
+    @GetMapping("/imageList/{meetingId}")
+    public ResponseEntity<? super GetMeetingImageListResponseDto> getMeetingImageList(
+            @PathVariable("meetingId") Long meetingId
+    ) {
+        ResponseEntity<? super GetMeetingImageListResponseDto> response = meetingBoardService.getMeetingImageList(meetingId);
         return response;
     }
 }
