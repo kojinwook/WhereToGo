@@ -300,4 +300,27 @@ public class MeetingServiceImplement implements MeetingService {
         }
         return DeleteMeetingResponseDto.success();
     }
+
+    @Override
+    public ResponseEntity<? super Get5RecentMeetingResponseDto> get5RecentMeeting() {
+        List<MeetingEntity> meetingList = new ArrayList<>();
+        try {
+            meetingList = meetingRepository.findTop5ByOrderByCreateDateDesc();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return Get5RecentMeetingResponseDto.success(meetingList);
+    }
+
+//    List<MeetingEntity> meetingEntities = new ArrayList<>();
+//            for (MeetingEntity meetingBoardEntity : meetingList) {
+//        UserEntity userEntity = meetingBoardEntity.getCreator();
+//        if (userEntity != null) {
+//            UserDto userDto = new UserDto(userEntity);
+//            meetingBoardEntity.setUserDto(userDto);
+//        }
+//        meetingEntities.add(meetingBoardEntity);
+//    }
 }

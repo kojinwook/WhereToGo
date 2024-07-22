@@ -15,4 +15,5 @@ public interface MeetingService {
     ResponseEntity<? super GetJoinMeetingMemberResponseDto> getJoinMeetingMember(Long meetingId);
     ResponseEntity<? super GetUserMeetingResponseDto> getUserMeeting(String userId);
     ResponseEntity<? super DeleteMeetingResponseDto> deleteMeeting(Long meetingId, String userId);
+    ResponseEntity<? super Get5RecentMeetingResponseDto> get5RecentMeeting();
 }
