@@ -37,7 +37,7 @@ public class ReviewEntity {
     @Column(name = "rate")
     private int rate;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ImageEntity> imageList = new ArrayList<>();
 
     public ReviewEntity(PostReviewRequestDto dto, String contentId) {

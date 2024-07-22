@@ -11,12 +11,12 @@ public class WithdrawalUserResponseDto extends ResponseDto {
 
     private WithdrawalUserResponseDto() {super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);}
 
-    public static ResponseEntity<WithdrawalUserResponseDto> success(){
+    public static ResponseEntity<? super WithdrawalUserResponseDto> success(){
         WithdrawalUserResponseDto result = new WithdrawalUserResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    public ResponseEntity<ResponseDto> notExistedUser() {
+    public static ResponseEntity<ResponseDto> notExistedUser() {
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(result);
     }

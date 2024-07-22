@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class FavoriteEntity {
 
     @ManyToOne
     @JoinColumn(name = "nickname", referencedColumnName = "nickname", nullable = false)
+    @JsonBackReference
     private UserEntity user;
 
     @ManyToOne

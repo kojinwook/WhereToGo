@@ -41,7 +41,7 @@ public class MeetingEntity {
     @JsonBackReference
     private UserEntity creator;
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     private List<ImageEntity> imageList = new ArrayList<>();
 
@@ -49,6 +49,7 @@ public class MeetingEntity {
     private LocalDateTime createDate;
     @LastModifiedDate
     private LocalDateTime modifyDate;
+
     private int maxParticipants;
     @ElementCollection
     private List<String> tags;
@@ -73,7 +74,6 @@ public class MeetingEntity {
         this.title = dto.getTitle();
         this.introduction = dto.getIntroduction();
         this.content = dto.getContent();
-//        this.userNickname = dto.getNickname();
         this.maxParticipants = dto.getMaxParticipants();
         this.tags = dto.getTags();
         this.categories = dto.getCategories();
@@ -91,5 +91,9 @@ public class MeetingEntity {
         this.categories = dto.getTags();
         this.locations = dto.getLocations();
         this.modifyDate = LocalDateTime.now();
+        this.imageList.clear();
+        for (String imageUrl : dto.getImageList()) {
+            this.imageList.add(new ImageEntity(imageUrl, this));
+        }
     }
 }

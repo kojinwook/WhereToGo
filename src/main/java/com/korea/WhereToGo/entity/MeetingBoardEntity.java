@@ -32,6 +32,9 @@ public class MeetingBoardEntity {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
+    @Column(name = "meeting_id", insertable = false, updatable = false)
+    private Long meetingId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
     @JsonBackReference
@@ -45,7 +48,7 @@ public class MeetingBoardEntity {
     @Transient
     private UserDto userDto;
 
-    @OneToMany(mappedBy = "meetingBoard", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "meetingBoard", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     private List<ImageEntity> imageList = new ArrayList<>();
 
@@ -56,10 +59,14 @@ public class MeetingBoardEntity {
         this.createDate = LocalDateTime.now();
     }
 
-    public void patchMeetingBoard(PatchMeetingBoardRequestDto dto){
+    public void patchMeetingBoard(PatchMeetingBoardRequestDto dto, String userId){
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.address = dto.getAddress();
         this.modifyDate = LocalDateTime.now();
+        this.imageList.clear();
+        for (String imageUrl : dto.getImageList()) {
+            this.imageList.add(new ImageEntity(imageUrl, this, userId));
+        }
     }
 }

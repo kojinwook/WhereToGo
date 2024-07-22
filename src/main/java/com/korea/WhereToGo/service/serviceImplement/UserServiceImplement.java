@@ -1,11 +1,13 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
+import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.user.ChangePasswordRequestDto;
 import com.korea.WhereToGo.dto.request.user.PatchNicknameRequestDto;
+import com.korea.WhereToGo.dto.request.user.WithdrawalUserRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.user.*;
-import com.korea.WhereToGo.entity.UserEntity;
-import com.korea.WhereToGo.repository.UserRepository;
+import com.korea.WhereToGo.entity.*;
+import com.korea.WhereToGo.repository.*;
 import com.korea.WhereToGo.service.EmailService;
 import com.korea.WhereToGo.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +29,14 @@ public class UserServiceImplement implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final FavoriteRepository favoriteRepository;
+    private final MeetingRepository meetingRepository;
+    private final MeetingBoardRepository meetingBoardRepository;
+    private final MeetingBoardReplyRepository meetingBoardReplyRepository;
+    private final MeetingUsersRepository meetingUsersRepository;
+    private final QuestionRepository questionRepository;
+    private final ChatMessageRepository chatMessageRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     private static final Logger log = LoggerFactory.getLogger(UserServiceImplement.class);
 
@@ -78,6 +91,53 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
+    public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(WithdrawalUserRequestDto dto, String userId) {
+        try{
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if(userEntity == null) return WithdrawalUserResponseDto.notExistedUser();
+
+            String nickname = userEntity.getNickname();
+
+            if(!userEntity.getUserId().equals(userId)) return WithdrawalUserResponseDto.notPermission();
+
+            String password = dto.getPassword();
+            if (!passwordEncoder.matches(password, userEntity.getPassword())) return WithdrawalUserResponseDto.wrongPassword();
+
+            List<FavoriteEntity> favoriteEntities = userEntity.getLikes();
+            favoriteRepository.deleteAll(favoriteEntities);
+
+            List<MeetingBoardReplyEntity> meetingBoardReplyEntities = userEntity.getMeetingBoardReply();
+            meetingBoardReplyRepository.deleteAll(meetingBoardReplyEntities);
+
+            Optional<MeetingUsersEntity> meetingUsersEntity = meetingUsersRepository.findByUserNickname(nickname);
+            meetingUsersEntity.ifPresent(meetingUsersRepository::delete);
+
+            List<MeetingEntity> meetingEntities = meetingRepository.findByCreatorNickname(nickname);
+            List<Long> meetingIds = meetingEntities.stream().map(MeetingEntity::getMeetingId).toList();
+            List<MeetingBoardEntity> meetingBoardEntities = meetingBoardRepository.findByMeeting_MeetingIdIn(meetingIds);
+            meetingBoardRepository.deleteAll(meetingBoardEntities);
+            meetingRepository.deleteAll(meetingEntities);
+
+            List<QuestionEntity> questionEntities = questionRepository.findByNickname(nickname);
+            questionRepository.deleteAll(questionEntities);
+
+            List<ChatMessageEntity> chatMessageEntities = chatMessageRepository.findBySender(nickname);
+            chatMessageRepository.deleteAll(chatMessageEntities);
+
+            List<ChatRoomEntity> chatRoomEntities = chatRoomRepository.findByNicknameOrCreatorNickname(nickname, nickname);
+            chatRoomRepository.deleteAll(chatRoomEntities);
+
+            userRepository.delete(userEntity);
+
+            log.info("User {} has been deleted.", userId);
+        }catch (Exception exception) {
+            log.error("Error occurred while deleting user {}.", userId, exception);
+            return ResponseDto.databaseError();
+        }
+        return WithdrawalUserResponseDto.success();
+    }
+
+    @Override
     public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto, String userId){
         try{
             UserEntity userEntity = userRepository.findByUserId(userId);
@@ -85,6 +145,7 @@ public class UserServiceImplement implements UserService {
 
             String nickname = dto.getNickname();
             boolean existedNickname = userRepository.existsByNickname(nickname);
+            if(existedNickname) return PatchNicknameResponseDto.duplicateNickname();
             userEntity.setNickname(nickname);
 
             userRepository.save(userEntity);
@@ -135,6 +196,71 @@ public class UserServiceImplement implements UserService {
         }
         return FindUserIdResponseDto.success();
     }
+
+    @Override
+    public ResponseEntity<? super GetUserListResponseDto> getUserList(String userId) {
+        List<UserDto> userList = new ArrayList<>();
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null || userEntity.getRole().equals("ROLE_USER")) return GetUserListResponseDto.noPermission();
+
+            List<UserEntity> users = userRepository.findAll();
+            if (users.isEmpty()) return GetUserListResponseDto.notExistUser();
+
+            for (UserEntity user : users) {
+                UserDto userDto = new UserDto(user);
+                userList.add(userDto);
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetUserListResponseDto.success(userList);
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteUserResponseDto> deleteUser(String userId) {
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return DeleteUserResponseDto.notExistUser();
+
+            String nickname = userEntity.getNickname();
+
+            List<FavoriteEntity> favoriteEntities = userEntity.getLikes();
+            favoriteRepository.deleteAll(favoriteEntities);
+
+            List<MeetingBoardReplyEntity> meetingBoardReplyEntities = userEntity.getMeetingBoardReply();
+            meetingBoardReplyRepository.deleteAll(meetingBoardReplyEntities);
+
+            Optional<MeetingUsersEntity> meetingUsersEntity = meetingUsersRepository.findByUserNickname(nickname);
+            meetingUsersEntity.ifPresent(meetingUsersRepository::delete);
+
+            List<MeetingEntity> meetingEntities = meetingRepository.findByCreatorNickname(nickname);
+            List<Long> meetingIds = meetingEntities.stream().map(MeetingEntity::getMeetingId).toList();
+            List<MeetingBoardEntity> meetingBoardEntities = meetingBoardRepository.findByMeeting_MeetingIdIn(meetingIds);
+            meetingBoardRepository.deleteAll(meetingBoardEntities);
+            meetingRepository.deleteAll(meetingEntities);
+
+            List<QuestionEntity> questionEntities = questionRepository.findByNickname(nickname);
+            questionRepository.deleteAll(questionEntities);
+
+            List<ChatMessageEntity> chatMessageEntities = chatMessageRepository.findBySender(nickname);
+            chatMessageRepository.deleteAll(chatMessageEntities);
+
+            List<ChatRoomEntity> chatRoomEntities = chatRoomRepository.findByNicknameOrCreatorNickname(nickname, nickname);
+            chatRoomRepository.deleteAll(chatRoomEntities);
+
+            userRepository.delete(userEntity);
+
+            log.info("User {} has been deleted.", userId);
+        } catch (Exception exception) {
+            log.error("Error occurred while deleting user {}.", userId, exception);
+            return ResponseDto.databaseError();
+        }
+        return DeleteUserResponseDto.success();
+    }
+
 
     private String generateTemporaryPassword() {
         int length = 10;

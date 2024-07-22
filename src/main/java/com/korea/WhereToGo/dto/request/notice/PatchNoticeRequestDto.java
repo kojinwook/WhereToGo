@@ -21,7 +21,7 @@ public class PatchNoticeRequestDto {
     @NotBlank
     private String nickname;
 
-    private List<String> image;
+    private List<String> imageList;
 
 
 

@@ -32,7 +32,7 @@ public class QuestionEntity {
 
     private String type;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ImageEntity> imageList = new ArrayList<>();
 
     private String nickname;
@@ -66,5 +66,9 @@ public class QuestionEntity {
         this.content = dto.getContent();
         this.type = dto.getType();
         this.modifyDateTime = LocalDateTime.now();
+        this.imageList.clear();
+        for (String imageUrl : dto.getImageList()) {
+            this.imageList.add(new ImageEntity(imageUrl, this));
+        }
     }
 }

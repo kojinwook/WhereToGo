@@ -74,7 +74,7 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
             if (!meetingBoardEntity.getUser().getUserId().equals(userId))
                 return PatchMeetingBoardResponseDto.noPermission();
 
-            meetingBoardEntity.patchMeetingBoard(dto);
+            meetingBoardEntity.patchMeetingBoard(dto, userId);
 
             meetingBoardRepository.save(meetingBoardEntity);
 
@@ -126,6 +126,24 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
             return ResponseDto.databaseError();
         }
         return GetMeetingBoardResponseDto.success(meetingBoardEntity);
+    }
+
+    @Override
+    public ResponseEntity<? super GetUserBoardResponseDto> getUserBoard(String userId) {
+        List<MeetingBoardEntity> boardList = new ArrayList<>();
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return GetUserBoardResponseDto.notExistedUser();
+
+            boardList = meetingBoardRepository.findByUser_UserId(userId);
+
+            if (boardList == null) return GetUserBoardResponseDto.notExistedBoard();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetUserBoardResponseDto.success(boardList);
     }
 
     @Override
