@@ -41,7 +41,7 @@ public class MeetingEntity {
     @JsonBackReference
     private UserEntity creator;
 
-    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     private List<ImageEntity> imageList = new ArrayList<>();
 
@@ -91,5 +91,9 @@ public class MeetingEntity {
         this.categories = dto.getTags();
         this.locations = dto.getLocations();
         this.modifyDate = LocalDateTime.now();
+        this.imageList.clear();
+        for (String imageUrl : dto.getImageList()) {
+            this.imageList.add(new ImageEntity(imageUrl, this));
+        }
     }
 }

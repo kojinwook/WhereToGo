@@ -32,26 +32,31 @@ public class NoticeEntity {
 
     private String nickname;
 
+    private List<String> image ;
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
     @UpdateTimestamp
     private LocalDateTime modifyDataTime;
 
-    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "notice", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ImageEntity> imageList;
 
     public NoticeEntity(PostNoticeRequestDto dto){
         this.title=dto.getTitle();
         this.content=dto.getContent();
-//        this.image=dto.getImage();
+        this.image=dto.getImageList();
         this.nickname= dto.getNickname();
         this.createDateTime=LocalDateTime.now();
     }
     public void patchNotice(PatchNoticeRequestDto dto){
         this.title=dto.getTitle();
         this.content=dto.getContent();
-//        this.image=dto.getImage();
+        this.imageList.clear();
+        for (String imageUrl : dto.getImageList()) {
+            this.imageList.add(new ImageEntity(imageUrl, this));
+        }
         this.modifyDataTime=LocalDateTime.now();
     }
 

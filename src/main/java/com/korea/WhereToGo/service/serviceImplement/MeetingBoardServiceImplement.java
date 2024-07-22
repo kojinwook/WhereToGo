@@ -75,7 +75,7 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
             if (!meetingBoardEntity.getUser().getUserId().equals(userId))
                 return PatchMeetingBoardResponseDto.noPermission();
 
-            meetingBoardEntity.patchMeetingBoard(dto);
+            meetingBoardEntity.patchMeetingBoard(dto, userId);
 
             meetingBoardRepository.save(meetingBoardEntity);
 
