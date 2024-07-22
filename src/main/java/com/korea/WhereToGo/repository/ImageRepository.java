@@ -14,9 +14,9 @@ public interface ImageRepository extends JpaRepository<ImageEntity, Long> {
     List<ImageEntity> findByReviewReviewId(Long reviewId);
     @EntityGraph(attributePaths = "question")
     List<ImageEntity> findByQuestion_QuestionId(Long questionId);
-
     @EntityGraph(attributePaths = "meeting")
     List<ImageEntity> findByMeeting_MeetingId(Long meetingId);
+    List<ImageEntity> findByMeetingBoard_Meeting_MeetingId(Long meetingId);
 
     @Transactional
     void deleteByContentId(String contentId);
