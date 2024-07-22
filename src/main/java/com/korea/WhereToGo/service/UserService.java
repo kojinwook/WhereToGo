@@ -16,4 +16,6 @@ public interface UserService {
     ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(WithdrawalUserRequestDto dto, String userId);
     ResponseEntity<? super PasswordRecoveryResponseDto> passwordRecovery(String email);
     ResponseEntity<? super FindUserIdResponseDto> findUserId(String email);
+    ResponseEntity<? super GetUserListResponseDto> getUserList(String userId);
+    ResponseEntity<? super DeleteUserResponseDto> deleteUser(String userId);
 }
