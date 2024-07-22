@@ -57,7 +57,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<MeetingBoardReplyEntity> meetingBoardAnswer = new ArrayList<>();
+    private List<MeetingBoardReplyEntity> meetingBoardReply = new ArrayList<>();
 
     @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
