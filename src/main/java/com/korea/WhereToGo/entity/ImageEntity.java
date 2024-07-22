@@ -84,7 +84,22 @@ public class ImageEntity {
         this.userId = userId;
     }
 
-     public Long getReviewId() {
+    public ImageEntity(String imageUrl, MeetingEntity meetingEntity) {
+        this.image = imageUrl;
+        this.meeting = meetingEntity;
+    }
+
+    public ImageEntity(String imageUrl, NoticeEntity noticeEntity) {
+        this.image = imageUrl;
+        this.notice = noticeEntity;
+    }
+
+    public ImageEntity(String imageUrl, QuestionEntity questionEntity) {
+        this.image = imageUrl;
+        this.question = questionEntity;
+    }
+
+    public Long getReviewId() {
         return review != null ? review.getReviewId() : null;
     }
 }

@@ -2,6 +2,7 @@ package com.korea.WhereToGo.service;
 
 import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
+import com.korea.WhereToGo.dto.response.meeting.GetMeetingImageListResponseDto;
 import com.korea.WhereToGo.dto.response.meeting.board.*;
 import org.springframework.http.ResponseEntity;
 
@@ -12,4 +13,6 @@ public interface MeetingBoardService {
     ResponseEntity<? super GetMeetingBoardResponseDto> getMeetingBoard(Long boardId);
     ResponseEntity<? super GetUserBoardResponseDto> getUserBoard(String userId);
     ResponseEntity<? super DeleteMeetingBoardResponseDto> deleteMeetingBoard(Long boardId, String userId);
+
+    ResponseEntity<? super GetMeetingImageListResponseDto> getMeetingImageList(Long meetingId);
 }
