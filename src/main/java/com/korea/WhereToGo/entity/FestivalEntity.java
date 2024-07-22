@@ -8,8 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 @Setter
@@ -28,7 +31,7 @@ public class FestivalEntity {
     @Column(name = "eventStartDate")
     private String startDate;
     @Column(name = "eventEndDate")
-    private String endDate;
+    private LocalDate endDate;
     @Column(name = "address1")
     private String address1;
     @Column(name = "first_image")
@@ -60,6 +63,15 @@ public class FestivalEntity {
     @OneToMany(mappedBy = "festival", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<FavoriteEntity> likes = new ArrayList<>();
+
+    public void setEndDate(String endDateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd", Locale.KOREA);
+        this.endDate = LocalDate.parse(endDateStr, formatter);
+    }
+
+    public String getEndDate() {
+        return endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd", Locale.KOREA));
+    }
 
     public void patchFestival(PatchFestivalRequestDto dto){
         this.title = dto.getTitle();

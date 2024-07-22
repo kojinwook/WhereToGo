@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -139,7 +140,7 @@ public class FestivalServiceImplements implements FestivalService {
 //                            festivalRepository.save(existingFestival);
 //                        }
 //                    } else {
-                        festivalRepository.save(festivalEntity);
+                    festivalRepository.save(festivalEntity);
 //                    }
                 }
             }
@@ -184,7 +185,8 @@ public class FestivalServiceImplements implements FestivalService {
             if (festivalEntity == null) return PatchFestivalResponseDto.notExistFestival();
 
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if (userEntity == null || !userEntity.getRole().equals("ADMIN")) return PatchFestivalResponseDto.notPermission();
+            if (userEntity == null || !userEntity.getRole().equals("ADMIN"))
+                return PatchFestivalResponseDto.notPermission();
 
             festivalEntity.patchFestival(dto);
             festivalRepository.save(festivalEntity);
@@ -206,5 +208,23 @@ public class FestivalServiceImplements implements FestivalService {
             return ResponseDto.databaseError();
         }
         return GetFestivalResponseDto.success(festivalEntity);
+    }
+
+    @Override
+    public ResponseEntity<? super GetTop5FestivalListResponseDto> getTop5FestivalList() {
+        List<FestivalEntity> festivalEntities = new ArrayList<>();
+        List<FestivalEntity> top5Festivals = new ArrayList<>();
+        try {
+            festivalEntities = festivalRepository.findAllActiveFestivals();
+
+            top5Festivals = festivalEntities.stream()
+                    .limit(5)
+                    .collect(Collectors.toList());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetTop5FestivalListResponseDto.success(top5Festivals);
+
     }
 }

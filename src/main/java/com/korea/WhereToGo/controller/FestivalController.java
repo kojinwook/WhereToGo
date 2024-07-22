@@ -53,4 +53,11 @@ public class FestivalController {
         ResponseEntity<? super GetFestivalResponseDto> response = festivalService.getFestival(contentId);
         return response;
     }
+
+    @GetMapping("/getTop5FestivalList")
+    public ResponseEntity<? super GetTop5FestivalListResponseDto> getTop5FestivalList(
+    ) {
+        ResponseEntity<? super GetTop5FestivalListResponseDto> response = festivalService.getTop5FestivalList();
+        return response;
+    }
 }

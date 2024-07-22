@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -12,7 +13,7 @@ import java.util.List;
 public class PatchFestivalRequestDto {
     private String title;
     private String startDate;
-    private String endDate;
+    private LocalDate endDate;
     private String address1;
     private String firstImage;
     private String tel;
