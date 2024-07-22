@@ -150,7 +150,6 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
         return DeleteMeetingBoardResponseDto.success();
     }
 
-<<<<<<< HEAD
     @Override
     public ResponseEntity<? super GetMeetingImageListResponseDto> getMeetingImageList(Long meetingId) {
         List<ImageEntity> imageEntityList = new ArrayList<>();
@@ -168,7 +167,4 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
         }
         return GetMeetingImageListResponseDto.success(imageEntityList);
     }
-=======
-
->>>>>>> 3d02c222836967582ecbfb560b51acfb5994d85b
 }
