@@ -49,6 +49,7 @@ public class MeetingEntity {
     private LocalDateTime createDate;
     @LastModifiedDate
     private LocalDateTime modifyDate;
+
     private int maxParticipants;
     @ElementCollection
     private List<String> tags;
@@ -73,7 +74,6 @@ public class MeetingEntity {
         this.title = dto.getTitle();
         this.introduction = dto.getIntroduction();
         this.content = dto.getContent();
-//        this.userNickname = dto.getNickname();
         this.maxParticipants = dto.getMaxParticipants();
         this.tags = dto.getTags();
         this.categories = dto.getCategories();

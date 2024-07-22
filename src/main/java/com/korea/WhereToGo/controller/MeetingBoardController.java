@@ -54,6 +54,14 @@ public class MeetingBoardController {
         return response;
     }
 
+    @GetMapping("/my-board-list/{userId}")
+    public ResponseEntity<? super GetUserBoardResponseDto> getUserBoard(
+            @PathVariable("userId") String userId
+    ) {
+        ResponseEntity<? super GetUserBoardResponseDto> response = meetingBoardService.getUserBoard(userId);
+        return response;
+    }
+
     @DeleteMapping("/delete/{meetingBoardId}")
     public ResponseEntity<? super DeleteMeetingBoardResponseDto> deleteMeetingBoard(
             @PathVariable("meetingBoardId") Long boardId,
