@@ -35,6 +35,14 @@ public class ReviewServiceImplement implements ReviewService {
     public ResponseEntity<? super PostReviewResponseDto> postReview(PostReviewRequestDto dto, String userId) {
         String contentId = dto.getContentId();
         try {
+
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return PostReviewResponseDto.notExistUser();
+
+            userEntity.increaseTemperature(0.5);
+            if (dto.getRate() >= 4) userEntity.increaseTemperature(0.5);
+            userRepository.save(userEntity);
+
             FestivalEntity festivalEntity = festivalRepository.findByContentId(contentId);
             if (festivalEntity == null) return PostReviewResponseDto.notExistFestival();
 

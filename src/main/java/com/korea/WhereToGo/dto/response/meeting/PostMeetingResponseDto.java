@@ -22,4 +22,9 @@ public class PostMeetingResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
     }
 
+    public static ResponseEntity<ResponseDto> cannotCreateMeeting(){
+        ResponseDto responseBody = new ResponseDto(ResponseCode.CANNOT_CREATE_MEETING, ResponseMessage.CANNOT_CREATE_MEETING);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
+    }
+
 }

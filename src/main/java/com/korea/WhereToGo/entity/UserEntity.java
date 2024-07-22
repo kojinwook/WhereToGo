@@ -47,6 +47,11 @@ public class UserEntity {
 
     private List<String> likeBoardList;
 
+    @Column(nullable = false)
+    private double temperature = 36.5;
+
+    private LocalDateTime lastMeetingCreated;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<FavoriteEntity> likes = new ArrayList<>();
@@ -63,6 +68,21 @@ public class UserEntity {
     @JsonManagedReference
     private List<MeetingEntity> meetings;
 
+    public void increaseTemperature(double amount) {
+        this.temperature += amount;
+    }
+
+    public void decreaseTemperature(double amount) {
+        this.temperature -= amount;
+        if (this.temperature < 0) {
+            this.temperature = 0;
+        }
+    }
+
+    public void updateLastMeetingCreated() {
+        this.lastMeetingCreated = LocalDateTime.now();
+    }
+
     public UserEntity(SignUpRequestDto dto) {
         this.userId = dto.getUserId();
         this.password = dto.getPassword();
@@ -70,7 +90,7 @@ public class UserEntity {
         this.nickname = dto.getNickname();
         this.phoneNumber = dto.getPhone();
         this.role = "ROLE_USER";
-        this.likeBoardList = new ArrayList<>();
+        this.temperature = 36.5;
     }
 
     public UserEntity(AdminSignUpRequestDto dto) {

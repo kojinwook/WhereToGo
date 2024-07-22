@@ -38,7 +38,8 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
 
             UserEntity userEntity = userRepository.findByUserId(userId);
             if (userEntity == null) return PostMeetingBoardResponseDto.notExistUser();
-//            UserDto userDto = new UserDto(userEntity);
+            userEntity.increaseTemperature(0.5);
+            userRepository.save(userEntity);
 
             MeetingBoardEntity meetingBoardEntity = new MeetingBoardEntity(dto);
             meetingBoardEntity.setMeeting(meetingEntity);

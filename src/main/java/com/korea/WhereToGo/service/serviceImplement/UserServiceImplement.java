@@ -91,7 +91,8 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(WithdrawalUserRequestDto dto, String userId) {
+    public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(WithdrawalUserRequestDto dto) {
+        String userId = dto.getUserId();
         try{
             UserEntity userEntity = userRepository.findByUserId(userId);
             if(userEntity == null) return WithdrawalUserResponseDto.notExistedUser();
