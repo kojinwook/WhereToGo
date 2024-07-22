@@ -32,6 +32,8 @@ public class NoticeEntity {
 
     private String nickname;
 
+    private List<String> image ;
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
@@ -44,14 +46,14 @@ public class NoticeEntity {
     public NoticeEntity(PostNoticeRequestDto dto){
         this.title=dto.getTitle();
         this.content=dto.getContent();
-//        this.image=dto.getImage();
+        this.image=dto.getImageList();
         this.nickname= dto.getNickname();
         this.createDateTime=LocalDateTime.now();
     }
     public void patchNotice(PatchNoticeRequestDto dto){
         this.title=dto.getTitle();
         this.content=dto.getContent();
-//        this.image=dto.getImage();
+        this.image=dto.getImage();
         this.modifyDataTime=LocalDateTime.now();
     }
 
