@@ -23,6 +23,7 @@ public class UserController {
         ResponseEntity<? super GetSignInUserResponseDto> responseBody = userService.getSignInUser(userId);
         return responseBody;
     }
+
     @GetMapping("/{userId}")
     public ResponseEntity<? super GetUserResponseDto> getUser(
             @PathVariable("userId") String userId
@@ -35,7 +36,7 @@ public class UserController {
     public ResponseEntity<? super ChangePasswordResponseDto> changePassword(
             @RequestBody @Valid ChangePasswordRequestDto requestBody,
             @PathVariable("userId") String userId
-    ){
+    ) {
         ResponseEntity<? super ChangePasswordResponseDto> response = userService.changePassword(requestBody, userId);
         return response;
     }
@@ -49,13 +50,29 @@ public class UserController {
         return response;
     }
 
-    @DeleteMapping("/withdrawal/{userId}")
+    @GetMapping("user-list")
+    public ResponseEntity<? super GetUserListResponseDto> getUserList(
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super GetUserListResponseDto> response = userService.getUserList(userId);
+        return response;
+    }
+
+    @DeleteMapping("/withdrawal")
     public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(
-            @PathVariable("userId") String userId,
-            @RequestBody @Valid WithdrawalUserRequestDto requestBody
+            @RequestBody @Valid WithdrawalUserRequestDto requestBody,
+            @AuthenticationPrincipal String userId
     ) {
         ResponseEntity<? super WithdrawalUserResponseDto> response = userService.withdrawalUser(requestBody, userId);
         return response;
+    }
+
+    @DeleteMapping("/delete-user/{userId}")
+    public ResponseEntity<? super DeleteUserResponseDto> deleteUser(
+            @PathVariable("userId") String userId
+    ) {
+        ResponseEntity<? super DeleteUserResponseDto> responseBody = userService.deleteUser(userId);
+        return responseBody;
     }
 
     @PostMapping("/recovery-password")
@@ -68,7 +85,7 @@ public class UserController {
     @PostMapping("/find-userId")
     public ResponseEntity<? super FindUserIdResponseDto> findUserId(
             @RequestBody @Valid FindUserIdRequestDto dto
-            ) {
+    ) {
         return userService.findUserId(dto.getEmail());
     }
 }
