@@ -4,6 +4,7 @@ import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
+import com.korea.WhereToGo.dto.response.meeting.GetMeetingImageListResponseDto;
 import com.korea.WhereToGo.dto.response.meeting.board.*;
 import com.korea.WhereToGo.entity.ImageEntity;
 import com.korea.WhereToGo.entity.MeetingBoardEntity;
@@ -146,5 +147,23 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
             return ResponseDto.databaseError();
         }
         return DeleteMeetingBoardResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetMeetingImageListResponseDto> getMeetingImageList(Long meetingId) {
+        List<ImageEntity> imageEntityList = new ArrayList<>();
+
+
+        try {
+            imageEntityList = imageRepository.findByMeeting_MeetingId(meetingId);
+            MeetingEntity meetingEntity = meetingRepository.findByMeetingId(meetingId);
+            if(meetingEntity == null) {
+                return GetMeetingImageListResponseDto.notExistMeeting();
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetMeetingImageListResponseDto.success(imageEntityList);
     }
 }
