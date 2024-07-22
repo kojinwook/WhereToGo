@@ -57,6 +57,15 @@ public class MeetingServiceImplement implements MeetingService {
             UserEntity userEntity = userRepository.findByNickname(nickname);
             if(userEntity == null) return PostMeetingResponseDto.notExistUser();
 
+            LocalDateTime lastMeetingCreated = userEntity.getLastMeetingCreated();
+            if (lastMeetingCreated != null && lastMeetingCreated.plusDays(2).isAfter(LocalDateTime.now())) {
+                return PostMeetingResponseDto.cannotCreateMeeting();
+            }
+
+            userEntity.increaseTemperature(0.5);
+            userEntity.updateLastMeetingCreated();
+            userRepository.save(userEntity);
+
             MeetingEntity meetingEntity = new MeetingEntity(dto, userEntity);
             UserEntity user = userRepository.findByUserId(userId);
             meetingEntity.setCreator(user);
@@ -313,14 +322,4 @@ public class MeetingServiceImplement implements MeetingService {
         }
         return Get5RecentMeetingResponseDto.success(meetingList);
     }
-
-//    List<MeetingEntity> meetingEntities = new ArrayList<>();
-//            for (MeetingEntity meetingBoardEntity : meetingList) {
-//        UserEntity userEntity = meetingBoardEntity.getCreator();
-//        if (userEntity != null) {
-//            UserDto userDto = new UserDto(userEntity);
-//            meetingBoardEntity.setUserDto(userDto);
-//        }
-//        meetingEntities.add(meetingBoardEntity);
-//    }
 }

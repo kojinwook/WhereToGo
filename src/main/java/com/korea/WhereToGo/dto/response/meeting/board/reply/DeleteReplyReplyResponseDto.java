@@ -26,6 +26,6 @@ public class DeleteReplyReplyResponseDto extends ResponseDto {
 
     public static ResponseEntity<ResponseDto> noPermission(){
         ResponseDto responseBody = new ResponseDto(ResponseCode.DO_NOT_HAVE_PERMISSION, ResponseMessage.DO_NOT_HAVE_PERMISSION);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseBody);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
     }
 }

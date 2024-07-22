@@ -34,4 +34,6 @@ public interface ResponseCode {
     String NOT_EXISTED_REPLY_REPLY = "NRR";
     String NOT_EXISTED_BOARD = "NB";
 
+    String CANNOT_CREATE_MEETING = "CCM";
+
 }

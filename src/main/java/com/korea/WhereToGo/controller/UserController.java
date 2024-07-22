@@ -60,10 +60,9 @@ public class UserController {
 
     @DeleteMapping("/withdrawal")
     public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(
-            @RequestBody @Valid WithdrawalUserRequestDto requestBody,
-            @AuthenticationPrincipal String userId
+            @RequestBody @Valid WithdrawalUserRequestDto requestBody
     ) {
-        ResponseEntity<? super WithdrawalUserResponseDto> response = userService.withdrawalUser(requestBody, userId);
+        ResponseEntity<? super WithdrawalUserResponseDto> response = userService.withdrawalUser(requestBody);
         return response;
     }
 

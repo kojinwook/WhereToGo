@@ -19,8 +19,13 @@ public class PostReviewResponseDto extends ResponseDto {
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
-    public static ResponseEntity<? super ResponseDto> notExistFestival() {
+    public static ResponseEntity<ResponseDto> notExistFestival() {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_FESTIVAL, ResponseMessage.NOT_EXISTED_FESTIVAL);
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
+    }
+
+    public static ResponseEntity<ResponseDto> notExistUser() {
+        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
     }
 }
