@@ -32,6 +32,9 @@ public class MeetingBoardEntity {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
+    @Column(name = "meeting_id", insertable = false, updatable = false)
+    private Long meetingId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
     @JsonBackReference

@@ -10,5 +10,6 @@ public interface MeetingBoardService {
     ResponseEntity<? super PatchMeetingBoardResponseDto> patchMeetingBoard(PatchMeetingBoardRequestDto dto, Long boardId, String userId);
     ResponseEntity<? super GetMeetingBoardListResponseDto> getMeetingBoardList(Long meetingId);
     ResponseEntity<? super GetMeetingBoardResponseDto> getMeetingBoard(Long boardId);
+    ResponseEntity<? super GetUserBoardResponseDto> getUserBoard(String userId);
     ResponseEntity<? super DeleteMeetingBoardResponseDto> deleteMeetingBoard(Long boardId, String userId);
 }

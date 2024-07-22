@@ -30,4 +30,5 @@ public interface ResponseMessage {
     String NOT_EXISTED_MEETING_BOARD = "Not_Existed_Meeting_Board";
     String NOT_EXISTED_BOARD_REPLY = "Not_Existed_Board_Reply";
     String NOT_EXISTED_REPLY_REPLY = "Not_Existed_Reply_Reply";
+    String NOT_EXISTED_BOARD = "Not_Existed_Board";
 }

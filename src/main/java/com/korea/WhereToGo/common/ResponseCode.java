@@ -32,5 +32,6 @@ public interface ResponseCode {
     String NOT_EXISTED_MEETING_BOARD = "NMB";
     String NOT_EXISTED_BOARD_REPLY = "NBR";
     String NOT_EXISTED_REPLY_REPLY = "NRR";
+    String NOT_EXISTED_BOARD = "NB";
 
 }
