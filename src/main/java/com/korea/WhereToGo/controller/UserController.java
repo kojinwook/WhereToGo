@@ -70,21 +70,31 @@ public class UserController {
     public ResponseEntity<? super DeleteUserResponseDto> deleteUser(
             @PathVariable("userId") String userId
     ) {
-        ResponseEntity<? super DeleteUserResponseDto> responseBody = userService.deleteUser(userId);
-        return responseBody;
+        ResponseEntity<? super DeleteUserResponseDto> response = userService.deleteUser(userId);
+        return response;
     }
 
     @PostMapping("/recovery-password")
     public ResponseEntity<? super PasswordRecoveryResponseDto> passwordRecovery(
             @RequestBody @Valid PasswordRecoveryRequestDto dto
     ) {
-        return userService.passwordRecovery(dto.getEmail());
+        ResponseEntity<? super PasswordRecoveryResponseDto> response = userService.passwordRecovery(dto.getEmail());
+        return response;
     }
 
     @PostMapping("/find-userId")
     public ResponseEntity<? super FindUserIdResponseDto> findUserId(
             @RequestBody @Valid FindUserIdRequestDto dto
     ) {
-        return userService.findUserId(dto.getEmail());
+        ResponseEntity<? super FindUserIdResponseDto> response = userService.findUserId(dto.getEmail());
+        return response;
+    }
+
+    @PostMapping("/report-user/{userId}")
+    public ResponseEntity<? super PostReportUserResponseDto> reportUser(
+            @PathVariable("userId") String userId
+    ) {
+        ResponseEntity<? super PostReportUserResponseDto> response = userService.reportUser(userId);
+        return response;
     }
 }
