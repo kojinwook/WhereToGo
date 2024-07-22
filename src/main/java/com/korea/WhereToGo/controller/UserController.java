@@ -1,9 +1,6 @@
 package com.korea.WhereToGo.controller;
 
-import com.korea.WhereToGo.dto.request.user.ChangePasswordRequestDto;
-import com.korea.WhereToGo.dto.request.user.FindUserIdRequestDto;
-import com.korea.WhereToGo.dto.request.user.PasswordRecoveryRequestDto;
-import com.korea.WhereToGo.dto.request.user.PatchNicknameRequestDto;
+import com.korea.WhereToGo.dto.request.user.*;
 import com.korea.WhereToGo.dto.response.user.*;
 import com.korea.WhereToGo.service.UserService;
 import jakarta.validation.Valid;
@@ -52,14 +49,14 @@ public class UserController {
         return response;
     }
 
-//    @DeleteMapping("/withdrawal/{userId}")
-//    public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(
-//            @PathVariable("userId") String userId,
-//            @RequestBody @Valid WithdrawalUserRequestDto requestBody
-//    ) {
-//        ResponseEntity<? super WithdrawalUserResponseDto> response = userService.withdrawalUser(requestBody, userId);
-//        return response;
-//    }
+    @DeleteMapping("/withdrawal/{userId}")
+    public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(
+            @PathVariable("userId") String userId,
+            @RequestBody @Valid WithdrawalUserRequestDto requestBody
+    ) {
+        ResponseEntity<? super WithdrawalUserResponseDto> response = userService.withdrawalUser(requestBody, userId);
+        return response;
+    }
 
     @PostMapping("/recovery-password")
     public ResponseEntity<? super PasswordRecoveryResponseDto> passwordRecovery(
