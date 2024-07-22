@@ -262,6 +262,23 @@ public class UserServiceImplement implements UserService {
         return DeleteUserResponseDto.success();
     }
 
+    @Override
+    public ResponseEntity<? super PostReportUserResponseDto> reportUser(String userId) {
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return PostReportUserResponseDto.notExistUser();
+
+            userEntity.setReportCount(userEntity.getReportCount() + 1);
+            userEntity.decreaseTemperature(0.5);
+            userRepository.save(userEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PostReportUserResponseDto.success();
+    }
+
 
     private String generateTemporaryPassword() {
         int length = 10;

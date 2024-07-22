@@ -50,6 +50,10 @@ public class UserEntity {
     @Column(nullable = false)
     private double temperature = 36.5;
 
+    private boolean isBlocked = false;
+
+    private int reportCount = 0;
+
     private LocalDateTime lastMeetingCreated;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

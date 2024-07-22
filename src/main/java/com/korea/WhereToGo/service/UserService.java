@@ -18,4 +18,5 @@ public interface UserService {
     ResponseEntity<? super FindUserIdResponseDto> findUserId(String email);
     ResponseEntity<? super GetUserListResponseDto> getUserList(String userId);
     ResponseEntity<? super DeleteUserResponseDto> deleteUser(String userId);
+    ResponseEntity<? super PostReportUserResponseDto> reportUser(String userId);
 }
