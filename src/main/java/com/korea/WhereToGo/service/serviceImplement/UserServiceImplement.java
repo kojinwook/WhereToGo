@@ -302,6 +302,23 @@ public class UserServiceImplement implements UserService {
         return BlockUserResponseDto.success();
     }
 
+    @Override
+    public ResponseEntity<? super GetTop5TemperatureUserResponseDto> getTop5User() {
+        List<UserDto> userList = new ArrayList<>();
+        try {
+            List<UserEntity> users = userRepository.findTop5ByOrderByTemperatureDesc();
+
+            for (UserEntity user : users) {
+                UserDto userDto = new UserDto(user);
+                userList.add(userDto);
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetTop5TemperatureUserResponseDto.success(userList);
+    }
 
     private String generateTemporaryPassword() {
         int length = 10;
