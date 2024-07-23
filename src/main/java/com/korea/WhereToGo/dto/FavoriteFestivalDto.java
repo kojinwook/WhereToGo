@@ -15,10 +15,14 @@ public class FavoriteFestivalDto {
     private Long id;
     private String contentId;
     private String title;
+    private String startDate;
+    private String endDate;
 
     public FavoriteFestivalDto(FestivalEntity festival) {
         this.id = festival.getId();
         this.contentId = festival.getContentId();
         this.title = festival.getTitle();
+        this.startDate = festival.getStartDate();
+        this.endDate = festival.getEndDate();
     }
 }

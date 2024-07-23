@@ -21,4 +21,5 @@ public interface UserService {
     ResponseEntity<? super DeleteUserResponseDto> deleteUser(String userId);
     ResponseEntity<? super PostReportUserResponseDto> reportUser(String userId);
     ResponseEntity<? super BlockUserResponseDto> blockUser(BlockUserRequestDto dto);
+    ResponseEntity<? super GetTop5TemperatureUserResponseDto> getTop5User();
 }

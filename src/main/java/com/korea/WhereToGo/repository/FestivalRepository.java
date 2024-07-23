@@ -13,4 +13,5 @@ public interface FestivalRepository extends JpaRepository<FestivalEntity, Intege
     List<FestivalEntity> findByAreaCode(String areaCode);
     @Query("SELECT f FROM festival f WHERE f.endDate > CURRENT_DATE ORDER BY f.favoriteCount DESC, f.startDate DESC")
     List<FestivalEntity> findAllActiveFestivals();
+    List<FestivalEntity> findByContentIdIn(List<String> contentIds);
 }

@@ -19,5 +19,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findByNickname(String nickname);
     @Query("SELECT u FROM user u WHERE u.role != 'ROLE_ADMIN'")
     List<UserEntity> findAllNonAdminUsers();
+    List<UserEntity> findTop5ByOrderByTemperatureDesc();
 
 }

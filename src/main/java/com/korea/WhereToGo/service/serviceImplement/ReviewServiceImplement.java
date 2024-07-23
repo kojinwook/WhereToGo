@@ -141,15 +141,19 @@ public class ReviewServiceImplement implements ReviewService {
     @Override
     public ResponseEntity<? super GetReviewListResponseDto> getReviewList(String userId) {
         List<ReviewEntity> reviews = new ArrayList<>();
+        List<FestivalEntity> festivalList = new ArrayList<>();
         try {
-            reviews = reviewRepository.findByUserId(userId);
+            reviews = reviewRepository.findByNickname(userId);
             if (reviews.isEmpty()) return GetReviewListResponseDto.notExistReview();
+
+            List<String> contentIds = reviews.stream().map(ReviewEntity::getContentId).toList();
+            festivalList = festivalRepository.findByContentIdIn(contentIds.stream().map(Object::toString).collect(Collectors.toList()));
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetReviewListResponseDto.success(reviews);
+        return GetReviewListResponseDto.success(reviews, festivalList);
     }
 
     @Override
