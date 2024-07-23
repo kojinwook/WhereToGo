@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.service;
 
+import com.korea.WhereToGo.dto.request.user.BlockUserRequestDto;
 import com.korea.WhereToGo.dto.request.user.ChangePasswordRequestDto;
 import com.korea.WhereToGo.dto.request.user.PatchNicknameRequestDto;
 import com.korea.WhereToGo.dto.request.user.WithdrawalUserRequestDto;
@@ -19,4 +20,5 @@ public interface UserService {
     ResponseEntity<? super GetUserListResponseDto> getUserList(String userId);
     ResponseEntity<? super DeleteUserResponseDto> deleteUser(String userId);
     ResponseEntity<? super PostReportUserResponseDto> reportUser(String userId);
+    ResponseEntity<? super BlockUserResponseDto> blockUser(BlockUserRequestDto dto);
 }

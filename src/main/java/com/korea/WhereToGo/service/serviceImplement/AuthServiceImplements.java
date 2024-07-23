@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImplements implements AuthService {
@@ -142,6 +144,19 @@ public class AuthServiceImplements implements AuthService {
             String userId = dto.getUserId();
             UserEntity userEntity = userRepository.findByUserId(userId);
             if(userEntity == null) return SignInResponseDto.SignInFail();
+
+            System.out.println(userEntity.isBlocked());
+            System.out.println(userEntity.getBlockReleaseDate());
+            System.out.println(LocalDate.now());
+            if (userEntity.isBlocked()) {
+                if (userEntity.getBlockReleaseDate() != null && LocalDate.now().isAfter(userEntity.getBlockReleaseDate())) {
+                    userEntity.setBlocked(false);
+                    userEntity.setBlockReleaseDate(null);
+                    userRepository.save(userEntity);
+                } else {
+                    return SignInResponseDto.UserBlocked(userEntity.getBlockReleaseDate());
+                }
+            }
 
             if (userEntity.getRole().equals("ROLE_ADMIN")) {
                 infiniteExpiration = true;
