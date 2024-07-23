@@ -13,6 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,8 @@ public class UserEntity {
 
     private boolean isBlocked = false;
 
+    private LocalDate blockReleaseDate;
+
     private int reportCount = 0;
 
     private LocalDateTime lastMeetingCreated;
@@ -87,6 +90,21 @@ public class UserEntity {
         this.lastMeetingCreated = LocalDateTime.now();
     }
 
+//    public void setBlocked(boolean blocked, int blockDays) {
+//        this.isBlocked = blocked;
+//        if (blocked) {
+//            this.blockReleaseDate = LocalDate.now().plusDays(blockDays);
+//        }
+//    }
+
+//    public boolean isBlocked() {
+//        if (isBlocked && blockReleaseDate != null && LocalDate.now().isAfter(blockReleaseDate)) {
+//            this.isBlocked = false;
+//            this.blockReleaseDate = null;
+//        }
+//        return isBlocked;
+//    }
+
     public UserEntity(SignUpRequestDto dto) {
         this.userId = dto.getUserId();
         this.password = dto.getPassword();
@@ -94,6 +112,7 @@ public class UserEntity {
         this.nickname = dto.getNickname();
         this.phoneNumber = dto.getPhone();
         this.role = "ROLE_USER";
+        this.reportCount = 0;
         this.temperature = 36.5;
     }
 

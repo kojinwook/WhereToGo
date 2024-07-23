@@ -33,4 +33,5 @@ public interface ResponseMessage {
     String NOT_EXISTED_BOARD = "Not_Existed_Board";
 
     String CANNOT_CREATE_MEETING = "Cannot_Create_Meeting";
+    String BLOCKED_USER = "Blocked_User";
 }

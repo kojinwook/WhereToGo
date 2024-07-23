@@ -97,4 +97,13 @@ public class UserController {
         ResponseEntity<? super PostReportUserResponseDto> response = userService.reportUser(userId);
         return response;
     }
+
+    @PostMapping("/block-user")
+    public ResponseEntity<? super BlockUserResponseDto> blockUser(
+            @RequestBody @Valid BlockUserRequestDto dto
+//            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super BlockUserResponseDto> response = userService.blockUser(dto);
+        return response;
+    }
 }
