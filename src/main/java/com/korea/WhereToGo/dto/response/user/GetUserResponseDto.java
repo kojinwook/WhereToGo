@@ -18,7 +18,7 @@ public class GetUserResponseDto extends ResponseDto {
     private String password;
     private String nickname;
     private String role;
-
+    private double temperature;
 
     private GetUserResponseDto(UserEntity userEntity){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
@@ -27,6 +27,7 @@ public class GetUserResponseDto extends ResponseDto {
         this.nickname = userEntity.getNickname();
         this.password = userEntity.getPassword();
         this.role = userEntity.getRole();
+        this.temperature = userEntity.getTemperature();
     }
 
     public static ResponseEntity<GetUserResponseDto> success(UserEntity userEntity){
