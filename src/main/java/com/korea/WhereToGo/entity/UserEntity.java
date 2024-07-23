@@ -13,6 +13,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +49,11 @@ public class UserEntity {
     private List<String> likeBoardList;
 
     @Column(nullable = false)
-    private double temperature = 36.5;
+    private double temperature;
 
     private boolean isBlocked = false;
+
+    private LocalDate blockReleaseDate;
 
     private int reportCount = 0;
 
@@ -94,7 +97,7 @@ public class UserEntity {
         this.nickname = dto.getNickname();
         this.phoneNumber = dto.getPhone();
         this.role = "ROLE_USER";
-        this.temperature = 36.5;
+        this.reportCount = 0;
     }
 
     public UserEntity(AdminSignUpRequestDto dto) {

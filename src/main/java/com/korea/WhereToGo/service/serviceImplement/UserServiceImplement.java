@@ -1,6 +1,7 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
 import com.korea.WhereToGo.dto.UserDto;
+import com.korea.WhereToGo.dto.request.user.BlockUserRequestDto;
 import com.korea.WhereToGo.dto.request.user.ChangePasswordRequestDto;
 import com.korea.WhereToGo.dto.request.user.PatchNicknameRequestDto;
 import com.korea.WhereToGo.dto.request.user.WithdrawalUserRequestDto;
@@ -205,6 +206,7 @@ public class UserServiceImplement implements UserService {
             UserEntity userEntity = userRepository.findByUserId(userId);
             if (userEntity == null || userEntity.getRole().equals("ROLE_USER")) return GetUserListResponseDto.noPermission();
 
+//            List<UserEntity> users = userRepository.findAllNonAdminUsers();
             List<UserEntity> users = userRepository.findAll();
             if (users.isEmpty()) return GetUserListResponseDto.notExistUser();
 
@@ -279,6 +281,44 @@ public class UserServiceImplement implements UserService {
         return PostReportUserResponseDto.success();
     }
 
+    @Override
+    public ResponseEntity<? super BlockUserResponseDto> blockUser(BlockUserRequestDto dto) {
+        try {
+//            UserEntity userEntity = userRepository.findByUserId(userId);
+//            if (userEntity == null || userEntity.getRole().equals("ROLE_USER")) return BlockUserResponseDto.noPermission();
+
+            String targetUserId = dto.getUserId();
+            int blockDays = dto.getBlockDay();
+            UserEntity targetUserEntity = userRepository.findByUserId(targetUserId);
+
+            targetUserEntity.setBlocked(true);
+            targetUserEntity.setBlockReleaseDate(targetUserEntity.getBlockReleaseDate().plusDays(blockDays));
+            userRepository.save(targetUserEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return BlockUserResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetTop5TemperatureUserResponseDto> getTop5User() {
+        List<UserDto> userList = new ArrayList<>();
+        try {
+            List<UserEntity> users = userRepository.findTop5ByOrderByTemperatureDesc();
+
+            for (UserEntity user : users) {
+                UserDto userDto = new UserDto(user);
+                userList.add(userDto);
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetTop5TemperatureUserResponseDto.success(userList);
+    }
 
     private String generateTemporaryPassword() {
         int length = 10;

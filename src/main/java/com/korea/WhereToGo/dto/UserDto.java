@@ -14,6 +14,9 @@ public class UserDto {
     private String email;
     private String profileImage;
     private LocalDateTime createDate;
+    private double temperature;
+    private int reportCount;
+    private boolean isBlocked;
 
     public UserDto(String userId, String nickname, String profileImage) {
         this.userId = userId;
@@ -27,5 +30,8 @@ public class UserDto {
         this.email = user.getEmail();
         this.profileImage = user.getProfileImage();
         this.createDate = user.getCreateDate();
+        this.temperature = user.getTemperature();
+        this.reportCount = user.getReportCount();
+        this.isBlocked = user.isBlocked();
     }
 }

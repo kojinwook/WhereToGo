@@ -50,7 +50,7 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("user-list")
+    @GetMapping("/user-list")
     public ResponseEntity<? super GetUserListResponseDto> getUserList(
             @AuthenticationPrincipal String userId
     ) {
@@ -95,6 +95,21 @@ public class UserController {
             @PathVariable("userId") String userId
     ) {
         ResponseEntity<? super PostReportUserResponseDto> response = userService.reportUser(userId);
+        return response;
+    }
+
+    @PostMapping("/block-user")
+    public ResponseEntity<? super BlockUserResponseDto> blockUser(
+            @RequestBody @Valid BlockUserRequestDto dto
+//            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super BlockUserResponseDto> response = userService.blockUser(dto);
+        return response;
+    }
+
+    @GetMapping("/temperature-top5")
+    public ResponseEntity<? super GetTop5TemperatureUserResponseDto> getTop5User() {
+        ResponseEntity<? super GetTop5TemperatureUserResponseDto> response = userService.getTop5User();
         return response;
     }
 }
