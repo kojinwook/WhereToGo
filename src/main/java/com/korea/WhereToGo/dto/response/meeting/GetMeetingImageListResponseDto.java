@@ -2,26 +2,24 @@ package com.korea.WhereToGo.dto.response.meeting;
 
 import com.korea.WhereToGo.common.ResponseCode;
 import com.korea.WhereToGo.common.ResponseMessage;
+import com.korea.WhereToGo.dto.ImageWithBoardIdDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
-import com.korea.WhereToGo.entity.ImageEntity;
-import com.korea.WhereToGo.entity.MeetingEntity;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class GetMeetingImageListResponseDto extends ResponseDto {
-    private List<ImageEntity> imageList;
+    private List<ImageWithBoardIdDto> imageList;
 
-    private GetMeetingImageListResponseDto(List<ImageEntity> imageList) {
+    private GetMeetingImageListResponseDto(List<ImageWithBoardIdDto> imageList) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.imageList = imageList;
     }
 
-    public  static ResponseEntity<GetMeetingImageListResponseDto> success(List<ImageEntity> imageList){
+    public  static ResponseEntity<GetMeetingImageListResponseDto> success(List<ImageWithBoardIdDto> imageList){
         GetMeetingImageListResponseDto responseDto = new GetMeetingImageListResponseDto(imageList);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }

@@ -20,7 +20,6 @@ public class GetUserResponseDto extends ResponseDto {
     private String role;
     private double temperature;
 
-
     private GetUserResponseDto(UserEntity userEntity){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.userId = userEntity.getUserId();
