@@ -218,15 +218,19 @@ public class MeetingServiceImplement implements MeetingService {
             meetingEntity = meetingRepository.findByMeetingId(meetingId);
             if (meetingEntity == null) return GetJoinMeetingMemberResponseDto.notExistMeeting();
 
+
             UserEntity creator = meetingEntity.getCreator();
+            System.out.println(creator.getUserId());
+            UserEntity creatorEntity = userRepository.findByUserId(creator.getUserId());
+            System.out.println(creatorEntity.getNickname());
             MeetingUserDto creatorDto = new MeetingUserDto(
-                    creator.getId(),
-                    creator.getNickname(),
-                    creator.getProfileImage(),
+                    creatorEntity.getId(),
+                    creatorEntity.getNickname(),
+                    creatorEntity.getProfileImage(),
                     meetingEntity.getCreateDate()
             );
 
-            if (!meetingUsersList.stream().anyMatch(user -> user.getUserNickname().equals(creator.getNickname()))) {
+            if (meetingUsersList.stream().noneMatch(user -> user.getUserNickname().equals(creatorEntity.getNickname()))) {
                 meetingUserDtos.add(creatorDto);
             }
 

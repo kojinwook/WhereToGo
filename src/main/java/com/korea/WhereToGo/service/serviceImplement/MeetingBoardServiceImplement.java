@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
+import com.korea.WhereToGo.dto.ImageWithBoardIdDto;
 import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -170,7 +172,7 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
     @Override
     public ResponseEntity<? super GetMeetingImageListResponseDto> getMeetingImageList(Long meetingId) {
         List<ImageEntity> imageEntityList = new ArrayList<>();
-
+        List<ImageWithBoardIdDto> imageDtos = new ArrayList<>();
         try {
             List<ImageEntity> meetingImages = imageRepository.findByMeeting_MeetingId(meetingId);
             imageEntityList.addAll(meetingImages);
@@ -183,11 +185,18 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
                 return GetMeetingImageListResponseDto.notExistMeeting();
             }
 
+            imageDtos = imageEntityList.stream()
+                    .map(image -> new ImageWithBoardIdDto(
+                            image.getId(),
+                            image.getImage(),
+                            image.getMeetingBoard() != null ? image.getMeetingBoard().getMeetingBoardId() : null))
+                    .collect(Collectors.toList());
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetMeetingImageListResponseDto.success(imageEntityList);
+        return GetMeetingImageListResponseDto.success(imageDtos);
     }
 
 }

@@ -22,6 +22,7 @@ public class ImageEntity {
     private String userId;
     private String contentId;
     private String image;
+    private Long boardId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
