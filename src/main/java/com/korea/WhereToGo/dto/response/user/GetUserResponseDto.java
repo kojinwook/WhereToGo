@@ -17,6 +17,8 @@ public class GetUserResponseDto extends ResponseDto {
     private String email;
     private String password;
     private String nickname;
+    private String profileImage;
+    private String phoneNumber;
     private String role;
     private double temperature;
 
@@ -26,6 +28,8 @@ public class GetUserResponseDto extends ResponseDto {
         this.email = userEntity.getEmail();
         this.nickname = userEntity.getNickname();
         this.password = userEntity.getPassword();
+        this.profileImage = userEntity.getProfileImage();
+        this.phoneNumber = userEntity.getPhoneNumber();
         this.role = userEntity.getRole();
         this.temperature = userEntity.getTemperature();
     }

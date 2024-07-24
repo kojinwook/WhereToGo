@@ -92,24 +92,43 @@ public class UserController {
 
     @PostMapping("/report-user/{userId}")
     public ResponseEntity<? super PostReportUserResponseDto> reportUser(
+            @RequestBody @Valid PostReportUserRequestDto dto,
             @PathVariable("userId") String userId
     ) {
-        ResponseEntity<? super PostReportUserResponseDto> response = userService.reportUser(userId);
+        ResponseEntity<? super PostReportUserResponseDto> response = userService.reportUser(dto, userId);
         return response;
     }
 
     @PostMapping("/block-user")
     public ResponseEntity<? super BlockUserResponseDto> blockUser(
-            @RequestBody @Valid BlockUserRequestDto dto
-//            @AuthenticationPrincipal String userId
+            @RequestBody @Valid BlockUserRequestDto dto,
+            @AuthenticationPrincipal String userId
     ) {
-        ResponseEntity<? super BlockUserResponseDto> response = userService.blockUser(dto);
+        ResponseEntity<? super BlockUserResponseDto> response = userService.blockUser(dto, userId);
         return response;
     }
 
     @GetMapping("/temperature-top5")
     public ResponseEntity<? super GetTop5TemperatureUserResponseDto> getTop5User() {
         ResponseEntity<? super GetTop5TemperatureUserResponseDto> response = userService.getTop5User();
+        return response;
+    }
+
+    @PatchMapping("/profile-image")
+    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(
+            @RequestBody @Valid PatchProfileImageRequestDto requestBody,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super PatchProfileImageResponseDto> response = userService.patchProfileImage(requestBody, userId);
+        return response;
+    }
+
+    @PatchMapping("/patch-user")
+    public ResponseEntity<? super PatchUserResponseDto> patchUser(
+            @RequestBody @Valid PatchUserRequestDto requestBody,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super PatchUserResponseDto> response = userService.patchUser(requestBody, userId);
         return response;
     }
 }
