@@ -3,6 +3,7 @@ package com.korea.WhereToGo.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.korea.WhereToGo.dto.request.auth.AdminSignUpRequestDto;
 import com.korea.WhereToGo.dto.request.auth.SignUpRequestDto;
+import com.korea.WhereToGo.dto.request.user.PatchUserRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -117,5 +118,12 @@ public class UserEntity {
         this.profileImage = profileImage;
         this.nickname = nickname;
         this.role = "ROLE_USER";
+    }
+
+    public void patchUser(PatchUserRequestDto dto) {
+        this.nickname = dto.getNickname();
+        this.email = dto.getEmail();
+        this.profileImage = dto.getProfileImage();
+        this.phoneNumber = dto.getPhoneNumber();
     }
 }

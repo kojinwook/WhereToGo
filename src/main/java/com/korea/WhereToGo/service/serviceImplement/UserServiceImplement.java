@@ -1,10 +1,7 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
 import com.korea.WhereToGo.dto.UserDto;
-import com.korea.WhereToGo.dto.request.user.BlockUserRequestDto;
-import com.korea.WhereToGo.dto.request.user.ChangePasswordRequestDto;
-import com.korea.WhereToGo.dto.request.user.PatchNicknameRequestDto;
-import com.korea.WhereToGo.dto.request.user.WithdrawalUserRequestDto;
+import com.korea.WhereToGo.dto.request.user.*;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.dto.response.user.*;
 import com.korea.WhereToGo.entity.*;
@@ -38,16 +35,17 @@ public class UserServiceImplement implements UserService {
     private final QuestionRepository questionRepository;
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final ReportUserRepository reportUserRepository;
 
     private static final Logger log = LoggerFactory.getLogger(UserServiceImplement.class);
 
     @Override
-    public ResponseEntity<? super GetUserResponseDto> getUser(String userId){
+    public ResponseEntity<? super GetUserResponseDto> getUser(String userId) {
         UserEntity userEntity = null;
-        try{
+        try {
             userEntity = userRepository.findByUserId(userId);
-            if(userEntity == null) return GetUserResponseDto.notExistUser();
-        }catch (Exception exception) {
+            if (userEntity == null) return GetUserResponseDto.notExistUser();
+        } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -70,9 +68,9 @@ public class UserServiceImplement implements UserService {
 
     @Override
     public ResponseEntity<? super ChangePasswordResponseDto> changePassword(ChangePasswordRequestDto dto, String userId) {
-        try{
+        try {
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if(userEntity == null) return ChangePasswordResponseDto.notExistUser();
+            if (userEntity == null) return ChangePasswordResponseDto.notExistUser();
 
             String currentPassword = dto.getCurrentPassword();
             if (!passwordEncoder.matches(currentPassword, userEntity.getPassword()))
@@ -84,7 +82,7 @@ public class UserServiceImplement implements UserService {
             userRepository.save(userEntity);
 
             log.info("User {} changed password successfully.", userId);
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             log.error("Error occurred while changing password for user {}.", userId, exception);
             return ResponseDto.databaseError();
         }
@@ -94,16 +92,17 @@ public class UserServiceImplement implements UserService {
     @Override
     public ResponseEntity<? super WithdrawalUserResponseDto> withdrawalUser(WithdrawalUserRequestDto dto) {
         String userId = dto.getUserId();
-        try{
+        try {
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if(userEntity == null) return WithdrawalUserResponseDto.notExistedUser();
+            if (userEntity == null) return WithdrawalUserResponseDto.notExistedUser();
 
             String nickname = userEntity.getNickname();
 
-            if(!userEntity.getUserId().equals(userId)) return WithdrawalUserResponseDto.notPermission();
+            if (!userEntity.getUserId().equals(userId)) return WithdrawalUserResponseDto.notPermission();
 
             String password = dto.getPassword();
-            if (!passwordEncoder.matches(password, userEntity.getPassword())) return WithdrawalUserResponseDto.wrongPassword();
+            if (!passwordEncoder.matches(password, userEntity.getPassword()))
+                return WithdrawalUserResponseDto.wrongPassword();
 
             List<FavoriteEntity> favoriteEntities = userEntity.getLikes();
             favoriteRepository.deleteAll(favoriteEntities);
@@ -132,7 +131,7 @@ public class UserServiceImplement implements UserService {
             userRepository.delete(userEntity);
 
             log.info("User {} has been deleted.", userId);
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             log.error("Error occurred while deleting user {}.", userId, exception);
             return ResponseDto.databaseError();
         }
@@ -140,18 +139,18 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto, String userId){
-        try{
+    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto, String userId) {
+        try {
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if(userEntity == null) PatchNicknameResponseDto.notExistUser();
+            if (userEntity == null) PatchNicknameResponseDto.notExistUser();
 
             String nickname = dto.getNickname();
             boolean existedNickname = userRepository.existsByNickname(nickname);
-            if(existedNickname) return PatchNicknameResponseDto.duplicateNickname();
+            if (existedNickname) return PatchNicknameResponseDto.duplicateNickname();
             userEntity.setNickname(nickname);
 
             userRepository.save(userEntity);
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -160,9 +159,9 @@ public class UserServiceImplement implements UserService {
 
     @Override
     public ResponseEntity<? super PasswordRecoveryResponseDto> passwordRecovery(String email) {
-        try{
+        try {
             UserEntity userEntity = userRepository.findByEmail(email);
-            if(userEntity == null) return PasswordRecoveryResponseDto.notExistUser();
+            if (userEntity == null) return PasswordRecoveryResponseDto.notExistUser();
 
             String temporaryPassword = generateTemporaryPassword();
             userEntity.setPassword(passwordEncoder.encode(temporaryPassword));
@@ -204,7 +203,8 @@ public class UserServiceImplement implements UserService {
         List<UserDto> userList = new ArrayList<>();
         try {
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if (userEntity == null || userEntity.getRole().equals("ROLE_USER")) return GetUserListResponseDto.noPermission();
+            if (userEntity == null || userEntity.getRole().equals("ROLE_USER"))
+                return GetUserListResponseDto.noPermission();
 
 //            List<UserEntity> users = userRepository.findAllNonAdminUsers();
             List<UserEntity> users = userRepository.findAll();
@@ -265,14 +265,20 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public ResponseEntity<? super PostReportUserResponseDto> reportUser(String userId) {
+    public ResponseEntity<? super PostReportUserResponseDto> reportUser(PostReportUserRequestDto dto, String userId) {
+        ReportUserEntity reportUserEntity = new ReportUserEntity();
+        String reportUserNickname = dto.getReportUserNickname();
         try {
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if (userEntity == null) return PostReportUserResponseDto.notExistUser();
+            UserEntity reportUser = userRepository.findByNickname(reportUserNickname);
+            if (userEntity == null || reportUser == null) return PostReportUserResponseDto.notExistUser();
 
-            userEntity.setReportCount(userEntity.getReportCount() + 1);
-            userEntity.decreaseTemperature(0.5);
-            userRepository.save(userEntity);
+            reportUserEntity = new ReportUserEntity(dto, userEntity.getNickname());
+            reportUserRepository.save(reportUserEntity);
+
+            reportUser.setReportCount(userEntity.getReportCount() + 1);
+//            userEntity.decreaseTemperature(0.5);
+            userRepository.save(reportUser);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -282,10 +288,11 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public ResponseEntity<? super BlockUserResponseDto> blockUser(BlockUserRequestDto dto) {
+    public ResponseEntity<? super BlockUserResponseDto> blockUser(BlockUserRequestDto dto, String userId) {
         try {
-//            UserEntity userEntity = userRepository.findByUserId(userId);
-//            if (userEntity == null || userEntity.getRole().equals("ROLE_USER")) return BlockUserResponseDto.noPermission();
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null || userEntity.getRole().equals("ROLE_USER"))
+                return BlockUserResponseDto.noPermission();
 
             String targetUserId = dto.getUserId();
             int blockDays = dto.getBlockDay();
@@ -318,6 +325,58 @@ public class UserServiceImplement implements UserService {
             return ResponseDto.databaseError();
         }
         return GetTop5TemperatureUserResponseDto.success(userList);
+    }
+
+    @Override
+    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, String userId) {
+
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return PatchProfileImageResponseDto.notExistUser();
+
+            String profileImage = dto.getProfileImage();
+            userEntity.setProfileImage(profileImage);
+            userRepository.save(userEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PatchProfileImageResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PatchUserResponseDto> patchUser(PatchUserRequestDto dto, String userId) {
+
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return PatchUserResponseDto.notExistUser();
+
+            userEntity.patchUser(dto);
+            userRepository.save(userEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PatchUserResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super VerifyPasswordResponseDto> verifyPassword(VerifyPasswordRequestDto dto, String userId) {
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return VerifyPasswordResponseDto.notExistUser();
+
+            String password = dto.getPassword();
+            if (!passwordEncoder.matches(password, userEntity.getPassword()))
+                return VerifyPasswordResponseDto.wrongPassword();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return VerifyPasswordResponseDto.success();
     }
 
     private String generateTemporaryPassword() {

@@ -57,10 +57,10 @@ public class MeetingServiceImplement implements MeetingService {
             UserEntity userEntity = userRepository.findByNickname(nickname);
             if(userEntity == null) return PostMeetingResponseDto.notExistUser();
 
-            LocalDateTime lastMeetingCreated = userEntity.getLastMeetingCreated();
-            if (lastMeetingCreated != null && lastMeetingCreated.plusDays(2).isAfter(LocalDateTime.now())) {
-                return PostMeetingResponseDto.cannotCreateMeeting();
-            }
+//            LocalDateTime lastMeetingCreated = userEntity.getLastMeetingCreated();
+//            if (lastMeetingCreated != null && lastMeetingCreated.plusDays(2).isAfter(LocalDateTime.now())) {
+//                return PostMeetingResponseDto.cannotCreateMeeting();
+//            }
 
             userEntity.increaseTemperature(0.5);
             userEntity.updateLastMeetingCreated();
@@ -222,17 +222,12 @@ public class MeetingServiceImplement implements MeetingService {
             UserEntity creator = meetingEntity.getCreator();
             System.out.println(creator.getUserId());
             UserEntity creatorEntity = userRepository.findByUserId(creator.getUserId());
-            System.out.println(creatorEntity.getNickname());
             MeetingUserDto creatorDto = new MeetingUserDto(
                     creatorEntity.getId(),
                     creatorEntity.getNickname(),
                     creatorEntity.getProfileImage(),
                     meetingEntity.getCreateDate()
             );
-
-            if (meetingUsersList.stream().noneMatch(user -> user.getUserNickname().equals(creatorEntity.getNickname()))) {
-                meetingUserDtos.add(creatorDto);
-            }
 
             meetingUserDtos = meetingUsersList.stream()
                     .map(user -> new MeetingUserDto(
@@ -242,6 +237,10 @@ public class MeetingServiceImplement implements MeetingService {
                             user.getJoinDate()
                     ))
                     .collect(Collectors.toList());
+
+            if (meetingUsersList.stream().noneMatch(user -> user.getUserNickname().equals(creatorDto.getUserNickname()))) {
+                meetingUserDtos.add(creatorDto);
+            }
 
         } catch (Exception exception) {
             exception.printStackTrace();
