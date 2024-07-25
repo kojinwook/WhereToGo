@@ -89,7 +89,9 @@ public class ChatServiceImplement implements ChatService {
         ChatRoomEntity chatRoom = new ChatRoomEntity();
         Long roomId = null;
         try {
-            Optional<ChatRoomEntity> existingChatRoom = chatRoomRepository.findByNicknameAndCreatorNickname(dto.getNickname(), dto.getCreatorNickname());
+            UserEntity user = userRepository.findByUserId(dto.getCreatorId());
+
+            Optional<ChatRoomEntity> existingChatRoom = chatRoomRepository.findByNicknameAndCreatorNickname(dto.getNickname(), user.getUserId());
             if (existingChatRoom.isPresent()) {
                 roomId = existingChatRoom.get().getRoomId();
                 return PostChatRoomResponseDto.success(roomId);
@@ -98,7 +100,7 @@ public class ChatServiceImplement implements ChatService {
             chatRoom.setRoomName(dto.getRoomName());
             chatRoom.setUserId(dto.getUserId());
             chatRoom.setNickname(dto.getNickname());
-            chatRoom.setCreatorNickname(dto.getCreatorNickname());
+            chatRoom.setCreatorNickname(user.getNickname());
             chatRoomRepository.save(chatRoom);
 
             roomId = chatRoom.getRoomId();
