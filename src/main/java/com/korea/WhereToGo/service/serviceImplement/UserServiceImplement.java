@@ -362,6 +362,23 @@ public class UserServiceImplement implements UserService {
         return PatchUserResponseDto.success();
     }
 
+    @Override
+    public ResponseEntity<? super VerifyPasswordResponseDto> verifyPassword(VerifyPasswordRequestDto dto, String userId) {
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null) return VerifyPasswordResponseDto.notExistUser();
+
+            String password = dto.getPassword();
+            if (!passwordEncoder.matches(password, userEntity.getPassword()))
+                return VerifyPasswordResponseDto.wrongPassword();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return VerifyPasswordResponseDto.success();
+    }
+
     private String generateTemporaryPassword() {
         int length = 10;
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

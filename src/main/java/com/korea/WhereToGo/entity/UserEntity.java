@@ -124,5 +124,6 @@ public class UserEntity {
         this.nickname = dto.getNickname();
         this.email = dto.getEmail();
         this.profileImage = dto.getProfileImage();
+        this.phoneNumber = dto.getPhoneNumber();
     }
 }

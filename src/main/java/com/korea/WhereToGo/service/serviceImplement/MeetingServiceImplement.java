@@ -57,10 +57,10 @@ public class MeetingServiceImplement implements MeetingService {
             UserEntity userEntity = userRepository.findByNickname(nickname);
             if(userEntity == null) return PostMeetingResponseDto.notExistUser();
 
-            LocalDateTime lastMeetingCreated = userEntity.getLastMeetingCreated();
-            if (lastMeetingCreated != null && lastMeetingCreated.plusDays(2).isAfter(LocalDateTime.now())) {
-                return PostMeetingResponseDto.cannotCreateMeeting();
-            }
+//            LocalDateTime lastMeetingCreated = userEntity.getLastMeetingCreated();
+//            if (lastMeetingCreated != null && lastMeetingCreated.plusDays(2).isAfter(LocalDateTime.now())) {
+//                return PostMeetingResponseDto.cannotCreateMeeting();
+//            }
 
             userEntity.increaseTemperature(0.5);
             userEntity.updateLastMeetingCreated();

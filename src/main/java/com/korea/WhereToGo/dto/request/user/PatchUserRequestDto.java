@@ -13,4 +13,5 @@ public class PatchUserRequestDto {
     private String currentPassword;
     private String newPassword;
     private String profileImage;
+    private String phoneNumber;
 }

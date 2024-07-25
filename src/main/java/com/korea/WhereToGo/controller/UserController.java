@@ -32,10 +32,10 @@ public class UserController {
         return responseBody;
     }
 
-    @PatchMapping("/change-password/{userId}")
+    @PatchMapping("/change-password")
     public ResponseEntity<? super ChangePasswordResponseDto> changePassword(
             @RequestBody @Valid ChangePasswordRequestDto requestBody,
-            @PathVariable("userId") String userId
+            @AuthenticationPrincipal String userId
     ) {
         ResponseEntity<? super ChangePasswordResponseDto> response = userService.changePassword(requestBody, userId);
         return response;
@@ -129,6 +129,15 @@ public class UserController {
             @AuthenticationPrincipal String userId
     ) {
         ResponseEntity<? super PatchUserResponseDto> response = userService.patchUser(requestBody, userId);
+        return response;
+    }
+
+    @PostMapping("/verify-password")
+    public ResponseEntity<? super VerifyPasswordResponseDto> verifyPassword(
+            @RequestBody @Valid VerifyPasswordRequestDto requestBody,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super VerifyPasswordResponseDto> response = userService.verifyPassword(requestBody, userId);
         return response;
     }
 }
