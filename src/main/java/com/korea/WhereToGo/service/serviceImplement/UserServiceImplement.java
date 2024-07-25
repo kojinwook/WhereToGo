@@ -36,6 +36,7 @@ public class UserServiceImplement implements UserService {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ReportUserRepository reportUserRepository;
+    private final ImageRepository imageRepository;
 
     private static final Logger log = LoggerFactory.getLogger(UserServiceImplement.class);
 
@@ -280,6 +281,16 @@ public class UserServiceImplement implements UserService {
 //            userEntity.decreaseTemperature(0.5);
             userRepository.save(reportUser);
 
+            List<String> imageList = dto.getImageList();
+            List<ImageEntity> imageEntities = new ArrayList<>();
+
+            for (String image : imageList) {
+                ImageEntity imageEntity = new ImageEntity(image, reportUserEntity, userId);
+                imageEntity.setReportUser(reportUserEntity);
+                imageEntities.add(imageEntity);
+            }
+            imageRepository.saveAll(imageEntities);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
@@ -377,6 +388,23 @@ public class UserServiceImplement implements UserService {
             return ResponseDto.databaseError();
         }
         return VerifyPasswordResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetReportListResponseDto> getReportList(String nickname, String userId) {
+        List<ReportUserEntity> reportList = new ArrayList<>();
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null || userEntity.getRole().equals("ROLE_USER"))
+                return GetReportListResponseDto.noPermission();
+
+            reportList = reportUserRepository.findByReportUserNickname(nickname);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetReportListResponseDto.success(reportList);
     }
 
     private String generateTemporaryPassword() {

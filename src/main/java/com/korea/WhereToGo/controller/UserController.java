@@ -140,4 +140,13 @@ public class UserController {
         ResponseEntity<? super VerifyPasswordResponseDto> response = userService.verifyPassword(requestBody, userId);
         return response;
     }
+
+    @GetMapping("/report-list/{nickname}")
+    public ResponseEntity<? super GetReportListResponseDto> getReportList(
+            @PathVariable("nickname") String nickname,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super GetReportListResponseDto> response = userService.getReportList(nickname, userId);
+        return response;
+    }
 }

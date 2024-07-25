@@ -49,6 +49,11 @@ public class ImageEntity {
     @JoinColumn(name = "notice_id")
     private NoticeEntity notice;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    @JoinColumn(name = "report_id")
+    private ReportUserEntity reportUser;
+
     public ImageEntity(String contentId, String image, String userId){
         this.userId = userId;
         this.contentId = contentId;
@@ -98,6 +103,12 @@ public class ImageEntity {
     public ImageEntity(String imageUrl, QuestionEntity questionEntity) {
         this.image = imageUrl;
         this.question = questionEntity;
+    }
+
+    public ImageEntity(String image, ReportUserEntity reportUserEntity, String userId) {
+        this.image = image;
+        this.userId = userId;
+        this.reportUser = reportUserEntity;
     }
 
     public Long getReviewId() {
