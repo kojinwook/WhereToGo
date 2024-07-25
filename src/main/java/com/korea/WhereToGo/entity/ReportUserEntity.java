@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,13 +24,24 @@ public class ReportUserEntity {
 
     private String userNickname;
     private String reportUserNickname;
-    private String reportContent;
+    private String reportType;
+    private String incidentDescription;
+    private String incidentTimeDate;
+    private String incidentLocation;
+    private String impactDescription;
     private String reportDate;
+
+    @OneToMany(mappedBy = "reportUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<ImageEntity> imageList;
 
     public ReportUserEntity(PostReportUserRequestDto dto, String userNickname) {
         this.userNickname = userNickname;
         this.reportUserNickname = dto.getReportUserNickname();
-        this.reportContent = dto.getReportContent();
+        this.reportType = dto.getReportType();
+        this.incidentDescription = dto.getIncidentDescription();
+        this.incidentTimeDate = dto.getIncidentTimeDate();
+        this.incidentLocation = dto.getIncidentLocation();
+        this.impactDescription = dto.getImpactDescription();
         this.reportDate = LocalDateTime.now().toString();
     }
 }

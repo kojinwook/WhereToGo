@@ -22,4 +22,5 @@ public interface UserService {
     ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, String userId);
     ResponseEntity<? super PatchUserResponseDto> patchUser(PatchUserRequestDto dto, String userId);
     ResponseEntity<? super VerifyPasswordResponseDto> verifyPassword(VerifyPasswordRequestDto dto, String userId);
+    ResponseEntity<? super GetReportListResponseDto> getReportList(String nickname, String userId);
 }

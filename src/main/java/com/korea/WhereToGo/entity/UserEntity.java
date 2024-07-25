@@ -98,6 +98,7 @@ public class UserEntity {
         this.nickname = dto.getNickname();
         this.phoneNumber = dto.getPhone();
         this.role = "ROLE_USER";
+        this.temperature = 36.5;
         this.reportCount = 0;
     }
 
