@@ -10,9 +10,7 @@ public interface ChatService {
     ResponseEntity<? super GetChatMessageResponseDto> getChatMessage(Long messageId);
     ResponseEntity<? super GetChatMessageListResponseDto> getChatMessageList(Long roomId);
     ResponseEntity<? super PostChatRoomResponseDto> postChatRoom(PostChatRoomRequestDto dto);
-    ResponseEntity<? super GetChatRoomListResponseDto> getChatRooms();
     ResponseEntity<? super GetSavedMessageResponseDto> getSavedMessage(String messageId);
     ResponseEntity<? super GetChatRoomResponseDto> getUserChatRooms(String nickname);
     ResponseEntity<? super GetRoomUsersResponseDto> getRoomUsers(Long roomId);
-    ResponseEntity<? super UpdateReadStatusResponseDto> updateReadStatus(Long messageId);
 }

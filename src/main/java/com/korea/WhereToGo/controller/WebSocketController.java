@@ -1,18 +1,20 @@
 package com.korea.WhereToGo.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korea.WhereToGo.dto.request.chat.PostChatMessageRequestDto;
-import com.korea.WhereToGo.dto.request.chat.PostTypingStatusRequestDto;
+import com.korea.WhereToGo.dto.request.meeting.board.reply.PostBoardReplyRequestDto;
+import com.korea.WhereToGo.dto.request.notification.PostReplyNotificationRequestDto;
 import com.korea.WhereToGo.dto.response.chat.GetChatMessageListResponseDto;
 import com.korea.WhereToGo.dto.response.chat.GetChatMessageResponseDto;
 import com.korea.WhereToGo.dto.response.chat.GetSavedMessageResponseDto;
 import com.korea.WhereToGo.entity.ChatMessageEntity;
+import com.korea.WhereToGo.entity.MeetingBoardEntity;
+import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.entity.UserStatus;
 import com.korea.WhereToGo.repository.ChatMessageRepository;
+import com.korea.WhereToGo.repository.MeetingBoardRepository;
+import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.ChatService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -23,7 +25,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,6 +32,8 @@ public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageRepository chatMessageRepository;
+    private final MeetingBoardRepository meetingBoardRepository;
+    private final UserRepository userRepository;
     private final ChatService chatService;
 
     @MessageMapping("/chat/{roomId}/message")
@@ -74,11 +77,6 @@ public class WebSocketController {
         }
     }
 
-    @MessageMapping("/chat/{roomId}/typing")
-    public void typingStatus(@DestinationVariable String roomId, @Payload PostTypingStatusRequestDto dto) {
-        messagingTemplate.convertAndSend("/topic/typing." + roomId, dto);
-    }
-
     // WebSocket 연결 시
     @MessageMapping("/chat/status")
     public void afterConnectionEstablished() {
@@ -95,47 +93,23 @@ public class WebSocketController {
         messagingTemplate.convertAndSend("/topic/status", new UserStatus(username, false));
     }
 
-    @MessageMapping("/chat/{roomId}/enter")
-    public void userEnterRoom(@DestinationVariable String roomId, @Payload String jsonAuthentication) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            AuthenticationMessage authenticationMessage = objectMapper.readValue(jsonAuthentication, AuthenticationMessage.class);
+    @MessageMapping("/board/reply")
+    public void notifyPostReply(@Payload PostBoardReplyRequestDto dto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
 
-            String username = authenticationMessage.getUsername();
+        MeetingBoardEntity meetingBoard = meetingBoardRepository.findByMeetingBoardId(dto.getMeetingBoardId());
+        UserEntity writer = meetingBoard.getUser();
 
-            String messageToSend = username + " has entered the chat room.";
-            messagingTemplate.convertAndSend("/topic/enter." + roomId, messageToSend);
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        UserEntity postAuthor = userRepository.findByUserId(writer.getUserId());
+        if (postAuthor != null) {
+            PostReplyNotificationRequestDto notification = new PostReplyNotificationRequestDto();
+            notification.setMeetingBoardId(dto.getMeetingBoardId());
+            notification.setWriterId(postAuthor.getUserId());
+            notification.setReplySender(username);
+            notification.setReplyContent(dto.getReply());
+
+            messagingTemplate.convertAndSend("/topic/notifications/" + postAuthor.getUserId(), notification);
         }
-    }
-
-    @MessageMapping("/chat/{roomId}/leave")
-    public void userLeaveRoom(@DestinationVariable String roomId, @Payload String jsonAuthentication) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            AuthenticationMessage authenticationMessage = objectMapper.readValue(jsonAuthentication, AuthenticationMessage.class);
-
-            String username = authenticationMessage.getUsername();
-            List<ChatMessageEntity> chatMessages = chatMessageRepository.findByRoomId(authenticationMessage.getRoomId());
-
-            for (ChatMessageEntity chatMessage : chatMessages) {
-                chatMessage.setReadByReceiver(true);
-                chatMessageRepository.save(chatMessage);
-            }
-
-            String messageToSend = username + " has left the chat room.";
-            messagingTemplate.convertAndSend("/topic/leave." + roomId, messageToSend);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
-
-    @Getter
-    @Setter
-    public static class AuthenticationMessage {
-        private Long roomId;
-        private String username;
-        private String message;
     }
 }
