@@ -113,19 +113,6 @@ public class ChatServiceImplement implements ChatService {
     }
 
     @Override
-    public ResponseEntity<? super GetChatRoomListResponseDto> getChatRooms() {
-        List<ChatRoomEntity> chatRooms = new ArrayList<>();
-        try {
-            chatRooms = chatRoomRepository.findAll();
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-        return GetChatRoomListResponseDto.success(chatRooms);
-    }
-
-    @Override
     public ResponseEntity<? super GetSavedMessageResponseDto> getSavedMessage(String messageKey) {
         ChatMessageEntity message = new ChatMessageEntity();
         try {
@@ -176,23 +163,5 @@ public class ChatServiceImplement implements ChatService {
             return ResponseDto.databaseError();
         }
         return GetRoomUsersResponseDto.success(users);
-    }
-
-    @Override
-    public ResponseEntity<? super UpdateReadStatusResponseDto> updateReadStatus(Long messageId) {
-        try {
-            ChatMessageEntity message = chatMessageRepository.findByMessageId(messageId);
-            if (message == null) {
-                return GetChatMessageResponseDto.notExistChatMessage(); // 존재하지 않는 메시지 처리
-            }
-
-            message.setReadByReceiver(true);
-            chatMessageRepository.save(message);
-
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-        return UpdateReadStatusResponseDto.success();
     }
 }

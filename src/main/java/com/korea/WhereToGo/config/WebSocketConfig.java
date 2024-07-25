@@ -20,10 +20,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
-
-//    @Override
-//    public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-//        // Optional: Configure WebSocket transport, e.g., set idle timeout
-//        registration.setSendTimeLimit(15 * 1000).setSendBufferSizeLimit(512 * 1024);
-//    }
 }
