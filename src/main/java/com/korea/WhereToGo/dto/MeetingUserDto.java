@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class MeetingUserDto {
-    private Long userId;
+    private String userId;
     private Long meetingUsersId;
     private Long meetingId;
     private String title;
@@ -17,7 +17,7 @@ public class MeetingUserDto {
     private String userProfileImage;
     private LocalDateTime joinDate;
 
-    public MeetingUserDto(Long userId, String userNickname, String userProfileImage, LocalDateTime joinDate) {
+    public MeetingUserDto(String userId, String userNickname, String userProfileImage, LocalDateTime joinDate) {
         this.userId = userId;
         this.userNickname = userNickname;
         this.userProfileImage = userProfileImage;

@@ -7,7 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostReplyNotificationRequestDto {
+public class ReplyNotificationRequestDto {
+    private String id;
+    private Long meetingId;
     private Long meetingBoardId;
     private String writerId;
     private String replySender;

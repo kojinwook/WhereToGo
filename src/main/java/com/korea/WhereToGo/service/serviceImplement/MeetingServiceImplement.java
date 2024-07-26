@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
+import com.korea.WhereToGo.dto.MeetingDto;
 import com.korea.WhereToGo.dto.MeetingUserDto;
 import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.PatchMeetingRequestDto;
@@ -223,7 +224,7 @@ public class MeetingServiceImplement implements MeetingService {
             System.out.println(creator.getUserId());
             UserEntity creatorEntity = userRepository.findByUserId(creator.getUserId());
             MeetingUserDto creatorDto = new MeetingUserDto(
-                    creatorEntity.getId(),
+                    creatorEntity.getUserId(),
                     creatorEntity.getNickname(),
                     creatorEntity.getProfileImage(),
                     meetingEntity.getCreateDate()
@@ -231,7 +232,7 @@ public class MeetingServiceImplement implements MeetingService {
 
             meetingUserDtos = meetingUsersList.stream()
                     .map(user -> new MeetingUserDto(
-                            user.getMeetingUsersId(),
+                            user.getUser().getUserId(),
                             user.getUserNickname(),
                             user.getUserProfileImage(),
                             user.getJoinDate()
@@ -251,32 +252,36 @@ public class MeetingServiceImplement implements MeetingService {
 
     @Override
     public ResponseEntity<? super GetUserMeetingResponseDto> getUserMeeting(String userId) {
-        List<MeetingUserDto> meetingUsersDtos = new ArrayList<>();
+        List<MeetingDto> meetingDtos = new ArrayList<>();
         try {
             List<MeetingUsersEntity> meetingUsersEntities = meetingUsersRepository.findByUser_UserId(userId);
 
-            UserEntity userEntity = userRepository.findByUserId(userId);
-            List<MeetingUsersEntity> filteredMeetingUsers = meetingUsersEntities.stream()
-                    .filter(meetingUser -> meetingUser.getUserNickname().equals(userEntity.getNickname()))
-                    .collect(Collectors.toList());
+            for (MeetingUsersEntity meetingUser : meetingUsersEntities) {
+                MeetingEntity meeting = meetingUser.getMeeting();
+                MeetingDto meetingDto = new MeetingDto();
+                meetingDto.setMeetingId(meeting.getMeetingId());
+                meetingDto.setTitle(meeting.getTitle());
+                meetingDto.setCreatorProfile(meeting.getCreator().getProfileImage());
+                meetingDto.setCreatorNickname(meeting.getCreator().getNickname());
 
-            meetingUsersDtos = filteredMeetingUsers.stream()
-                    .map(meetingUser -> {
-                        MeetingUserDto dto = new MeetingUserDto();
-                        dto.setUserId(meetingUser.getUser().getId());
-                        dto.setUserNickname(meetingUser.getUserNickname());
-                        dto.setMeetingId(meetingUser.getMeeting().getMeetingId());
-                        dto.setTitle(meetingUser.getMeeting().getTitle());
-                        dto.setJoinDate(meetingUser.getJoinDate());
-                        return dto;
-                    })
-                    .collect(Collectors.toList());
+                meetingDtos.add(meetingDto);
+            }
+
+            List<MeetingEntity> createdMeetings = meetingRepository.findByCreator_UserId(userId);
+            for (MeetingEntity meeting : createdMeetings) {
+                MeetingDto meetingDto = new MeetingDto();
+                meetingDto.setMeetingId(meeting.getMeetingId());
+                meetingDto.setTitle(meeting.getTitle());
+                meetingDto.setCreatorProfile(meeting.getCreator().getProfileImage());
+                meetingDto.setCreatorNickname(meeting.getCreator().getNickname());
+                meetingDtos.add(meetingDto);
+            }
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetUserMeetingResponseDto.success(meetingUsersDtos);
+        return GetUserMeetingResponseDto.success(meetingDtos);
     }
 
     @Override

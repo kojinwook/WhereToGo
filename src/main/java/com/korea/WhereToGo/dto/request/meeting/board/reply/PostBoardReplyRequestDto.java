@@ -10,4 +10,5 @@ import lombok.Setter;
 public class PostBoardReplyRequestDto {
     private String reply;
     private Long meetingBoardId;
+    private Long meetingId;
 }

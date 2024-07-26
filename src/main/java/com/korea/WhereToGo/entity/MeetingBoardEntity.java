@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,11 +39,13 @@ public class MeetingBoardEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "meeting_id")
+    @Fetch(FetchMode.JOIN)
     @JsonBackReference
     private MeetingEntity meeting;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @Fetch(FetchMode.JOIN)
     @JsonBackReference
     private UserEntity user;
 
@@ -49,6 +53,7 @@ public class MeetingBoardEntity {
     private UserDto userDto;
 
     @OneToMany(mappedBy = "meetingBoard", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Fetch(FetchMode.JOIN)
     @JsonManagedReference
     private List<ImageEntity> imageList = new ArrayList<>();
 

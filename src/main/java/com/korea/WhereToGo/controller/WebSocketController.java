@@ -1,8 +1,11 @@
 package com.korea.WhereToGo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.korea.WhereToGo.dto.request.chat.PostChatMessageRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PostBoardReplyRequestDto;
-import com.korea.WhereToGo.dto.request.notification.PostReplyNotificationRequestDto;
+import com.korea.WhereToGo.dto.request.notification.ChatNotificationRequestDto;
+import com.korea.WhereToGo.dto.request.notification.ReplyNotificationRequestDto;
 import com.korea.WhereToGo.dto.response.chat.GetChatMessageListResponseDto;
 import com.korea.WhereToGo.dto.response.chat.GetChatMessageResponseDto;
 import com.korea.WhereToGo.dto.response.chat.GetSavedMessageResponseDto;
@@ -14,7 +17,9 @@ import com.korea.WhereToGo.repository.ChatMessageRepository;
 import com.korea.WhereToGo.repository.MeetingBoardRepository;
 import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.ChatService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,6 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -77,7 +83,6 @@ public class WebSocketController {
         }
     }
 
-    // WebSocket 연결 시
     @MessageMapping("/chat/status")
     public void afterConnectionEstablished() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -85,7 +90,6 @@ public class WebSocketController {
         messagingTemplate.convertAndSend("/topic/status", new UserStatus(username, true));
     }
 
-    // WebSocket 연결 종료 시
     @MessageMapping("/chat/disconnect")
     public void afterConnectionClosed() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -94,22 +98,64 @@ public class WebSocketController {
     }
 
     @MessageMapping("/board/reply")
-    public void notifyPostReply(@Payload PostBoardReplyRequestDto dto) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
+    public void notifyPostReply(@Payload PostBoardReplyRequestDto dto,
+                                @Payload String jsonAuthentication) throws JsonProcessingException {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            AuthenticationMessage authenticationMessage = objectMapper.readValue(jsonAuthentication, AuthenticationMessage.class);
 
-        MeetingBoardEntity meetingBoard = meetingBoardRepository.findByMeetingBoardId(dto.getMeetingBoardId());
-        UserEntity writer = meetingBoard.getUser();
+            String username = authenticationMessage.getReplySender();
 
-        UserEntity postAuthor = userRepository.findByUserId(writer.getUserId());
-        if (postAuthor != null) {
-            PostReplyNotificationRequestDto notification = new PostReplyNotificationRequestDto();
-            notification.setMeetingBoardId(dto.getMeetingBoardId());
-            notification.setWriterId(postAuthor.getUserId());
-            notification.setReplySender(username);
-            notification.setReplyContent(dto.getReply());
+            MeetingBoardEntity meetingBoard = meetingBoardRepository.findByMeetingBoardId(dto.getMeetingBoardId());
+            UserEntity writer = meetingBoard.getUser();
 
-            messagingTemplate.convertAndSend("/topic/notifications/" + postAuthor.getUserId(), notification);
+            UserEntity postAuthor = userRepository.findByUserId(writer.getUserId());
+            if (postAuthor != null) {
+                ReplyNotificationRequestDto notification = new ReplyNotificationRequestDto();
+                notification.setId(UUID.randomUUID().toString());
+                notification.setMeetingId(meetingBoard.getMeeting().getMeetingId());
+                notification.setMeetingBoardId(dto.getMeetingBoardId());
+                notification.setWriterId(postAuthor.getUserId());
+                notification.setReplySender(username);
+                notification.setReplyContent(authenticationMessage.getReplyContent());
+
+                messagingTemplate.convertAndSend("/topic/notifications/" + postAuthor.getUserId(), notification);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw exception;
         }
+    }
+
+    @MessageMapping("/chat/message")
+    public void notifyChatMessage(@Payload PostChatMessageRequestDto dto) {
+        try {
+            ChatMessageEntity chatMessage = chatMessageRepository.findByMessageKey(dto.getMessageKey());
+            if (chatMessage == null) {
+                System.out.println("Failed to retrieve chat message with messageKey: " + dto.getMessageKey());
+                return;
+            }
+                ChatNotificationRequestDto notification = new ChatNotificationRequestDto();
+                notification.setId(UUID.randomUUID().toString());
+                notification.setChatRoomId(chatMessage.getRoomId());
+                notification.setSenderId(chatMessage.getSender());
+                notification.setMessage(chatMessage.getMessage());
+
+                messagingTemplate.convertAndSend("/topic/notifications." + chatMessage.getRoomId(), notification);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw exception;
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class AuthenticationMessage {
+        private Long meetingBoardId;
+        private String replySender;
+        private String replyContent;
+        private Long roomId;
+        private String messageSender;
+
     }
 }

@@ -9,13 +9,11 @@ import com.korea.WhereToGo.entity.MeetingBoardReplyEntity;
 import com.korea.WhereToGo.entity.MeetingReplyToReplyEntity;
 import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.repository.MeetingBoardReplyRepository;
-import com.korea.WhereToGo.repository.MeetingBoardRepository;
 import com.korea.WhereToGo.repository.MeetingReplyToReplyRepository;
 import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.MeetingBoardReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,10 +24,8 @@ import java.util.List;
 public class MeetingBoardReplyServiceImplement implements MeetingBoardReplyService {
 
     private final MeetingBoardReplyRepository meetingBoardReplyRepository;
-    private final MeetingBoardRepository meetingBoardRepository;
     private final UserRepository userRepository;
     private final MeetingReplyToReplyRepository meetingReplyToReplyRepository;
-    private final SimpMessagingTemplate messagingTemplate;
 
     @Override
     public ResponseEntity<? super PostBoardReplyResponseDto> postBoardReply(PostBoardReplyRequestDto dto, String userId) {
