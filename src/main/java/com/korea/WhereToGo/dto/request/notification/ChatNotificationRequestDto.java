@@ -13,4 +13,5 @@ public class ChatNotificationRequestDto {
     private String senderId;
     private String receiverId;
     private String message;
+    private String type;
 }

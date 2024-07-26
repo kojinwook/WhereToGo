@@ -14,4 +14,5 @@ public class ReplyNotificationRequestDto {
     private String writerId;
     private String replySender;
     private String replyContent;
+    private String type;
 }
