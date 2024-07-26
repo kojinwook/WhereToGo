@@ -9,11 +9,9 @@ import com.korea.WhereToGo.dto.request.notification.ReplyNotificationRequestDto;
 import com.korea.WhereToGo.dto.response.chat.GetChatMessageListResponseDto;
 import com.korea.WhereToGo.dto.response.chat.GetChatMessageResponseDto;
 import com.korea.WhereToGo.dto.response.chat.GetSavedMessageResponseDto;
-import com.korea.WhereToGo.entity.ChatMessageEntity;
-import com.korea.WhereToGo.entity.MeetingBoardEntity;
-import com.korea.WhereToGo.entity.UserEntity;
-import com.korea.WhereToGo.entity.UserStatus;
+import com.korea.WhereToGo.entity.*;
 import com.korea.WhereToGo.repository.ChatMessageRepository;
+import com.korea.WhereToGo.repository.ChatRoomRepository;
 import com.korea.WhereToGo.repository.MeetingBoardRepository;
 import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.ChatService;
@@ -21,7 +19,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -30,6 +27,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -38,18 +37,10 @@ public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatRoomRepository chatRoomRepository;
     private final MeetingBoardRepository meetingBoardRepository;
     private final UserRepository userRepository;
     private final ChatService chatService;
-
-    @MessageMapping("/chat/{roomId}/message")
-    public void postChatMessage(@DestinationVariable String roomId, @Payload PostChatMessageRequestDto dto) {
-        chatService.postChatMessage(dto);
-        ResponseEntity<? super GetSavedMessageResponseDto> savedMessageResponse = chatService.getSavedMessage(dto.getMessageKey());
-        ChatMessageEntity savedMessage = ((GetSavedMessageResponseDto) savedMessageResponse.getBody()).getSavedMessage();
-        messagingTemplate.convertAndSend("/topic/chat." + dto.getRoomId(),
-                GetChatMessageResponseDto.success(savedMessage));
-    }
 
     @MessageMapping("/chat/room.{roomId}")
     public void getChatMessageList(@Payload Long roomId, Principal principal) {
@@ -118,8 +109,9 @@ public class WebSocketController {
                 notification.setWriterId(postAuthor.getUserId());
                 notification.setReplySender(username);
                 notification.setReplyContent(authenticationMessage.getReplyContent());
+                notification.setType("REPLY");
 
-                messagingTemplate.convertAndSend("/topic/notifications/" + postAuthor.getUserId(), notification);
+                messagingTemplate.convertAndSend("/topic/notifications/" + postAuthor.getNickname(), notification);
             }
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -130,18 +122,37 @@ public class WebSocketController {
     @MessageMapping("/chat/message")
     public void notifyChatMessage(@Payload PostChatMessageRequestDto dto) {
         try {
+            chatService.postChatMessage(dto);
+            ResponseEntity<? super GetSavedMessageResponseDto> savedMessageResponse = chatService.getSavedMessage(dto.getMessageKey());
+            ChatMessageEntity savedMessage = ((GetSavedMessageResponseDto) savedMessageResponse.getBody()).getSavedMessage();
+            messagingTemplate.convertAndSend("/topic/chat." + dto.getRoomId(),
+                    GetChatMessageResponseDto.success(savedMessage));
+
             ChatMessageEntity chatMessage = chatMessageRepository.findByMessageKey(dto.getMessageKey());
             if (chatMessage == null) {
                 System.out.println("Failed to retrieve chat message with messageKey: " + dto.getMessageKey());
                 return;
             }
-                ChatNotificationRequestDto notification = new ChatNotificationRequestDto();
-                notification.setId(UUID.randomUUID().toString());
-                notification.setChatRoomId(chatMessage.getRoomId());
-                notification.setSenderId(chatMessage.getSender());
-                notification.setMessage(chatMessage.getMessage());
 
-                messagingTemplate.convertAndSend("/topic/notifications." + chatMessage.getRoomId(), notification);
+            ChatRoomEntity chatRoom = chatRoomRepository.findByRoomId(chatMessage.getRoomId());
+            if (chatRoom == null) {
+                System.out.println("Failed to retrieve chat room with roomId: " + chatMessage.getRoomId());
+                return;
+            }
+
+            List<String> usersInRoom = Arrays.asList(chatRoom.getNickname(), chatRoom.getCreatorNickname());
+            for (String receiverId : usersInRoom) {
+                if (!receiverId.equals(chatMessage.getSender())) {
+                    ChatNotificationRequestDto notification = new ChatNotificationRequestDto();
+                    notification.setId(UUID.randomUUID().toString());
+                    notification.setChatRoomId(chatMessage.getRoomId());
+                    notification.setSenderId(chatMessage.getSender());
+                    notification.setMessage(chatMessage.getMessage());
+                    notification.setType("CHAT");
+
+                    messagingTemplate.convertAndSend("/topic/notifications/" + receiverId, notification);
+                }
+            }
         } catch (Exception exception) {
             exception.printStackTrace();
             throw exception;
