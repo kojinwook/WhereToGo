@@ -27,8 +27,6 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
 
     private final MeetingRepository meetingRepository;
     private final MeetingBoardRepository meetingBoardRepository;
-    private final MeetingBoardReplyRepository meetingBoardReplyRepository;
-    private final MeetingReplyToReplyRepository meetingReplyToReplyRepository;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
@@ -199,4 +197,24 @@ public class MeetingBoardServiceImplement implements MeetingBoardService {
         return GetMeetingImageListResponseDto.success(imageDtos);
     }
 
+    @Override
+    public ResponseEntity<? super GetMeetingBoardsTitleResponseDto> getMeetingBoardsTitle(List<Long> meetingBoardIds) {
+        List<String> meetingBoardTitles = new ArrayList<>();
+        try {
+            if (meetingBoardIds == null || meetingBoardIds.isEmpty()) {
+                return GetMeetingBoardsTitleResponseDto.success(meetingBoardTitles);
+            }
+
+            List<MeetingBoardEntity> meetingBoardList = meetingBoardRepository.findAllById(meetingBoardIds);
+
+            for (MeetingBoardEntity meetingBoardEntity : meetingBoardList) {
+                meetingBoardTitles.add(meetingBoardEntity.getTitle());
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetMeetingBoardsTitleResponseDto.success(meetingBoardTitles);
+    }
 }

@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/meeting/board")
@@ -77,6 +79,14 @@ public class MeetingBoardController {
             @PathVariable("meetingId") Long meetingId
     ) {
         ResponseEntity<? super GetMeetingImageListResponseDto> response = meetingBoardService.getMeetingImageList(meetingId);
+        return response;
+    }
+
+    @GetMapping("/titles")
+    public ResponseEntity<? super GetMeetingBoardsTitleResponseDto> getMeetingBoardsTitle(
+            @RequestParam List<Long> meetingBoardIds
+    ) {
+        ResponseEntity<? super GetMeetingBoardsTitleResponseDto> response = meetingBoardService.getMeetingBoardsTitle(meetingBoardIds);
         return response;
     }
 }

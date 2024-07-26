@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.provider;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -43,5 +44,22 @@ public class JwtProvider {
             return null;
         }
         return subject;
+    }
+
+    public String getUsernameFromToken(String token) {
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            return claims.getSubject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

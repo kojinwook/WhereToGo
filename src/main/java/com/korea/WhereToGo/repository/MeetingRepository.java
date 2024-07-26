@@ -11,4 +11,5 @@ public interface MeetingRepository extends JpaRepository<MeetingEntity, Long> {
     MeetingEntity findByMeetingId(Long meetingId);
     List<MeetingEntity> findByCreatorNickname(String nickname);
     List<MeetingEntity> findTop5ByOrderByCreateDateDesc();
+    List<MeetingEntity> findByCreator_UserId(String userId);
 }
