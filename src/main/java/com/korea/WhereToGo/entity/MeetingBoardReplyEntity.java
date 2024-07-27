@@ -3,6 +3,7 @@ package com.korea.WhereToGo.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.korea.WhereToGo.dto.UserDto;
+import com.korea.WhereToGo.dto.request.meeting.board.reply.PatchBoardReplyRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PostBoardReplyRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,9 +42,14 @@ public class MeetingBoardReplyEntity {
     @JsonManagedReference
     private List<MeetingReplyToReplyEntity> replies;
 
-    public MeetingBoardReplyEntity(PostBoardReplyRequestDto requestDto) {
-        this.reply = requestDto.getReply();
+    public MeetingBoardReplyEntity(PostBoardReplyRequestDto dto) {
+        this.reply = dto.getReply();
         this.createDate = LocalDateTime.now();
-        this.meetingBoardId = requestDto.getMeetingBoardId();
+        this.meetingBoardId = dto.getMeetingBoardId();
+    }
+
+    public void patchBoardReply(PatchBoardReplyRequestDto dto) {
+        this.reply = dto.getReply();
+        this.modifyDate = LocalDateTime.now();
     }
 }

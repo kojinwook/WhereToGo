@@ -1,6 +1,8 @@
 package com.korea.WhereToGo.service.serviceImplement;
 
 import com.korea.WhereToGo.dto.UserDto;
+import com.korea.WhereToGo.dto.request.meeting.board.reply.PatchBoardReplyRequestDto;
+import com.korea.WhereToGo.dto.request.meeting.board.reply.PatchReplyReplyRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PostBoardReplyRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PostReplyToReplyRequestDto;
 import com.korea.WhereToGo.dto.response.ResponseDto;
@@ -123,5 +125,43 @@ public class MeetingBoardReplyServiceImplement implements MeetingBoardReplyServi
             return ResponseDto.databaseError();
         }
         return DeleteReplyReplyResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PatchBoardReplyResponseDto> patchBoardReply(PatchBoardReplyRequestDto dto, String userId) {
+        MeetingBoardReplyEntity reply = new MeetingBoardReplyEntity();
+        try {
+            reply = meetingBoardReplyRepository.findByReplyId(dto.getReplyId());
+            if(reply == null) return PatchBoardReplyResponseDto.notExistReply();
+
+            if (!reply.getUser().getUserId().equals(userId)) return PatchBoardReplyResponseDto.noPermission();
+
+            reply.patchBoardReply(dto);
+            meetingBoardReplyRepository.save(reply);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PatchBoardReplyResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super PatchReplyReplyResponseDto> patchReplyReply(PatchReplyReplyRequestDto dto, String userId) {
+        MeetingReplyToReplyEntity reply = new MeetingReplyToReplyEntity();
+        try {
+            reply = meetingReplyToReplyRepository.findByReplyReplyId(dto.getReplyReplyId());
+            if(reply == null) return PatchReplyReplyResponseDto.notExistReply();
+
+            if (!reply.getUser().getUserId().equals(userId)) return PatchReplyReplyResponseDto.noPermission();
+
+            reply.patchReplyReply(dto);
+            meetingReplyToReplyRepository.save(reply);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return PatchReplyReplyResponseDto.success();
     }
 }

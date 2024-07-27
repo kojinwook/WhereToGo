@@ -2,6 +2,7 @@ package com.korea.WhereToGo.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.korea.WhereToGo.dto.UserDto;
+import com.korea.WhereToGo.dto.request.meeting.board.reply.PatchReplyReplyRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PostReplyToReplyRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,5 +44,10 @@ public class MeetingReplyToReplyEntity {
         this.replyReply = dto.getReplyReply();
         this.createDate = LocalDateTime.now();
         this.parentComment = parentComment;
+    }
+
+    public void patchReplyReply(PatchReplyReplyRequestDto dto) {
+        this.replyReply = dto.getReplyReply();
+        this.modifyDate = LocalDateTime.now();
     }
 }
