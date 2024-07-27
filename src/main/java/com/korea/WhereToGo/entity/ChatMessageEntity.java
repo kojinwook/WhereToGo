@@ -18,16 +18,10 @@ public class ChatMessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
-
     private String messageKey;
-
     private Long roomId;
-
     private String sender;
-
     private String message;
-
     private LocalDateTime timestamp;
-
     private boolean readByReceiver;
 }

@@ -126,6 +126,7 @@ public class ChatServiceImplement implements ChatService {
         return GetSavedMessageResponseDto.success(message);
     }
 
+    @Override
     public ResponseEntity<? super GetChatRoomResponseDto> getUserChatRooms(String nickname) {
         List<ChatRoomEntity> chatRoomList = new ArrayList<>();
         try {
@@ -138,7 +139,7 @@ public class ChatServiceImplement implements ChatService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetChatRoomResponseDto.success(chatRoomList);
+        return GetChatRoomResponseDto.success(chatRoomList, chatMessageRepository);
     }
 
     @Override
