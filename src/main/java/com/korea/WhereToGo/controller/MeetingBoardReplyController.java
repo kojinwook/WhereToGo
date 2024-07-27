@@ -1,5 +1,7 @@
 package com.korea.WhereToGo.controller;
 
+import com.korea.WhereToGo.dto.request.meeting.board.reply.PatchBoardReplyRequestDto;
+import com.korea.WhereToGo.dto.request.meeting.board.reply.PatchReplyReplyRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PostBoardReplyRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PostReplyToReplyRequestDto;
 import com.korea.WhereToGo.dto.response.meeting.board.reply.*;
@@ -43,7 +45,7 @@ public class MeetingBoardReplyController {
         return response;
     }
 
-    @DeleteMapping("/{replyId}")
+    @DeleteMapping("/delete/{replyId}")
     public ResponseEntity<? super DeleteBoardReplyResponseDto> deleteBoardReply(
             @PathVariable("replyId") Long replyId,
             @AuthenticationPrincipal String userId
@@ -52,12 +54,30 @@ public class MeetingBoardReplyController {
         return response;
     }
 
-    @DeleteMapping("/reply/{replyReplyId}")
+    @DeleteMapping("/reply/delete/{replyReplyId}")
     public ResponseEntity<? super DeleteReplyReplyResponseDto> deleteReplyReply(
             @PathVariable("replyReplyId") Long replyReplyId,
             @AuthenticationPrincipal String userId
     ) {
         ResponseEntity<? super DeleteReplyReplyResponseDto> response = meetingBoardReplyService.deleteReplyReply(replyReplyId, userId);
+        return response;
+    }
+
+    @PatchMapping("/patch")
+    public ResponseEntity<? super PatchBoardReplyResponseDto> patchBoardReply(
+            @RequestBody @Valid PatchBoardReplyRequestDto requestBody,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super PatchBoardReplyResponseDto> response = meetingBoardReplyService.patchBoardReply(requestBody, userId);
+        return response;
+    }
+
+    @PatchMapping("/reply/patch")
+    public ResponseEntity<? super PatchReplyReplyResponseDto> patchReplyReply(
+            @RequestBody @Valid PatchReplyReplyRequestDto requestBody,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super PatchReplyReplyResponseDto> response = meetingBoardReplyService.patchReplyReply(requestBody, userId);
         return response;
     }
 }
