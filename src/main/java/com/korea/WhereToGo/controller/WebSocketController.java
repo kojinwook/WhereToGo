@@ -55,25 +55,6 @@ public class WebSocketController {
         System.out.println("Messages sent to /queue/chat." + roomId + " for user: " + principal.getName());
     }
 
-    @MessageMapping("/chat/{roomId}/read")
-    public void updateReadStatus(@Payload String messageKey) {
-        try {
-            ResponseEntity<? super GetSavedMessageResponseDto> savedMessageResponse = chatService.getSavedMessage(messageKey);
-            if (savedMessageResponse.getBody() == null || !savedMessageResponse.getStatusCode().is2xxSuccessful()) {
-                System.out.println("Failed to update read status for messageKey: " + messageKey);
-                return;
-            }
-
-            ChatMessageEntity updatedMessage = ((GetSavedMessageResponseDto) savedMessageResponse.getBody()).getSavedMessage();
-            updatedMessage.setReadByReceiver(true);
-            chatMessageRepository.save(updatedMessage);
-
-            messagingTemplate.convertAndSend("/topic/chat." + updatedMessage.getRoomId(), updatedMessage);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
-
     @MessageMapping("/chat/status")
     public void afterConnectionEstablished() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -125,6 +106,7 @@ public class WebSocketController {
             chatService.postChatMessage(dto);
             ResponseEntity<? super GetSavedMessageResponseDto> savedMessageResponse = chatService.getSavedMessage(dto.getMessageKey());
             ChatMessageEntity savedMessage = ((GetSavedMessageResponseDto) savedMessageResponse.getBody()).getSavedMessage();
+
             messagingTemplate.convertAndSend("/topic/chat." + dto.getRoomId(),
                     GetChatMessageResponseDto.success(savedMessage));
 
