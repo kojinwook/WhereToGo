@@ -3,6 +3,7 @@ package com.korea.WhereToGo.filter;
 import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.provider.JwtProvider;
 import com.korea.WhereToGo.repository.UserRepository;
+import io.micrometer.common.lang.Nullable;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -29,18 +31,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     @Override
-    protected  void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected  void doFilterInternal(@Nullable HttpServletRequest request,@Nullable HttpServletResponse response,@Nullable FilterChain filterChain)
             throws ServletException, IOException {
 
         try {
             String token = parseBearerToken(request);
             if(token == null){
-                filterChain.doFilter(request, response);
+                Objects.requireNonNull(filterChain).doFilter(request, response);
                 return;
             }
             String userId = jwtProvider.validate(token);
             if(userId == null){
-                filterChain.doFilter(request, response);
+                Objects.requireNonNull(filterChain).doFilter(request, response);
                 return;
             }
 
@@ -73,7 +75,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         boolean isBearer = authorization.startsWith("Bearer");
 
-        String token = authorization.substring(7);
-        return token;
+        return authorization.substring(7);
     }
 }

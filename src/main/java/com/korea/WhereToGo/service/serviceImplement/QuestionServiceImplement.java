@@ -47,7 +47,7 @@ public class QuestionServiceImplement implements QuestionService {
             questionRepository.save(questionEntity);
 
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if(userEntity == null) return PostQuestionResponseDto.notExistUser();
+            if (userEntity == null) return PostQuestionResponseDto.notExistUser();
 
             List<String> imageList = dto.getImageList();
             List<ImageEntity> imageEntities = new ArrayList<>();
@@ -97,7 +97,6 @@ public class QuestionServiceImplement implements QuestionService {
         return PatchQuestionResponseDto.success();
     }
 
-
     @Override
     public ResponseEntity<? super DeleteQuestionResponseDto> deleteQuestion(Long QuestionId) {
         try {
@@ -122,6 +121,4 @@ public class QuestionServiceImplement implements QuestionService {
         }
         return GetAllQuestionResponseDto.success(questions);
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.korea.WhereToGo.config;
 
 import com.korea.WhereToGo.provider.JwtProvider;
+import io.micrometer.common.lang.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
@@ -18,6 +19,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Configuration
 @EnableWebSocketMessageBroker
@@ -38,12 +40,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new ChannelInterceptor() {
+    public void configureClientInboundChannel(@Nullable ChannelRegistration registration) {
+        Objects.requireNonNull(registration).interceptors(new ChannelInterceptor() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
                 StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-                String authHeader = accessor.getFirstNativeHeader("Authorization");
+                String authHeader = accessor != null ? accessor.getFirstNativeHeader("Authorization") : null;
                 System.out.println("Authorization Header: " + authHeader);
 
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {

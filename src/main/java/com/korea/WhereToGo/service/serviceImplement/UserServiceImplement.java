@@ -24,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImplement implements UserService {
 
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImplement.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
@@ -37,8 +38,6 @@ public class UserServiceImplement implements UserService {
     private final ChatRoomRepository chatRoomRepository;
     private final ReportUserRepository reportUserRepository;
     private final ImageRepository imageRepository;
-
-    private static final Logger log = LoggerFactory.getLogger(UserServiceImplement.class);
 
     @Override
     public ResponseEntity<? super GetUserResponseDto> getUser(String userId) {

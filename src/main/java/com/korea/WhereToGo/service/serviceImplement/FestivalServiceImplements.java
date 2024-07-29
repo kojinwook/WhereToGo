@@ -44,7 +44,7 @@ public class FestivalServiceImplements implements FestivalService {
         ResponseEntity<String> response;
 
         try {
-            String encodedStartDate = URLEncoder.encode(eventStartDate, StandardCharsets.UTF_8.toString());
+            String encodedStartDate = URLEncoder.encode(eventStartDate, StandardCharsets.UTF_8);
             String url = String.format("%s?MobileOS=WIN&MobileApp=A&_type=json&eventStartDate=%s&serviceKey=%s&numOfRows=1000",
                     API_URL, encodedStartDate, SERVICE_KEY);
 

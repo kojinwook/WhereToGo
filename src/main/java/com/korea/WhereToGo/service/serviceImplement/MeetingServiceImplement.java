@@ -295,7 +295,7 @@ public class MeetingServiceImplement implements MeetingService {
             if (meetingEntity == null) return DeleteMeetingResponseDto.notExistMeeting();
 
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if (userEntity == null || !meetingEntity.getUserNickname().equals(userEntity.getNickname())) return DeleteMeetingResponseDto.noPermission();
+            if (userEntity == null || !meetingEntity.getCreator().getNickname().equals(userEntity.getNickname())) return DeleteMeetingResponseDto.noPermission();
 
             List<MeetingUsersEntity> meetingUsersList = meetingUsersRepository.findByMeeting_MeetingId(meetingId);
             meetingUsersRepository.deleteAll(meetingUsersList);
