@@ -54,10 +54,4 @@ public class AnswerController {
         ResponseEntity<? super DeleteAnswerResponseDto> response = answerService.deleteAnswer(answerId);
         return response;
     }
-
-
-
-
-
-
 }

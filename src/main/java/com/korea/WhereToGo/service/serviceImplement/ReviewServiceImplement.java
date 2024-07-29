@@ -95,7 +95,7 @@ public class ReviewServiceImplement implements ReviewService {
             List<ImageEntity> imageEntities = imageRepository.findByReviewReviewId(reviewId);
             reviewEntity.setImageList(imageEntities);
 
-        }catch (Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }

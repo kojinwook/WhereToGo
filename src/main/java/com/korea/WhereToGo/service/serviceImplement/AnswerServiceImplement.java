@@ -103,10 +103,4 @@ public class AnswerServiceImplement implements AnswerService {
         }
         return GetAllAnswerResponseDto.success(answers);
     }
-
-
-
-
-
-
 }
