@@ -84,6 +84,14 @@ public class UserEntity {
     @JsonManagedReference
     private List<ChatRoomEntity> chatRoom = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<MeetingUsersEntity> meetingUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "targetUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<MeetingUsersEntity> targetMeetingUsers = new ArrayList<>();
+
     public void increaseTemperature(double amount) {
         this.temperature += amount;
     }
