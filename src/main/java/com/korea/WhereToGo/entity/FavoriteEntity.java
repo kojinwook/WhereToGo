@@ -34,5 +34,4 @@ public class FavoriteEntity {
         this.user = user;
         this.festival = festival;
     }
-
 }

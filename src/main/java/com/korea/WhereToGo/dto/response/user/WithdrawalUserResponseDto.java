@@ -30,5 +30,4 @@ public class WithdrawalUserResponseDto extends ResponseDto {
         ResponseDto result = new ResponseDto(ResponseCode.WRONG_PASSWORD, ResponseMessage.WRONG_PASSWORD);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
-
 }

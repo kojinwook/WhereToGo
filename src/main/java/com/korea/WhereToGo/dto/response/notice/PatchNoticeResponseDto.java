@@ -19,7 +19,4 @@ public class PatchNoticeResponseDto extends ResponseDto {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_NOTICE,ResponseMessage.NOT_EXISTED_NOTICE);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
     }
-
-
-
 }

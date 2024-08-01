@@ -26,5 +26,4 @@ public class PostMeetingResponseDto extends ResponseDto {
         ResponseDto responseBody = new ResponseDto(ResponseCode.CANNOT_CREATE_MEETING, ResponseMessage.CANNOT_CREATE_MEETING);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
     }
-
 }

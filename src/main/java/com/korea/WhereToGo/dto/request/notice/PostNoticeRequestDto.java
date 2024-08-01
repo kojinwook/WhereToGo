@@ -17,10 +17,8 @@ public class PostNoticeRequestDto {
     private String title;
     @NotBlank
     private String content;
-
     @NotBlank
     private String nickname;
-
     private List<String> imageList;
 
 

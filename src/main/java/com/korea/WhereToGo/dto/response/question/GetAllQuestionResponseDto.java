@@ -14,19 +14,15 @@ import java.util.List;
 @Getter
 public class GetAllQuestionResponseDto extends ResponseDto {
 
-
     private List<QuestionEntity> questions;
 
-    public GetAllQuestionResponseDto(List<QuestionEntity> questions){
+    public GetAllQuestionResponseDto(List<QuestionEntity> questions) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.questions = questions;
     }
-    public static ResponseEntity<GetAllQuestionResponseDto> success(List<QuestionEntity> questions){
+
+    public static ResponseEntity<GetAllQuestionResponseDto> success(List<QuestionEntity> questions) {
         GetAllQuestionResponseDto responseBody = new GetAllQuestionResponseDto(questions);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
-
-
-
-
 }

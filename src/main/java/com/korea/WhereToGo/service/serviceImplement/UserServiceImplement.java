@@ -206,8 +206,7 @@ public class UserServiceImplement implements UserService {
             if (userEntity == null || userEntity.getRole().equals("ROLE_USER"))
                 return GetUserListResponseDto.noPermission();
 
-//            List<UserEntity> users = userRepository.findAllNonAdminUsers();
-            List<UserEntity> users = userRepository.findAll();
+            List<UserEntity> users = userRepository.findAllNonAdminUsers();
             if (users.isEmpty()) return GetUserListResponseDto.notExistUser();
 
             for (UserEntity user : users) {
@@ -277,7 +276,6 @@ public class UserServiceImplement implements UserService {
             reportUserRepository.save(reportUserEntity);
 
             reportUser.setReportCount(userEntity.getReportCount() + 1);
-//            userEntity.decreaseTemperature(0.5);
             userRepository.save(reportUser);
 
             List<String> imageList = dto.getImageList();
@@ -405,6 +403,69 @@ public class UserServiceImplement implements UserService {
         }
         return GetReportListResponseDto.success(reportList);
     }
+
+    @Override
+    public ResponseEntity<? super LikeUserResponseDto> likeUser(String nickname, Long meetingId, String userId) {
+        try{
+            MeetingEntity meeting = meetingRepository.findByMeetingId(meetingId);
+            UserEntity user = userRepository.findByUserId(userId);
+            UserEntity targetUser = userRepository.findByNickname(nickname);
+
+            MeetingUsersEntity userMeetingRecord = meetingUsersRepository.findByMeetingAndUserAndIsParticipantTrue(meeting, user);
+            if (userMeetingRecord == null) return LikeUserResponseDto.notExistUser();
+
+            MeetingUsersEntity existingLikeRecord = meetingUsersRepository.findByMeetingAndUserAndTargetUserAndLiked(meeting, user, targetUser, true);
+            if (existingLikeRecord != null) return LikeUserResponseDto.alreadyLiked();
+
+            MeetingUsersEntity newLikeRecord = new MeetingUsersEntity();
+            newLikeRecord.setMeeting(meeting);
+            newLikeRecord.setUser(user);
+            newLikeRecord.setTargetUser(targetUser);
+            newLikeRecord.setLiked(true);
+            newLikeRecord.setParticipant(false);
+            meetingUsersRepository.save(newLikeRecord);
+
+            targetUser.increaseTemperature(0.1);
+            userRepository.save(targetUser);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return LikeUserResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super DislikeUserResponseDto> dislikeUser(String nickname, Long meetingId, String userId) {
+        try {
+            MeetingEntity meeting = meetingRepository.findByMeetingId(meetingId);
+            UserEntity user = userRepository.findByUserId(userId);
+            UserEntity targetUser = userRepository.findByNickname(nickname);
+
+            MeetingUsersEntity userMeetingRecord = meetingUsersRepository.findByMeetingAndUserAndIsParticipantTrue(meeting, user);
+            if (userMeetingRecord == null) return DislikeUserResponseDto.notExistUser();
+
+            MeetingUsersEntity existingDislikeRecords = meetingUsersRepository.findByMeetingAndUserAndTargetUserAndLiked(meeting, user, targetUser, false);
+            if (existingDislikeRecords != null) return DislikeUserResponseDto.alreadyDisliked();
+
+            MeetingUsersEntity newDislikeRecord = new MeetingUsersEntity();
+            newDislikeRecord.setMeeting(meeting);
+            newDislikeRecord.setUser(user);
+            newDislikeRecord.setTargetUser(targetUser);
+            newDislikeRecord.setLiked(false);
+            newDislikeRecord.setParticipant(false);
+            meetingUsersRepository.save(newDislikeRecord);
+
+            targetUser.decreaseTemperature(0.1);
+            userRepository.save(targetUser);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return DislikeUserResponseDto.success();
+    }
+
 
     private String generateTemporaryPassword() {
         int length = 10;

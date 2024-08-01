@@ -59,13 +59,13 @@ public class MeetingServiceImplement implements MeetingService {
             if(userEntity == null) return PostMeetingResponseDto.notExistUser();
 
 //            LocalDateTime lastMeetingCreated = userEntity.getLastMeetingCreated();
-//            if (lastMeetingCreated != null && lastMeetingCreated.plusDays(2).isAfter(LocalDateTime.now())) {
+//            if (lastMeetingCreated != null && lastMeetingCreated.plusDays(1).isAfter(LocalDateTime.now())) {
 //                return PostMeetingResponseDto.cannotCreateMeeting();
 //            }
-
-            userEntity.increaseTemperature(0.5);
-            userEntity.updateLastMeetingCreated();
-            userRepository.save(userEntity);
+//
+//            userEntity.increaseTemperature(0.5);
+//            userEntity.updateLastMeetingCreated();
+//            userRepository.save(userEntity);
 
             MeetingEntity meetingEntity = new MeetingEntity(dto, userEntity);
             UserEntity user = userRepository.findByUserId(userId);
@@ -81,6 +81,15 @@ public class MeetingServiceImplement implements MeetingService {
                 imageEntities.add(imageEntity);
             }
             imageRepository.saveAll(imageEntities);
+
+            MeetingUsersEntity creatorMeetingUser = new MeetingUsersEntity();
+            creatorMeetingUser.setMeeting(meetingEntity);
+            creatorMeetingUser.setUser(user);
+            creatorMeetingUser.setUserNickname(user.getNickname());
+            creatorMeetingUser.setUserProfileImage(user.getProfileImage());
+            creatorMeetingUser.setParticipant(true);
+            creatorMeetingUser.setJoinDate(LocalDateTime.now());
+            meetingUsersRepository.save(creatorMeetingUser);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,6 +167,7 @@ public class MeetingServiceImplement implements MeetingService {
                 meetingUserEntity.setUser(meetingRequest.getUser());
                 meetingUserEntity.setUserNickname(meetingRequest.getUser().getNickname());
                 meetingUserEntity.setUserProfileImage(meetingRequest.getUser().getProfileImage());
+                meetingUserEntity.setParticipant(true);
                 meetingUserEntity.setJoinDate(LocalDateTime.now());
 
                 meetingUsersRepository.save(meetingUserEntity);
@@ -211,24 +221,12 @@ public class MeetingServiceImplement implements MeetingService {
     @Override
     public ResponseEntity<? super GetJoinMeetingMemberResponseDto> getJoinMeetingMember(Long meetingId) {
         List<MeetingUsersEntity> meetingUsersList = new ArrayList<>();
-        MeetingEntity meetingEntity = new MeetingEntity();
         List<MeetingUserDto> meetingUserDtos = new ArrayList<>();
         try {
-            meetingUsersList = meetingUsersRepository.findByMeeting_MeetingId(meetingId);
+            meetingUsersList = meetingUsersRepository.findByMeeting_MeetingIdAndIsParticipantTrue(meetingId);
 
-            meetingEntity = meetingRepository.findByMeetingId(meetingId);
+            MeetingEntity meetingEntity = meetingRepository.findByMeetingId(meetingId);
             if (meetingEntity == null) return GetJoinMeetingMemberResponseDto.notExistMeeting();
-
-
-            UserEntity creator = meetingEntity.getCreator();
-            System.out.println(creator.getUserId());
-            UserEntity creatorEntity = userRepository.findByUserId(creator.getUserId());
-            MeetingUserDto creatorDto = new MeetingUserDto(
-                    creatorEntity.getUserId(),
-                    creatorEntity.getNickname(),
-                    creatorEntity.getProfileImage(),
-                    meetingEntity.getCreateDate()
-            );
 
             meetingUserDtos = meetingUsersList.stream()
                     .map(user -> new MeetingUserDto(
@@ -238,10 +236,6 @@ public class MeetingServiceImplement implements MeetingService {
                             user.getJoinDate()
                     ))
                     .collect(Collectors.toList());
-
-            if (meetingUsersList.stream().noneMatch(user -> user.getUserNickname().equals(creatorDto.getUserNickname()))) {
-                meetingUserDtos.add(creatorDto);
-            }
 
         } catch (Exception exception) {
             exception.printStackTrace();

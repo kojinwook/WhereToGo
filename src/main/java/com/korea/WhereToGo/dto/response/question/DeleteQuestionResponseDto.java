@@ -19,9 +19,4 @@ public class DeleteQuestionResponseDto extends ResponseDto {
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_FESTIVAL,ResponseMessage.NOT_EXISTED_FESTIVAL);
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(result);
     }
-
-
-
-
-
 }

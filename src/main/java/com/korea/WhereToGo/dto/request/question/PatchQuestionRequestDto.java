@@ -20,6 +20,5 @@ public class PatchQuestionRequestDto {
     private String nickname;
     @NotBlank
     private String type;
-
     private List<String> imageList;
 }

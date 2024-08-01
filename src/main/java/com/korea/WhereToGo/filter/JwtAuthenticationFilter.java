@@ -3,7 +3,6 @@ package com.korea.WhereToGo.filter;
 import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.provider.JwtProvider;
 import com.korea.WhereToGo.repository.UserRepository;
-import io.micrometer.common.lang.Nullable;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     @Override
-    protected  void doFilterInternal(@Nullable HttpServletRequest request,@Nullable HttpServletResponse response,@Nullable FilterChain filterChain)
+    protected  void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         try {
