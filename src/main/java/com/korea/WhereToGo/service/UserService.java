@@ -23,4 +23,6 @@ public interface UserService {
     ResponseEntity<? super PatchUserResponseDto> patchUser(PatchUserRequestDto dto, String userId);
     ResponseEntity<? super VerifyPasswordResponseDto> verifyPassword(VerifyPasswordRequestDto dto, String userId);
     ResponseEntity<? super GetReportListResponseDto> getReportList(String nickname, String userId);
+    ResponseEntity<? super LikeUserResponseDto> likeUser(String nickname, Long meetingId, String userId);
+    ResponseEntity<? super DislikeUserResponseDto> dislikeUser(String nickname, Long meetingId, String userId);
 }

@@ -48,10 +48,4 @@ public class AnswerEntity {
         this.content= dto.getContent();
         this.modifyDateTime = LocalDateTime.now();
     }
-
-
-
-
-
-
 }

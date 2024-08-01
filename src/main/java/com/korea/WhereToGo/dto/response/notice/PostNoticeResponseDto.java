@@ -15,6 +15,4 @@ public class PostNoticeResponseDto extends ResponseDto {
         PostNoticeResponseDto responseBody = new PostNoticeResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
-
-
 }

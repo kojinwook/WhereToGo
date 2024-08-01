@@ -149,4 +149,24 @@ public class UserController {
         ResponseEntity<? super GetReportListResponseDto> response = userService.getReportList(nickname, userId);
         return response;
     }
+
+    @PostMapping("/like-user/{meetingId}/{nickname}")
+    public ResponseEntity<? super LikeUserResponseDto> likeUser(
+            @PathVariable("meetingId") Long meetingId,
+            @PathVariable("nickname") String nickname,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super LikeUserResponseDto> response = userService.likeUser(nickname, meetingId, userId);
+        return response;
+    }
+
+    @PostMapping("/dislike-user/{meetingId}/{nickname}")
+    public ResponseEntity<? super DislikeUserResponseDto> dislikeUser(
+            @PathVariable("meetingId") Long meetingId,
+            @PathVariable("nickname") String nickname,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super DislikeUserResponseDto> response = userService.dislikeUser(nickname, meetingId, userId);
+        return response;
+    }
 }

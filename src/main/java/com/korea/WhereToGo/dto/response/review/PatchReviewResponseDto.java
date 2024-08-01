@@ -28,5 +28,4 @@ public class PatchReviewResponseDto extends ResponseDto {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
     }
-
 }

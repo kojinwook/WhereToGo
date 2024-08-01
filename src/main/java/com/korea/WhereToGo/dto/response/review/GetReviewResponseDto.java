@@ -26,5 +26,4 @@ public class GetReviewResponseDto extends ResponseDto {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_REVIEW, ResponseMessage.NOT_EXISTED_REVIEW);
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
     }
-
 }

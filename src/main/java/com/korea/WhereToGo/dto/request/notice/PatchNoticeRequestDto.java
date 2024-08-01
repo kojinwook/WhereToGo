@@ -14,13 +14,10 @@ import java.util.List;
 public class PatchNoticeRequestDto {
     @NotBlank
     private String title;
-
     @NotBlank
     private String content;
-
     @NotBlank
     private String nickname;
-
     private List<String> imageList;
 
 

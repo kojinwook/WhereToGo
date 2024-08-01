@@ -28,6 +28,4 @@ public class GetQuestionResponseDto  extends ResponseDto {
         ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_QUESTION,ResponseMessage.NOT_EXISTED_QUESTION);
         return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(responseBody);
     }
-
-
 }

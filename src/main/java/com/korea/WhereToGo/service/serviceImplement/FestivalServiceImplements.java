@@ -8,7 +8,6 @@ import com.korea.WhereToGo.dto.response.festival.*;
 import com.korea.WhereToGo.entity.FestivalEntity;
 import com.korea.WhereToGo.entity.UserEntity;
 import com.korea.WhereToGo.repository.FestivalRepository;
-import com.korea.WhereToGo.repository.ReviewRepository;
 import com.korea.WhereToGo.repository.UserRepository;
 import com.korea.WhereToGo.service.FestivalService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +34,6 @@ public class FestivalServiceImplements implements FestivalService {
     private static final String SERVICE_KEY = "jyrjzPCPy2ZunbDHSvrxNcr1Jl%2BWUNSidHGaWa0ZtEPPpAeF%2FCXZlJu9%2FInRdrmT7z29NspgBpW3ebiR3qBQ%2FQ%3D%3D";
     private final FestivalRepository festivalRepository;
     private final UserRepository userRepository;
-    private final ReviewRepository reviewRepository;
 
     @Override
     public ResponseEntity<? super PostFestivalListResponseDto> saveFestivalList(String eventStartDate) {

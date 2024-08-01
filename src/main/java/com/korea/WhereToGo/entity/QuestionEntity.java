@@ -45,13 +45,6 @@ public class QuestionEntity {
     @UpdateTimestamp
     private LocalDateTime modifyDateTime;
 
-//    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL,orphanRemoval = true)
-//    private List<Attachment> attachments = new ArrayList<>();
-
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "question",cascade = CascadeType.ALL,orphanRemoval = true)
-//    private List<AnswerEntity> answers;
-
     public QuestionEntity(PostQuestionRequestDto dto) {
         this.title = dto.getTitle();
         this.content = dto.getContent();

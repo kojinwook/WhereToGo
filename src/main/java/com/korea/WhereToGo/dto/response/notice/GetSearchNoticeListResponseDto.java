@@ -5,7 +5,6 @@ import com.korea.WhereToGo.common.ResponseMessage;
 import com.korea.WhereToGo.dto.response.ResponseDto;
 import com.korea.WhereToGo.entity.NoticeEntity;
 import lombok.Getter;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -27,5 +26,4 @@ public class GetSearchNoticeListResponseDto extends ResponseDto {
        ResponseDto responseBody = new ResponseDto(ResponseCode.NOT_EXISTED_NOTICE, ResponseMessage.NOT_EXISTED_NOTICE);
        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
    }
-
 }

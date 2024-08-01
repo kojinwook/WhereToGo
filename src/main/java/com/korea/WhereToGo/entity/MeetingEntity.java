@@ -31,7 +31,6 @@ public class MeetingEntity {
     private String title;
     private String introduction;
     private String content;
-    private String userNickname;
 
     @Transient
     private UserDto userDto;

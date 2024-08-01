@@ -23,5 +23,4 @@ public class GetAllAnswerResponseDto extends ResponseDto {
         GetAllAnswerResponseDto responseBody = new GetAllAnswerResponseDto(answers);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
-
 }

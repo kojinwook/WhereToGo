@@ -35,6 +35,11 @@ public class MeetingUsersEntity {
     @JsonBackReference
     private UserEntity user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "target_user_id")
+    @JsonBackReference
+    private UserEntity targetUser;
+
     @Column(name = "user_nickname")
     private String userNickname;
 
@@ -43,4 +48,10 @@ public class MeetingUsersEntity {
 
     @Column(name = "join_date")
     private LocalDateTime joinDate;
+
+    @Column(name = "liked")
+    private boolean liked;
+
+    @Column(name = "is_participant")
+    private boolean isParticipant;
 }

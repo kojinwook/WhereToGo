@@ -25,5 +25,4 @@ public class PostChatRoomResponseDto extends ResponseDto {
         ResponseDto responseBody = new ResponseDto(ResponseCode.ALREADY_EXIST_CHAT_ROOM, ResponseMessage.ALREADY_EXIST_CHAT_ROOM);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
-
 }
