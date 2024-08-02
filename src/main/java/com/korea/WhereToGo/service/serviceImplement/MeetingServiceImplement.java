@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,6 +87,7 @@ public class MeetingServiceImplement implements MeetingService {
             MeetingUsersEntity creatorMeetingUser = new MeetingUsersEntity();
             creatorMeetingUser.setMeeting(meetingEntity);
             creatorMeetingUser.setUser(user);
+            creatorMeetingUser.setTargetUser(user);
             creatorMeetingUser.setUserNickname(user.getNickname());
             creatorMeetingUser.setUserProfileImage(user.getProfileImage());
             creatorMeetingUser.setParticipant(true);
@@ -247,28 +250,36 @@ public class MeetingServiceImplement implements MeetingService {
     @Override
     public ResponseEntity<? super GetUserMeetingResponseDto> getUserMeeting(String userId) {
         List<MeetingDto> meetingDtos = new ArrayList<>();
+        Set<Long> meetingIds = new HashSet<>();
         try {
             List<MeetingUsersEntity> meetingUsersEntities = meetingUsersRepository.findByUser_UserId(userId);
 
             for (MeetingUsersEntity meetingUser : meetingUsersEntities) {
                 MeetingEntity meeting = meetingUser.getMeeting();
-                MeetingDto meetingDto = new MeetingDto();
-                meetingDto.setMeetingId(meeting.getMeetingId());
-                meetingDto.setTitle(meeting.getTitle());
-                meetingDto.setCreatorProfile(meeting.getCreator().getProfileImage());
-                meetingDto.setCreatorNickname(meeting.getCreator().getNickname());
+                if (!meetingIds.contains(meeting.getMeetingId())) {
+                    MeetingDto meetingDto = new MeetingDto();
+                    meetingDto.setMeetingId(meeting.getMeetingId());
+                    meetingDto.setTitle(meeting.getTitle());
+                    meetingDto.setCreatorProfile(meeting.getCreator().getProfileImage());
+                    meetingDto.setCreatorNickname(meeting.getCreator().getNickname());
 
-                meetingDtos.add(meetingDto);
+                    meetingDtos.add(meetingDto);
+                    meetingIds.add(meeting.getMeetingId());
+                }
             }
 
             List<MeetingEntity> createdMeetings = meetingRepository.findByCreator_UserId(userId);
             for (MeetingEntity meeting : createdMeetings) {
-                MeetingDto meetingDto = new MeetingDto();
-                meetingDto.setMeetingId(meeting.getMeetingId());
-                meetingDto.setTitle(meeting.getTitle());
-                meetingDto.setCreatorProfile(meeting.getCreator().getProfileImage());
-                meetingDto.setCreatorNickname(meeting.getCreator().getNickname());
-                meetingDtos.add(meetingDto);
+                if (!meetingIds.contains(meeting.getMeetingId())) {
+                    MeetingDto meetingDto = new MeetingDto();
+                    meetingDto.setMeetingId(meeting.getMeetingId());
+                    meetingDto.setTitle(meeting.getTitle());
+                    meetingDto.setCreatorProfile(meeting.getCreator().getProfileImage());
+                    meetingDto.setCreatorNickname(meeting.getCreator().getNickname());
+
+                    meetingDtos.add(meetingDto);
+                    meetingIds.add(meeting.getMeetingId());
+                }
             }
 
         } catch (Exception exception) {
@@ -277,6 +288,7 @@ public class MeetingServiceImplement implements MeetingService {
         }
         return GetUserMeetingResponseDto.success(meetingDtos);
     }
+
 
     @Override
     public ResponseEntity<? super DeleteMeetingResponseDto> deleteMeeting(Long meetingId, String userId) {
