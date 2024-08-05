@@ -18,7 +18,8 @@ public interface UserService {
     ResponseEntity<? super DeleteUserResponseDto> deleteUser(String userId);
     ResponseEntity<? super PostReportUserResponseDto> reportUser(PostReportUserRequestDto dto, String userId);
     ResponseEntity<? super BlockUserResponseDto> blockUser(BlockUserRequestDto dto, String userId);
-    ResponseEntity<? super GetTop5TemperatureUserResponseDto> getTop5User();
+    ResponseEntity<? super UnBlockUserResponseDto> unBlockUser(UnBlockUserRequestDto dto, String userId);
+    ResponseEntity<? super GetTop3TemperatureUserResponseDto> getTop3User();
     ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, String userId);
     ResponseEntity<? super PatchUserResponseDto> patchUser(PatchUserRequestDto dto, String userId);
     ResponseEntity<? super VerifyPasswordResponseDto> verifyPassword(VerifyPasswordRequestDto dto, String userId);

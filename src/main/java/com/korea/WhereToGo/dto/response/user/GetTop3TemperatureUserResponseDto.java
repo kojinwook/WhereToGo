@@ -11,17 +11,17 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 @Getter
-public class GetTop5TemperatureUserResponseDto extends ResponseDto {
+public class GetTop3TemperatureUserResponseDto extends ResponseDto {
 
     private List<UserDto> userList;
 
-    public GetTop5TemperatureUserResponseDto(List<UserDto> userList){
+    public GetTop3TemperatureUserResponseDto(List<UserDto> userList){
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         this.userList = userList;
     }
 
-    public static ResponseEntity<? super GetTop5TemperatureUserResponseDto> success(List<UserDto> userList){
-        GetTop5TemperatureUserResponseDto responseBody = new GetTop5TemperatureUserResponseDto(userList);
+    public static ResponseEntity<? super GetTop3TemperatureUserResponseDto> success(List<UserDto> userList){
+        GetTop3TemperatureUserResponseDto responseBody = new GetTop3TemperatureUserResponseDto(userList);
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 }
