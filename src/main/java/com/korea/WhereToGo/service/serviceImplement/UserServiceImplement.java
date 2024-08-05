@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -303,11 +304,15 @@ public class UserServiceImplement implements UserService {
                 return BlockUserResponseDto.noPermission();
 
             String targetUserId = dto.getUserId();
-            int blockDays = dto.getBlockDay();
+            int blockDays = dto.getBlockDays();
             UserEntity targetUserEntity = userRepository.findByUserId(targetUserId);
 
+            if (targetUserEntity.getBlockReleaseDate() == null) {
+                targetUserEntity.setBlockReleaseDate(LocalDate.now().plusDays(blockDays));
+            } else {
+                targetUserEntity.setBlockReleaseDate(targetUserEntity.getBlockReleaseDate().plusDays(blockDays));
+            }
             targetUserEntity.setBlocked(true);
-            targetUserEntity.setBlockReleaseDate(targetUserEntity.getBlockReleaseDate().plusDays(blockDays));
             userRepository.save(targetUserEntity);
 
         } catch (Exception exception) {

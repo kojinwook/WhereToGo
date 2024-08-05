@@ -9,5 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BlockUserRequestDto {
     private String userId;
-    private int blockDay;
+    private int blockDays;
 }
