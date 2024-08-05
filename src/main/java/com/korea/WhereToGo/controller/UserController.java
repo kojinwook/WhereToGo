@@ -108,9 +108,18 @@ public class UserController {
         return response;
     }
 
-    @GetMapping("/temperature-top5")
-    public ResponseEntity<? super GetTop5TemperatureUserResponseDto> getTop5User() {
-        ResponseEntity<? super GetTop5TemperatureUserResponseDto> response = userService.getTop5User();
+    @PostMapping("/unblock-user")
+    public ResponseEntity<? super UnBlockUserResponseDto> unBlockUser(
+            @RequestBody @Valid UnBlockUserRequestDto dto,
+            @AuthenticationPrincipal String userId
+    ) {
+        ResponseEntity<? super UnBlockUserResponseDto> response = userService.unBlockUser(dto, userId);
+        return response;
+    }
+
+    @GetMapping("/temperature-top3")
+    public ResponseEntity<? super GetTop3TemperatureUserResponseDto> getTop5User() {
+        ResponseEntity<? super GetTop3TemperatureUserResponseDto> response = userService.getTop3User();
         return response;
     }
 

@@ -318,10 +318,31 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
-    public ResponseEntity<? super GetTop5TemperatureUserResponseDto> getTop5User() {
+    public ResponseEntity<? super UnBlockUserResponseDto> unBlockUser(UnBlockUserRequestDto dto, String userId) {
+        try {
+            UserEntity userEntity = userRepository.findByUserId(userId);
+            if (userEntity == null || userEntity.getRole().equals("ROLE_USER"))
+                return UnBlockUserResponseDto.noPermission();
+
+            String targetUserId = dto.getUserId();
+            UserEntity targetUserEntity = userRepository.findByUserId(targetUserId);
+
+            targetUserEntity.setBlocked(false);
+            targetUserEntity.setBlockReleaseDate(null);
+            userRepository.save(targetUserEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return UnBlockUserResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetTop3TemperatureUserResponseDto> getTop3User() {
         List<UserDto> userList = new ArrayList<>();
         try {
-            List<UserEntity> users = userRepository.findTop5ByOrderByTemperatureDesc();
+            List<UserEntity> users = userRepository.findTop3NonAdminUsersByOrderByTemperatureDesc();
 
             for (UserEntity user : users) {
                 UserDto userDto = new UserDto(user);
@@ -332,7 +353,7 @@ public class UserServiceImplement implements UserService {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return GetTop5TemperatureUserResponseDto.success(userList);
+        return GetTop3TemperatureUserResponseDto.success(userList);
     }
 
     @Override
