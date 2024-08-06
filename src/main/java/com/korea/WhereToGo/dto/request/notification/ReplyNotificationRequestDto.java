@@ -1,11 +1,9 @@
 package com.korea.WhereToGo.dto.request.notification;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class ReplyNotificationRequestDto {
     private String id;

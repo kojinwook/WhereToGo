@@ -5,15 +5,11 @@ import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PatchReplyReplyRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PostReplyToReplyRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "meeting_reply_to_board_reply")

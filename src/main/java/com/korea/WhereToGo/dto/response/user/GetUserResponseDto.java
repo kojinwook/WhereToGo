@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
-@RequiredArgsConstructor
 public class GetUserResponseDto extends ResponseDto {
 
     private String userId;

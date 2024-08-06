@@ -4,18 +4,14 @@ package com.korea.WhereToGo.entity;
 import com.korea.WhereToGo.dto.request.notice.PatchNoticeRequestDto;
 import com.korea.WhereToGo.dto.request.notice.PostNoticeRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Setter
-@Getter
+@Data
 @Entity(name="notice")
 @Table(name="notice")
 @NoArgsConstructor

@@ -50,7 +50,6 @@ public class FestivalServiceImplements implements FestivalService {
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
             response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-//            System.out.println(response);
             JsonNode rootNode = objectMapper.readTree(response.getBody());
             JsonNode itemsNode = rootNode.path("response").path("body").path("items").path("item");
 

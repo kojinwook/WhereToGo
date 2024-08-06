@@ -1,14 +1,12 @@
 package com.korea.WhereToGo.dto.request.meeting;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class PatchMeetingRequestDto {
     @NotBlank

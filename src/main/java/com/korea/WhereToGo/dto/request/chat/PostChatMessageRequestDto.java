@@ -1,11 +1,9 @@
 package com.korea.WhereToGo.dto.request.chat;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class PostChatMessageRequestDto {
     private Long roomId; // 채팅방 ID

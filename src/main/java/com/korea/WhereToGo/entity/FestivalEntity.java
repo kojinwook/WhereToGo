@@ -3,10 +3,7 @@ package com.korea.WhereToGo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.korea.WhereToGo.dto.request.festival.PatchFestivalRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "festival")

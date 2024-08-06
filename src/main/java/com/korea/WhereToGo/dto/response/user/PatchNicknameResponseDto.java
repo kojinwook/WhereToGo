@@ -3,9 +3,11 @@ package com.korea.WhereToGo.dto.response.user;
 import com.korea.WhereToGo.common.ResponseCode;
 import com.korea.WhereToGo.common.ResponseMessage;
 import com.korea.WhereToGo.dto.response.ResponseDto;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+@Getter
 public class PatchNicknameResponseDto extends ResponseDto {
     private PatchNicknameResponseDto() {super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);}
 

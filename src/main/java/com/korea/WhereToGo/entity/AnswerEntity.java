@@ -4,17 +4,13 @@ package com.korea.WhereToGo.entity;
 import com.korea.WhereToGo.dto.request.answer.PatchAnswerRequestDto;
 import com.korea.WhereToGo.dto.request.answer.PostAnswerRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Entity(name="answer")
 @Table(name="answer")
 @NoArgsConstructor

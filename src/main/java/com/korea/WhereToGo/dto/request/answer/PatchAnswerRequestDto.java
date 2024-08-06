@@ -3,12 +3,10 @@ package com.korea.WhereToGo.dto.request.answer;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class PatchAnswerRequestDto {
     @NotBlank
