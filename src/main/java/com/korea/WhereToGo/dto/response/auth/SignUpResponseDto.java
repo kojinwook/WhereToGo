@@ -6,6 +6,7 @@ import com.korea.WhereToGo.dto.response.ResponseDto;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 @Getter
 public class SignUpResponseDto extends ResponseDto {
 

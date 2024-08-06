@@ -4,10 +4,7 @@ package com.korea.WhereToGo.entity;
 import com.korea.WhereToGo.dto.request.question.PatchQuestionRequestDto;
 import com.korea.WhereToGo.dto.request.question.PostQuestionRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,8 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "question")

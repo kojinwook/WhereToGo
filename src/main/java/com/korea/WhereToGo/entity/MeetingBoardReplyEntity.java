@@ -6,16 +6,12 @@ import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PatchBoardReplyRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.reply.PostBoardReplyRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "meeting_board_reply")

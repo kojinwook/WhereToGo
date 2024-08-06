@@ -2,17 +2,14 @@ package com.korea.WhereToGo.dto.request.notice;
 
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class PostNoticeRequestDto {
-
     @NotBlank
     private String title;
     @NotBlank
@@ -20,6 +17,4 @@ public class PostNoticeRequestDto {
     @NotBlank
     private String nickname;
     private List<String> imageList;
-
-
 }

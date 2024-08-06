@@ -1,15 +1,13 @@
 package com.korea.WhereToGo.dto;
 
 import com.korea.WhereToGo.entity.MeetingBoardReplyEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
+@Data
 public class MeetingBoardReplyDto {
     private Long replyId;
     private String reply;

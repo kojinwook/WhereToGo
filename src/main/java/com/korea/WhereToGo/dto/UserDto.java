@@ -1,13 +1,13 @@
 package com.korea.WhereToGo.dto;
 
 import com.korea.WhereToGo.entity.UserEntity;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 public class UserDto {
     private String userId;
     private String nickname;

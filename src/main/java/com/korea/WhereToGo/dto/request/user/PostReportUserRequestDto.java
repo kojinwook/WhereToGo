@@ -1,13 +1,11 @@
 package com.korea.WhereToGo.dto.request.user;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class PostReportUserRequestDto {
     private String reportUserNickname;

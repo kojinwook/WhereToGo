@@ -1,10 +1,8 @@
 package com.korea.WhereToGo.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class UserStatus {
     private String username;
     private boolean online;

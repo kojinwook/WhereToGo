@@ -6,10 +6,7 @@ import com.korea.WhereToGo.dto.UserDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PatchMeetingBoardRequestDto;
 import com.korea.WhereToGo.dto.request.meeting.board.PostMeetingBoardRequestDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -17,8 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "meeting_board")

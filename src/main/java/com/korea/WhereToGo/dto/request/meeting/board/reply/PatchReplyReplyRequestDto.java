@@ -1,11 +1,9 @@
 package com.korea.WhereToGo.dto.request.meeting.board.reply;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class PatchReplyReplyRequestDto {
     private Long replyReplyId;
