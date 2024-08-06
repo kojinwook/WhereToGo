@@ -29,7 +29,7 @@ public class FestivalEntity {
     @Column(name = "title")
     private String title;
     @Column(name = "eventStartDate")
-    private String startDate;
+    private LocalDate startDate;
     @Column(name = "eventEndDate")
     private LocalDate endDate;
     @Column(name = "address1")
@@ -71,6 +71,15 @@ public class FestivalEntity {
 
     public String getEndDate() {
         return endDate.format(DateTimeFormatter.ofPattern("yyyyMMdd", Locale.KOREA));
+    }
+
+    public void setStartDate(String startDateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd", Locale.KOREA);
+        this.startDate = LocalDate.parse(startDateStr, formatter);
+    }
+
+    public String getStartDate() {
+        return startDate.format(DateTimeFormatter.ofPattern("yyyyMMdd", Locale.KOREA));
     }
 
     public void patchFestival(PatchFestivalRequestDto dto){

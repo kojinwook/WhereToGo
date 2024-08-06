@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PatchFestivalRequestDto {
     private String title;
-    private String startDate;
+    private LocalDate startDate;
     private LocalDate endDate;
     private String address1;
     private String firstImage;

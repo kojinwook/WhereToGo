@@ -98,7 +98,9 @@ public class MeetingBoardReplyServiceImplement implements MeetingBoardReplyServi
             reply = meetingBoardReplyRepository.findByReplyId(replyId);
             if(reply == null) return DeleteBoardReplyResponseDto.notExistBoardReply();
 
-            if (!reply.getUser().getUserId().equals(userId)) return DeleteBoardReplyResponseDto.noPermission();
+            UserEntity user = userRepository.findByUserId(userId);
+
+            if (!reply.getUser().getUserId().equals(userId) || !user.getRole().equals("ROLE_ADMIN")) return DeleteBoardReplyResponseDto.noPermission();
 
             meetingBoardReplyRepository.delete(reply);
 
