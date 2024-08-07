@@ -129,6 +129,9 @@ public class UserServiceImplement implements UserService {
             List<ChatRoomEntity> chatRoomEntities = chatRoomRepository.findByNicknameOrCreatorNickname(nickname, nickname);
             chatRoomRepository.deleteAll(chatRoomEntities);
 
+            List<ReportUserEntity> reportUserEntities = reportUserRepository.findByReportUserNickname(nickname);
+            reportUserRepository.deleteAll(reportUserEntities);
+
             userRepository.delete(userEntity);
 
             log.info("User {} has been deleted.", userId);

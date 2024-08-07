@@ -185,7 +185,7 @@ public class FestivalServiceImplements implements FestivalService {
             if (festivalEntity == null) return PatchFestivalResponseDto.notExistFestival();
 
             UserEntity userEntity = userRepository.findByUserId(userId);
-            if (userEntity == null || !userEntity.getRole().equals("ADMIN"))
+            if (userEntity == null || !userEntity.getRole().equals("ROLE_ADMIN"))
                 return PatchFestivalResponseDto.notPermission();
 
             festivalEntity.patchFestival(dto);
