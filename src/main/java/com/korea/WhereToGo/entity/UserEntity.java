@@ -43,8 +43,6 @@ public class UserEntity {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
-    private List<String> likeBoardList;
-
     @Column(nullable = false)
     private double temperature;
 

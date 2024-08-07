@@ -19,6 +19,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     UserEntity findByNickname(String nickname);
     @Query("SELECT u FROM user u WHERE u.role != 'ROLE_ADMIN'")
     List<UserEntity> findAllNonAdminUsers();
-    @Query("SELECT u FROM user u WHERE u.role != 'ROLE_ADMIN' ORDER BY u.temperature DESC")
+    @Query("SELECT u FROM user u WHERE u.role != 'ROLE_ADMIN' ORDER BY u.temperature DESC LIMIT 3")
     List<UserEntity> findTop3NonAdminUsersByOrderByTemperatureDesc();
 }
