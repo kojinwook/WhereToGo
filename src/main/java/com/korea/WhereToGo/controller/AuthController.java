@@ -87,5 +87,4 @@ public class AuthController {
         ResponseEntity<? super AdminSignInResponseDto> response = authService.adminSignIn(requestBody);
         return response;
     }
-
 }

@@ -35,7 +35,6 @@ public class ReviewServiceImplement implements ReviewService {
     public ResponseEntity<? super PostReviewResponseDto> postReview(PostReviewRequestDto dto, String userId) {
         String contentId = dto.getContentId();
         try {
-
             UserEntity userEntity = userRepository.findByUserId(userId);
             if (userEntity == null) return PostReviewResponseDto.notExistUser();
 

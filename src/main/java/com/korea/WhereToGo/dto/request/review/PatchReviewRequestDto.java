@@ -17,5 +17,6 @@ public class PatchReviewRequestDto {
     private String review;
     @NotBlank
     private String nickname;
+    private String profileImage;
     private List<String> imageList;
 }

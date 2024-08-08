@@ -22,6 +22,8 @@ public class ReviewEntity {
     private Long reviewId;
     @Column(name = "user_nickname")
     private String nickname;
+    @Column(name = "profile_image")
+    private String profileImage;
     @Column(name = "write_datetime")
     private String writeDatetime;
     @Column(name = "modify_datetime")
@@ -39,6 +41,7 @@ public class ReviewEntity {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
         this.nickname = dto.getNickname();
+        this.profileImage = dto.getProfileImage();
         this.writeDatetime = writeDatetime;
         this.contentId = contentId;
         this.review = dto.getReview();
