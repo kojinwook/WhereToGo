@@ -1,13 +1,15 @@
 package com.korea.WhereToGo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.korea.WhereToGo.dto.request.auth.AdminSignUpRequestDto;
 import com.korea.WhereToGo.dto.request.auth.SignUpRequestDto;
 import com.korea.WhereToGo.dto.request.user.PatchUserRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -81,7 +83,7 @@ public class UserEntity {
     private List<ChatRoomEntity> chatRoom = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
+    @JsonManagedReference
     private List<MeetingUsersEntity> meetingUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "targetUser", cascade = CascadeType.ALL, orphanRemoval = true)
