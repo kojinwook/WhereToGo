@@ -193,7 +193,7 @@ public class MeetingServiceImplement implements MeetingService {
         List<MeetingRequestEntity> requests = new ArrayList<>();
         try {
 
-            requests = meetingRequestRepository.findByMeeting_MeetingId(meetingId);
+            requests = meetingRequestRepository.findByMeeting_MeetingIdWithUser(meetingId);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -281,7 +281,6 @@ public class MeetingServiceImplement implements MeetingService {
                     meetingIds.add(meeting.getMeetingId());
                 }
             }
-
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();

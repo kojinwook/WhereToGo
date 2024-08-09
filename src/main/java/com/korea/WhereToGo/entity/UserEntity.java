@@ -1,5 +1,6 @@
 package com.korea.WhereToGo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.korea.WhereToGo.dto.request.auth.AdminSignUpRequestDto;
 import com.korea.WhereToGo.dto.request.auth.SignUpRequestDto;
@@ -16,7 +17,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name="user")
@@ -79,7 +81,7 @@ public class UserEntity {
     private List<ChatRoomEntity> chatRoom = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonBackReference
     private List<MeetingUsersEntity> meetingUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "targetUser", cascade = CascadeType.ALL, orphanRemoval = true)
